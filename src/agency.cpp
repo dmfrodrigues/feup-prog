@@ -13,15 +13,18 @@ Agency::Agency(){
         std::cout << "Ficheiro da agência não foi aberto";
     }
     is >> *this;
-    //loadClients();
-    //loadPacks();
 }
 
 
-std::istream& operator>>(std::istream& is, Agency& a){
+void operator>>(std::istream& is, Agency& a){
     std::stringstream dummy;
-    vin("", a.name, is, dummy);
-    vin("", a.nif , is, dummy);
-    
-    return is;
+    if(!vin("",                a.name      , is, dummy) ||
+       !vin("",                a.nif       , is, dummy) ||
+       !vin("",                a.url       , is, dummy) ||
+       !vin("", &Address::set, &a.address  , is, dummy) ||
+       !vin("",                a.clientpath, is, dummy) ||
+       !vin("",                a.travelpath, is, dummy))
+       throw std::invalid_argument("failed to find one of the required fields in agency file");
+    a.loadClients(a.clientpath);
+    //a.loadPacks(a.travelpath);
 }
