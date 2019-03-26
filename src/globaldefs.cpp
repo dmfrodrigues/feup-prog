@@ -10,6 +10,10 @@ NIF::NIF(std::string s){
     s_ = s;
 }
 
+std::ostream& operator<<(std::ostream& os, const NIF& obj){
+    return (os << std::string(obj));
+}
+
 std::istream& operator>>(std::istream& is, NIF& obj){
     std::string s; is >> s;
     obj = NIF(s);

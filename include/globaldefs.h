@@ -22,7 +22,7 @@ public:
     bool operator< (const NIF& obj) const{ return (this->s_  < obj.s_); }
 };
 
-//std::ostream& operator<<(std::ostream& os, const NIF& obj);
+std::ostream& operator<<(std::ostream& os, const NIF& obj);
 std::istream& operator>>(std::istream& is,       NIF& obj);
 
 bool isCancel(std::string s);

@@ -34,5 +34,5 @@ void operator>>(std::istream& is, Agency& a){
 }
 
 void Agency::run(){
-
+    Client::print(vclient.begin(), vclient.end(), "table");
 }
