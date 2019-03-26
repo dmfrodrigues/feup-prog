@@ -67,8 +67,8 @@ public:
                 os << setwidth(std::to_string(t.id     ()),  4) << "   ";
                 os << setwidth((t.avail()? "sim" : "não") ,  4) << "\t";
                 os << setwidth(t.getPlaces()              , 53) << " \t";
-                os << setwidth(t.begin().to_string()      , 12) << " ";
-                os << setwidth(t.end  ().to_string()      , 12) << " ";
+                os << setwidth(std::string(t.begin())     , 12) << " ";
+                os << setwidth(std::string(t.end())       , 12) << " ";
                 os << setwidth(std::to_string(t.price  ()),  5) << " ";
                 os << setwidth(std::to_string(t.numMax ()), 10) << " ";
                 os << setwidth(std::to_string(t.numSold()),  8) << " ";
