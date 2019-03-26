@@ -2,10 +2,25 @@ import os
 import platform
 
 if platform.system() == "Linux":
-    print("Create ./build/linux/obj/, remove all content")
-    os.system("mkdir -p build/linux/obj")
-    for f in os.listdir("build/linux/obj"):
-        os.remove(f)
+    print("Create build/linux/obj/, remove all content")
+    os.system("mkdir -p build/linux/obj/")
+    for f in os.listdir("build/linux/obj/"):
+        os.remove("build/linux/obj/"+f)
+    print('Done')
+    print("Creating .o files...")
+    lst = os.listdir("src/")
+    N = max(len(s) for s in lst)+1;
+    for f in lst:
+        if f[-4:] != ".cpp": continue
+        print("    compiling", f)
+        cmd = "g++ -Wall -std=c++11 -c " + ("src/%s"%f).ljust(N+4) + " -o " + ("build/linux/obj/%s.o"%(f.split("/")[-1])[:-4]).ljust(N+14) + " -I./include/"
+        assert os.system(cmd) == 0
+    print('Done')
+    print("Create build/linux/bin/, link .o files...")
+    os.system("mkdir -p build/linux/bin/")
+    os.system("g++ -o build/linux/bin/main.app build/linux/obj/*.o")
+    print("Done")
+
 
 """
 elif platform.system() == "Windows":
