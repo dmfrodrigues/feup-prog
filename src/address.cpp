@@ -24,6 +24,10 @@ std::string Address::str(std::string s) const{
     return std::string(b);
 }
 
+std::ostream& operator<<(std::ostream& os, const Address& a){
+    return (os << a.str());
+}
+
 bool Address::operator==(const Address& a) const{
     return (this->str() == a.str());;
 }
