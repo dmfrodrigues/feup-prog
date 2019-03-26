@@ -4,11 +4,11 @@
 
 std::istream& operator>>(std::istream& is, Client& c){
     std::stringstream dummy;
-    if(!vin("",                    c.name_    , is, dummy) ||
-       !vin("",                    c.nif_     , is, dummy) ||
-       !vin("",                    c.numFam_  , is, dummy) ||
-       !vin("", &Address::set    , &c.address_, is, dummy) ||
-       !vin("", &Client::setPacks, &c         , is, dummy))
+    if(!vin("",                   c.name_   , is, dummy) ||
+       !vin("",                   c.nif_    , is, dummy) ||
+       !vin("",                   c.numFam_ , is, dummy) ||
+       !vin("", Address::set    , c.address_, is, dummy) ||
+       !vin("", Client::setPacks, c         , is, dummy))
        throw std::invalid_argument("could not read client file");
     return is;
 }
@@ -22,25 +22,28 @@ std::ostream& operator<<(std::ostream& os, const Client& c){
     return os;
 }
 
-void Client::setPacks(Client* cptr, std::string s){
-    cptr->vtravel_ = makePacks(s);
+void Client::setPacks(Client& c, std::string s){
+    c.vtravel_ = makePacks(s);
 }
 
 std::vector<ID> Client::makePacks(std::string s){
     std::vector<ID> ret;
-    std::vector<std::string> v = parse(s, ';');
+    std::vector<std::string> v = split(s, ';');
     for(auto s:v) ret.push_back(str_to<ID>(s));
     return ret;
 }
 
 std::string Client::getPacks() const{
+    //std::string ret = join(vtravel_.begin(), vtravel_.end(), &std::to_string, " ; ");
+
     std::string ret;
     if(vtravel_.size() >= 1){
         auto it = vtravel_.begin();
-        ret = std::to_string(*it);
+        ret = std::to_string(*(it++));
         for(; it != vtravel_.end(); ++it)
             ret += " ; " + std::to_string(*it);
     }
+
     return ret;
 }
 

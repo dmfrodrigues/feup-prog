@@ -10,7 +10,7 @@ Date::operator std::string() const{
 }
 
 Date::Date(std::string s){
-    std::vector<std::string> v = parse(s, '/');
+    std::vector<std::string> v = split(s, '/');
     if(v.size() != 3){
         throw std::invalid_argument("date does not have 3 fields");
     }
@@ -22,8 +22,8 @@ Date::Date(std::string s){
     }
 }
 
-void Date::set(Date* dptr, std::string s){
-    *dptr = Date(s);
+void Date::set(Date& d, std::string s){
+    d = Date(s);
 }
 
 int days[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};

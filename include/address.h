@@ -19,7 +19,7 @@ public:
     */
     Address(std::string s);
 
-    static void set(Address* aptr, std::string s);
+    static void set(Address& a, std::string s);
 
     /***/
     const std::string& street    ()const{ return street_    ; }

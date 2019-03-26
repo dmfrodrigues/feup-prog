@@ -22,13 +22,13 @@ template<> inline bool vin(const std::string& q, std::string& obj, std::istream&
     return true;
 }
 
-template<class T> inline bool vin(const std::string& q, void (*fptr)(T*, std::string), T* context, std::istream& is = std::cin, std::ostream& os = std::cout){
+template<class T> inline bool vin(const std::string& q, void fptr(T&, std::string), T& obj, std::istream& is = std::cin, std::ostream& os = std::cout){
     std::string b;
     while(true){
         os << q; getline(is, b);
         if(isCancel(b)) return false;
         try{
-            fptr(context, b);
+            fptr(obj, b);
             break;
         }catch(...){
             os << "Input failed, try again" << std::endl;

@@ -26,7 +26,7 @@ private:
     /***/
     std::string getPlaces()const;
     /***/
-    static void setPlaces(TravelPack* tptr, std::string s);
+    static void setPlaces(TravelPack& t, std::string s);
 public:
     /***/
     static std::vector<std::string> makePlaces(std::string s);

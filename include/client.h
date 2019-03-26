@@ -22,7 +22,7 @@ private:
     std::vector<ID> vtravel_;
     //TOTAL DE COMPRAS EFETUADAS?
 
-    static void setPacks(Client* cptr, std::string s);
+    static void setPacks(Client& c, std::string s);
 
 public:
 

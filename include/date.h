@@ -14,7 +14,7 @@ public:
     /***/
     bool checkValid() const;
     /***/
-    static void set(Date* dptr, std::string s);
+    static void set(Date& d, std::string s);
 
     /***/
     operator std::string() const;

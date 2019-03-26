@@ -5,7 +5,7 @@ std::string trim(const std::string& s){
                        s.begin()+s.find_last_not_of(' ')+1);
 }
 
-std::vector<std::string> parse(std::string s, char delim){
+std::vector<std::string> split(std::string s, char delim){
     std::vector<std::string> ret;
     int i;
     while(true){

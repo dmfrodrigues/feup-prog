@@ -17,12 +17,12 @@ Agency::Agency(){
 
 std::istream& operator>>(std::istream& is, Agency& a){
     std::stringstream dummy;
-    if(!vin("",                a.name      , is, dummy) ||
-       !vin("",                a.nif       , is, dummy) ||
-       !vin("",                a.url       , is, dummy) ||
-       !vin("", &Address::set, &a.address  , is, dummy) ||
-       !vin("",                a.clientpath, is, dummy) ||
-       !vin("",                a.travelpath, is, dummy))
+    if(!vin("",               a.name      , is, dummy) ||
+       !vin("",               a.nif       , is, dummy) ||
+       !vin("",               a.url       , is, dummy) ||
+       !vin("", Address::set, a.address   , is, dummy) ||
+       !vin("",               a.clientpath, is, dummy) ||
+       !vin("",               a.travelpath, is, dummy))
         throw std::invalid_argument("failed to find one of the required fields in agency file");
     a.loadClients(a.clientpath);
     a.loadPacks  (a.travelpath);
@@ -88,7 +88,7 @@ std::ostream& Agency::save(std::ostream& os) const{
         std::ofstream of_client(clientpath);
         if(vclient.size() >= 1){
             auto it = vclient.begin();
-            of_client << *it << std::endl;
+            of_client << *(it++) << std::endl;
             for(; it != vclient.end(); ++it){
                 of_client << "::::::::::" << std::endl;
                 of_client << *it << std::endl;
@@ -101,7 +101,7 @@ std::ostream& Agency::save(std::ostream& os) const{
         of_pack << lasttravel << std::endl;
         if(vtravel.size() >= 1){
             auto it = vtravel.begin();
-            of_pack << it->second << std::endl;
+            of_pack << (it++)->second << std::endl;
             for(; it != vtravel.end(); ++it){
                 of_pack << "::::::::::" << std::endl;
                 of_pack << it->second << std::endl;
