@@ -22,6 +22,16 @@ void TravelPack::setPlaces(TravelPack* tptr, std::string s){
     tptr->vplaces_ = makePlaces(s);
 }
 
+std::string TravelPack::getPlaces() const{
+    std::string ret = vplaces_[0];
+    if(vplaces_.size() > 1){
+        ret += " - " + vplaces_[1];
+        for(unsigned i = 1; i < vplaces_.size(); ++i)
+            ret += ", " + vplaces_[i];
+    }
+    return ret;
+}
+
 std::vector<std::string> TravelPack::makePlaces(std::string s){
     std::vector<std::string> ret;
     std::vector<std::string> v = parse(s, '-');

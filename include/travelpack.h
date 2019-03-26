@@ -80,8 +80,8 @@ public:
                 os << "0      ID:                          " << t.id_                  << std::endl;
                 os << "1      Disponibilidade:             " << (t.avail_?"sim":"não") << std::endl;
                 os << "2      Destino:                     " << t.getPlaces()          << std::endl;
-                os << "3      Data de início (yyyy/mm/dd): " << t.begin_.to_string()   << std::endl;
-                os << "4      Data de fim    (yyyy/mm/dd): " << t.end_  .to_string()   << std::endl;
+                os << "3      Data de início (yyyy/mm/dd): " << t.begin_               << std::endl;
+                os << "4      Data de fim    (yyyy/mm/dd): " << t.end_                 << std::endl;
                 os << "5      Preço por pessoa:            " << t.price_               << std::endl;
                 os << "6      Máximo de pessoas:           " << t.numMax_              << std::endl;
                 os << "7      Lugares vendidos:            " << t.numSold_;
