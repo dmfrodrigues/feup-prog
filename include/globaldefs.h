@@ -2,15 +2,14 @@
 #define GLOBALDEFS_H_INCLUDED
 
 #include <iostream>
-//#include <stdexcept>
 
 typedef int Price;
 typedef std::string Name;
 
 const int NIFsize = 9;
 struct NIF{
-friend std::ostream& operator<<(std::ostream& os, const NIF& obj);
-friend std::istream& operator>>(std::istream& os,       NIF& obj);
+//friend std::ostream& operator<<(std::ostream& os, const NIF& obj);
+//friend std::istream& operator>>(std::istream& os,       NIF& obj);
 private:
     std::string s_;
 public:
@@ -23,7 +22,7 @@ public:
     bool operator< (const NIF& obj) const{ return (this->s_  < obj.s_); }
 };
 
-std::ostream& operator<<(std::ostream& os, const NIF& obj);
+//std::ostream& operator<<(std::ostream& os, const NIF& obj);
 std::istream& operator>>(std::istream& is,       NIF& obj);
 
 bool isCancel(std::string s);

@@ -12,9 +12,12 @@ public:
     /***/
     Date(std::string s);
     /***/
-    static bool checkValid(const Date& d);
+    bool checkValid() const;
     /***/
     static void set(Date* dptr, std::string s);
+
+    /***/
+    operator std::string() const;
     /***/
     static Date begin(){ return Date("0001/01/01"); }
     static Date end  (){ return Date("9999/12/31"); }
@@ -28,11 +31,9 @@ public:
         return (this->y == d.y && this->m == d.m && this->d == d.d);
     }
     bool operator<=(const Date& d) const{ return (*this < d || *this == d); }
-    /***/
-    std::string to_string() const;
 };
 
 /***/
-std::ostream& operator<<(std::ostream& os, const Date& d);
+//std::ostream& operator<<(std::ostream& os, const Date& d);
 
 #endif

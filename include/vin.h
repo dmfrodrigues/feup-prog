@@ -1,6 +1,8 @@
 #ifndef VIN_H_INCLUDED
 #define VIN_H_INCLUDED
 
+bool isCancel(std::string s){ return (s == "cancel"); }
+
 template<class T> inline bool vin(const std::string& q, T& obj, std::istream& is = std::cin, std::ostream& os = std::cout){
     std::string b; std::stringstream ss;
     while(true){
