@@ -41,9 +41,6 @@ public:
     const Address&         address  ()const{ return address_; }
     const std::vector<ID>& vtravel  ()const{ return vtravel_; }
 
-
-
-
     /***/
     bool operator<(const Client& obj) const;
     /***/

@@ -50,17 +50,18 @@ std::ostream& operator<<(std::ostream& os, const Agency& a){
 
 void Agency::run(){
     this->print() << std::endl;
-    this->printHelp() << std::endl;
+    this->printHelp();
     std::string b;
     while(true){
         std::cout << std::endl;
         std::cout << "Operação: "; getline(std::cin, b); b = trim(b);
         std::cout << std::endl;
-        if     (b == "tclient") Client::print(vclient.begin(), vclient.end(), "table") << std::endl;
-        else if(b == "tpack"  ) TravelPack::print(vtravel.begin(), vtravel.end(), "table") << std::endl;
+        if     (b == "tclient")     Client::print(vclient.begin(), vclient.end(), "table");
+        else if(b == "tpack"  ) TravelPack::print(vtravel.begin(), vtravel.end(), "table");
+        else if(b == "sclient") seeClient();    else if(b == "spack") seePack();
         else if(b == "+client") addClient();    else if(b == "+pack") addPack();
         //else if(b == "#client") changeClient(); else if(b == "#pack") changePack();
-        //else if(b == "-client") deleteClient(); else if(b == "-pack") deletePack(); //#DEV
+        //else if(b == "-client") deleteClient(); //else if(b == "-pack") deletePack(); //#DEV
         else if(b == "help"   ) printHelp();
         else if(b == "save"   ) save();         else if(b == "exit" ) return;
     }
@@ -80,6 +81,7 @@ std::ostream& Agency::print(std::ostream& os){
 
 std::ostream& Agency::printHelp(std::ostream& os) const{
     os << "Mostrar clientes em tabela\t[tclient]" << "\t" << "Mostrar pacotes em tabela\t[tpack]" << std::endl;
+    os << "Ver cliente               \t[sclient]" << "\t" << "Ver pacote               \t[spack]" << std::endl;
     os << "Adicionar cliente         \t[+client]" << "\t" << "Adicionar pacote         \t[+pack]" << std::endl;
     os << "Alterar cliente           \t[#client]" << "\t" << "Alterar pacote           \t[#pack]" << std::endl;
     os << "Eliminar cliente          \t[-client]" << "\t" << "Eliminar pacote          \t[-pack]" << std::endl;
