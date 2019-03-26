@@ -34,6 +34,6 @@ public:
 };
 
 /***/
-//std::ostream& operator<<(std::ostream& os, const Date& d);
+std::ostream& operator<<(std::ostream& os, const Date& d);
 
 #endif

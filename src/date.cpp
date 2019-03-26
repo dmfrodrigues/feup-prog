@@ -41,3 +41,7 @@ bool Date::checkValid()const{
     if(!(0 <= y && y <= 9999)) return false;
     return true;
 }
+
+std::ostream& operator<<(std::ostream& os, const Date& d){
+    return (os << std::string(d));
+}
