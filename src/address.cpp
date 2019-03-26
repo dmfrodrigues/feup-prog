@@ -17,3 +17,13 @@ Address::Address(std::string s){
 void Address::set(Address* aptr, std::string s){
     *aptr = Address(s);
 }
+
+bool Address::operator==(const Address& a) const{
+    return (this->str() == a.str());;
+}
+bool Address::operator!=(const Address& a) const{
+    return !(*this == a);
+}
+bool Address::operator< (const Address& a) const{
+    return (this->str() < a.str());
+}
