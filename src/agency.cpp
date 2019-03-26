@@ -6,15 +6,15 @@
 Agency::Agency(){
     std::ifstream is;
     while(true){
-        agencypath = "agency.txt";
+        std::cout << "Ficheiro da agência: "; std::cin >> agencypath;
+        //agencypath = "agency.txt";
         is.clear();
         is.open(agencypath, std::ifstream::in);
         if(is.is_open()) break;
-        std::cout << "Ficheiro da agência não foi aberto";
+        std::cout << "Ficheiro da agência não foi aberto\n";
     }
     is >> *this;
 }
-
 
 void operator>>(std::istream& is, Agency& a){
     std::stringstream dummy;
@@ -26,5 +26,9 @@ void operator>>(std::istream& is, Agency& a){
        !vin("",                a.travelpath, is, dummy))
        throw std::invalid_argument("failed to find one of the required fields in agency file");
     a.loadClients(a.clientpath);
-    //a.loadPacks(a.travelpath);
+    a.loadPacks  (a.travelpath);
+}
+
+void Agency::run(){
+
 }

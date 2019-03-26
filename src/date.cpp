@@ -18,6 +18,10 @@ Date::Date(std::string s){
     if(!checkValid()) throw std::invalid_argument("date not valid");
 }
 
+void Date::set(Date* dptr, std::string s){
+    *dptr = Date(s);
+}
+
 int days[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 bool isLeap(int y){
     if (y%4 == 0){
