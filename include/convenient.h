@@ -35,7 +35,7 @@ std::string join(ForwardIterator first, ForwardIterator last, std::string delim)
     return ret;
 }
 
-template<class ForwardIterator, class T>
+template<class ForwardIterator, class T = long long>
 std::string join(ForwardIterator first, ForwardIterator last, std::string (*fptr)(T), std::string delim){
     std::string ret;
     if(first != last){
@@ -55,7 +55,7 @@ template<typename T> T str_to(std::string s){
 }
 
 /***/
-std::string setwidth(std::string s, int sz);
+std::string setwidth(std::string s, size_t sz);
 
 /***/
 std::string lower_case(std::string s);

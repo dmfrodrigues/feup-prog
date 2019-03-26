@@ -16,7 +16,7 @@ struct Agency{
 friend std::istream& operator>>(std::istream& is,       Agency& a);
 friend std::ostream& operator<<(std::ostream& os, const Agency& a);
 private:
-    std::string agencypath, travelpath, clientpath;
+    std::string agencypath, travelpath, clientpath, inputpath;
     std::string name;
     NIF nif;
     URL url;

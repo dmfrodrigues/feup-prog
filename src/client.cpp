@@ -34,20 +34,19 @@ std::vector<ID> Client::makePacks(std::string s){
 }
 
 std::string Client::getPacks() const{
-    //std::string ret = join(vtravel_.begin(), vtravel_.end(), &std::to_string, " ; ");
-
-    std::string ret;
-    if(vtravel_.size() >= 1){
-        auto it = vtravel_.begin();
-        ret = std::to_string(*(it++));
-        for(; it != vtravel_.end(); ++it)
-            ret += " ; " + std::to_string(*it);
-    }
-
+    std::string ret = join(vtravel_.begin(), vtravel_.end(), &std::to_string, " ; ");
     return ret;
 }
 
-
+bool Client::userClient(std::istream& is, std::ostream& os){
+    if(!vin("Nome: "                                 ,                   name_   ) ||
+       !vin("NIF: "                                  ,                   nif_    ) ||
+       !vin("Número de elementos da família: "       ,                   numFam_ ) ||
+       !vin("Morada: "                               , Address::set    , address_) ||
+       !vin("Pacotes comprados (separados por ';'): ", Client::setPacks, *this   ))
+        return false;
+    return true;
+}
 
 bool Client::operator<(const Client& c) const{
     if     (name_    != c.name_   ) return (name_    < c.name_   );

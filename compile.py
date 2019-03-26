@@ -18,7 +18,7 @@ if platform.system() == "Linux":
     print('Done')
     print("Create build/linux/bin/, link .o files...")
     os.system("mkdir -p build/linux/bin/")
-    os.system("g++ -o build/linux/bin/main.app build/linux/obj/*.o")
+    assert os.system("g++ -o build/linux/bin/main.app build/linux/obj/*.o") == 0
     print("Done")
 
 

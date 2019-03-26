@@ -17,4 +17,5 @@ std::ostream& operator<<(std::ostream& os, const NIF& obj){
 std::istream& operator>>(std::istream& is, NIF& obj){
     std::string s; is >> s;
     obj = NIF(s);
+    return is;
 }

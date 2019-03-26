@@ -8,8 +8,13 @@ template<class T> inline bool vin(const std::string& q, T& obj, std::istream& is
     while(true){
         os << q; getline(is, b);
         if(isCancel(b)) return false;
-        ss.clear(); ss.str(b); ss >> obj; if(ss) break;
-        os << "Input failed, try again" << std::endl;
+        ss.clear(); ss.str(b);
+        try{
+            ss >> obj;
+            if(ss) break;
+        }catch(const std::invalid_argument& e){
+            os << "Error: " << e.what() << std::endl;
+        }
     }
     return true;
 }

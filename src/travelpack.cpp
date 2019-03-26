@@ -29,6 +29,19 @@ std::ostream& operator<<(std::ostream& os, const TravelPack& t){
     return os;
 }
 
+bool TravelPack::userPack(unsigned lasttravel, std::istream&, std::ostream& os){
+    id_ = lasttravel;
+    avail_ = true;
+    if(!vin("Destino (principal - secundários separados por ','): ", TravelPack::setPlaces, *this  ) ||
+       !vin("Data de início (yyyy/mm/dd): "                        , Date::set            , begin_ ) ||
+       !vin("Data de fim (yyyy/mm/dd): "                           , Date::set            , end_   ) ||
+       !vin("Preço por pessoa: "                                   ,                        price_ ) ||
+       !vin("Número máximo de pessoas: "                           ,                        numMax_))
+        return false;
+    numSold_ = 0;
+    return true;
+}
+
 void TravelPack::setPlaces(TravelPack& t, std::string s){
     t.vplaces_ = makePlaces(s);
 }

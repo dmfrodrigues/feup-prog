@@ -6,9 +6,18 @@
 Agency::Agency(){
     std::ifstream is;
     while(true){
-        agencypath = "agency.txt";
+        std::string fullpath = "input/agency.txt"; //#DEV
+        auto n = fullpath.find_last_of('/');
+        if(n != fullpath.npos){
+            inputpath  = std::string(fullpath.begin(), fullpath.begin()+n+1);
+            agencypath = std::string(fullpath.begin()+n+1, fullpath.end());
+        }else{
+            inputpath  = "";
+            agencypath = fullpath;
+        }
+
         is.clear();
-        is.open(agencypath, std::ifstream::in);
+        is.open(inputpath + agencypath, std::ifstream::in);
         if(is.is_open()) break;
         std::cout << "Ficheiro da agência não foi aberto\n";
     }
@@ -24,8 +33,8 @@ std::istream& operator>>(std::istream& is, Agency& a){
        !vin("",               a.clientpath, is, dummy) ||
        !vin("",               a.travelpath, is, dummy))
         throw std::invalid_argument("failed to find one of the required fields in agency file");
-    a.loadClients(a.clientpath);
-    a.loadPacks  (a.travelpath);
+    a.loadClients(a.inputpath + a.clientpath);
+    a.loadPacks  (a.inputpath + a.travelpath);
     return is;
 }
 
@@ -44,13 +53,14 @@ void Agency::run(){
     this->printHelp() << std::endl;
     std::string b;
     while(true){
+        std::cout << std::endl;
         std::cout << "Operação: "; getline(std::cin, b); b = trim(b);
         std::cout << std::endl;
         if     (b == "tclient") Client::print(vclient.begin(), vclient.end(), "table") << std::endl;
         else if(b == "tpack"  ) TravelPack::print(vtravel.begin(), vtravel.end(), "table") << std::endl;
-        //else if(b == "+client") addClient();    else if(b == "+pack") addPack();
+        else if(b == "+client") addClient();    else if(b == "+pack") addPack();
         //else if(b == "#client") changeClient(); else if(b == "#pack") changePack();
-        //else if(b == "-client") deleteClient(); else if(b == "-pack") deletePack();
+        //else if(b == "-client") deleteClient(); else if(b == "-pack") deletePack(); //#DEV
         else if(b == "help"   ) printHelp();
         else if(b == "save"   ) save();         else if(b == "exit" ) return;
     }
@@ -80,12 +90,12 @@ std::ostream& Agency::printHelp(std::ostream& os) const{
 
 std::ostream& Agency::save(std::ostream& os) const{
     {
-        std::ofstream of_agency(agencypath);
+        std::ofstream of_agency(inputpath + agencypath);
         of_agency << *this;
         of_agency.close();
     }
     {
-        std::ofstream of_client(clientpath);
+        std::ofstream of_client(inputpath + clientpath);
         if(vclient.size() >= 1){
             auto it = vclient.begin();
             of_client << *(it++) << std::endl;
@@ -97,7 +107,7 @@ std::ostream& Agency::save(std::ostream& os) const{
         of_client.close();
     }
     {
-        std::ofstream of_pack(travelpath);
+        std::ofstream of_pack(inputpath + travelpath);
         of_pack << lasttravel << std::endl;
         if(vtravel.size() >= 1){
             auto it = vtravel.begin();

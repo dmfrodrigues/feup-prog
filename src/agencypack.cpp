@@ -15,3 +15,12 @@ void Agency::loadPacks(std::string fpath){
         getline(is, b);
     }
 }
+
+void Agency::addPack(){
+    TravelPack t;
+    if(t.userPack(lasttravel+1)){
+        ++lasttravel;
+        vtravel[t.id()] = t;
+        std::cout << "Pacote turístico adicionado" << std::endl;
+    }
+}

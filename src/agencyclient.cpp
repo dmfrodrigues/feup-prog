@@ -14,3 +14,11 @@ void Agency::loadClients(std::string fpath){
         getline(is, b);
     }
 }
+
+void Agency::addClient(){
+    Client c;
+    if(c.userClient()){
+        vclient.insert(c);
+        std::cout << "Cliente adicionado" << std::endl;
+    }
+}

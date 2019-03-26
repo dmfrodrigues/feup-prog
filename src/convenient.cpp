@@ -7,7 +7,7 @@ std::string trim(const std::string& s){
 
 std::vector<std::string> split(std::string s, char delim){
     std::vector<std::string> ret;
-    int i;
+    size_t i;
     while(true){
         i = s.find(delim);
         if(i == s.npos) break;
@@ -18,7 +18,7 @@ std::vector<std::string> split(std::string s, char delim){
     return ret;
 }
 
-std::string setwidth(std::string s, int sz){
+std::string setwidth(std::string s, size_t sz){
     if(s.size() < sz)
         s += std::string(sz-s.size(), ' ');
     if(s.size() > sz)
