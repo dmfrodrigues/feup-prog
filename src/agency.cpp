@@ -6,13 +6,14 @@
 Agency::Agency(){
     std::ifstream is;
     while(true){
-        std::cout << "Ficheiro da agência: "; std::cin >> agencypath;
-        //agencypath = "agency.txt";
+        //std::cout << "Ficheiro da agência: "; std::cin >> agencypath;
+        agencypath = "agency.txt";
         is.clear();
         is.open(agencypath, std::ifstream::in);
         if(is.is_open()) break;
         std::cout << "Ficheiro da agência não foi aberto\n";
     }
+    std::cout << "L16" << std::endl;
     is >> *this;
 }
 
