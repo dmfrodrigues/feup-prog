@@ -38,6 +38,28 @@ std::pair<unsigned, bool> Agency::seeClient() const{
     return std::make_pair(i, true);
 }
 
+void Agency::changeClient(){
+    auto p = seeClient();
+    if(!p.second) return;
+    int i = p.first;
+    std::string b; std::cout << std::endl;
+    int j;{
+        while(true){
+            if(!vin("# da propriedade a alterar: ", j)) return;
+            if(0 <= j && j < 5)      break;
+            else std::cout << "Número fora do intervalo permitido [0,4]" << std::endl;
+        }
+    }
+    auto it = vclient.begin(); std::advance(it, i);
+    Client cbef = *it;
+    Client caft = cbef;
+    if(caft.userClientprop(j)){
+        vclient.erase(cbef);
+        vclient.insert(caft);
+        std::cout << "Propriedade alterada" << std::endl;
+    }
+}
+
 void Agency::deleteClient(){
     auto p = seeClient();
     if(!p.second) return;

@@ -60,10 +60,12 @@ void Agency::run(){
         else if(b == "tpack"  ) TravelPack::print(vtravel.begin(), vtravel.end(), "table");
         else if(b == "sclient") seeClient();    else if(b == "spack") seePack();
         else if(b == "+client") addClient();    else if(b == "+pack") addPack();
-        //else if(b == "#client") changeClient(); else if(b == "#pack") changePack();
-        else if(b == "-client") deleteClient(); else if(b == "-pack") deletePack(); //#DEV
+        else if(b == "#client") changeClient(); else if(b == "#pack") changePack(); //#DEV
+        else if(b == "-client") deleteClient(); else if(b == "-pack") deletePack();
+        //else if(b == "sell"   ) sell();
         else if(b == "help"   ) printHelp();
         else if(b == "save"   ) save();         else if(b == "exit" ) return;
+        else std::cout << "Comando inválido" << std::endl;
     }
 }
 
@@ -85,6 +87,7 @@ std::ostream& Agency::printHelp(std::ostream& os) const{
     os << "Adicionar cliente         \t[+client]" << "\t" << "Adicionar pacote         \t[+pack]" << std::endl;
     os << "Alterar cliente           \t[#client]" << "\t" << "Alterar pacote           \t[#pack]" << std::endl;
     os << "Eliminar cliente          \t[-client]" << "\t" << "Eliminar pacote          \t[-pack]" << std::endl;
+    os << "Vender pacote a um cliente\t[sell]   " << "\t" << "                         \t       " << std::endl;
     os << "Lista de comandos         \t[help]   " << "\t" << "                         \t       " << std::endl;
     os << "Guardar                   \t[save]   " << "\t" << "Sair                     \t[exit] " << std::endl;
     return os;

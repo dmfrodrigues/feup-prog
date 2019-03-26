@@ -17,6 +17,15 @@ void Agency::loadPacks(std::string fpath){
     }
 }
 
+void Agency::addPack(){
+    TravelPack t;
+    if(t.userPack(lasttravel+1)){
+        ++lasttravel;
+        vtravel[t.id()] = t;
+        std::cout << "Pacote turístico adicionado" << std::endl;
+    }
+}
+
 std::pair<unsigned, bool> Agency::seePack() const{
     TravelPack::print(vtravel.begin(), vtravel.end(), "table") << std::endl;
     int id;
@@ -31,14 +40,25 @@ std::pair<unsigned, bool> Agency::seePack() const{
     return std::make_pair(id, true);
 }
 
-void Agency::addPack(){
-    TravelPack t;
-    if(t.userPack(lasttravel+1)){
-        ++lasttravel;
-        vtravel[t.id()] = t;
-        std::cout << "Pacote turístico adicionado" << std::endl;
+
+void Agency::changePack(){
+    auto p = seePack();
+    if(!p.second) return;
+    int id = p.first;
+    std::string b; std::cout << std::endl;
+    int j;{
+        while(true){
+            if(!vin("# da propriedade a alterar: ", j)) return;
+            if(0 <= j && j < 8)      break;
+            else std::cout << "Número fora do intervalo permitido [0,7]" << std::endl;
+        }
+    }
+    auto& it = vtravel[id];
+    if(it.userPackprop(j)){
+        std::cout << "Propriedade alterada" << std::endl;
     }
 }
+
 
 void Agency::deletePack(){
     auto p = seePack();

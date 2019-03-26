@@ -42,6 +42,29 @@ bool TravelPack::userPack(unsigned lasttravel, std::istream&, std::ostream& os){
     return true;
 }
 
+bool TravelPack::userPackprop(int propn, std::istream& is, std::ostream& os){
+    std::string b;
+    switch(propn){
+        case 0: os << "O ID de um pacote turístico não pode ser alterado" << std::endl; return false; break;
+        case 1: os << "Disponibilidade: "          << (avail_?"sim":"não") << std::endl;
+            while(true){
+                if(!vin("Novo valor de disponibilidade [sim/não]: ", b)) return false;
+                if(b == "sim" || b == "não") break;
+                else os << "Apenas os valores [sim] e [não] são válidos" << std::endl;
+            }
+            avail_ = (b == "sim");
+            break;
+        case 2: os << "Destino: "                  << getPlaces() << std::endl; if(!vin("Novo destino: "         , TravelPack::setPlaces, *this  )) return false; break;
+        case 3: os << "Data de início: "           << begin_      << std::endl; if(!vin("Nova data de início: "  , Date::set            , begin_ )) return false; break;
+        case 4: os << "Data de fim: "              << end_        << std::endl; if(!vin("Nova data de fim: "     , Date::set            , end_   )) return false; break;
+        case 5: os << "Preço por pessoa: "         << price_      << std::endl; if(!vin("Novo preço por pessoa: ",                        price_ )) return false; break;
+        case 6: os << "Número máximo de pessoas: " << numMax_     << std::endl; if(!vin("Novo número máximo de pessoas: ",                numMax_)) return false; break;
+        case 7: os << "Vendas de lugares devem ser processadas através da operação [sell]" << std::endl; return false; break;
+        default: throw std::invalid_argument("trying to access travelpack property that does not exist");
+    }
+    return true;
+}
+
 void TravelPack::setPlaces(TravelPack& t, std::string s){
     t.vplaces_ = makePlaces(s);
 }

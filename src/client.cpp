@@ -48,6 +48,19 @@ bool Client::userClient(std::istream& is, std::ostream& os){
     return true;
 }
 
+bool Client::userClientprop(int propn, std::istream& is, std::ostream& os){
+    switch(propn){
+        case 0: os << "Nome: "                           << name_      << std::endl; if(!vin("Novo nome: "                          ,                   name_   )) return false; break;
+        case 1: os << "NIF: "                            << nif_       << std::endl; if(!vin("Novo NIF: "                           ,                   nif_    )) return false; break;
+        case 2: os << "Número de elementos da família: " << numFam_    << std::endl; if(!vin("Novo número de elementos da família: ",                   numFam_ )) return false; break;
+        case 3: os << "Morada: "                         << address_   << std::endl; if(!vin("Nova morada: "                        , Address::set    , address_)) return false; break;
+        case 4: os << "Compras de pacotes devem ser processadas através da operação [sell]" << std::endl; return false; break;
+        default: throw std::invalid_argument("trying to access client property that does not exist");
+    }
+    return true;
+}
+
+
 bool Client::operator<(const Client& c) const{
     if     (name_    != c.name_   ) return (name_    < c.name_   );
     else if(nif_     != c.nif_    ) return (nif_     < c.nif_    );
