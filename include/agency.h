@@ -50,7 +50,7 @@ private:
     /***/
     void findPack();
     /***/
-    void save() const;
+    std::ostream& save(std::ostream& os = std::cout) const;
 public:
     /**
     Constructs Agency object from content of file.

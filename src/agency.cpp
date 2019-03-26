@@ -78,7 +78,7 @@ std::ostream& Agency::printHelp(std::ostream& os) const{
     return os;
 }
 
-void Agency::save() const{
+std::ostream& Agency::save(std::ostream& os) const{
     {
         std::ofstream of_agency(agencypath);
         of_agency << *this;
@@ -89,9 +89,24 @@ void Agency::save() const{
         if(vclient.size() >= 1){
             auto it = vclient.begin();
             of_client << *it << std::endl;
-            for(; it != vclient.end(); ++it)
+            for(; it != vclient.end(); ++it){
+                of_client << "::::::::::" << std::endl;
                 of_client << *it << std::endl;
+            }
         }
         of_client.close();
     }
+    {
+        std::ofstream of_pack(travelpath);
+        of_pack << lasttravel << std::endl;
+        if(vtravel.size() >= 1){
+            auto it = vtravel.begin();
+            of_pack << it->second << std::endl;
+            for(; it != vtravel.end(); ++it){
+                of_pack << "::::::::::" << std::endl;
+                of_pack << it->second << std::endl;
+            }
+        }
+    }
+    return (os << "Ficheiros guardados" << std::endl);
 }

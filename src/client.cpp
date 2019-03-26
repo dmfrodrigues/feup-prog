@@ -34,7 +34,14 @@ std::vector<ID> Client::makePacks(std::string s){
 }
 
 std::string Client::getPacks() const{
-    AQUI
+    std::string ret;
+    if(vtravel_.size() >= 1){
+        auto it = vtravel_.begin();
+        ret = std::to_string(*it);
+        for(; it != vtravel_.end(); ++it)
+            ret += " ; " + std::to_string(*it);
+    }
+    return ret;
 }
 
 
