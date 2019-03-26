@@ -18,6 +18,12 @@ void Address::set(Address* aptr, std::string s){
     *aptr = Address(s);
 }
 
+std::string Address::str(std::string s) const{
+    char b[512];
+    sprintf(b, s.c_str(), street_, door_, floor_, postalCode_, city_);
+    return std::string(b);
+}
+
 bool Address::operator==(const Address& a) const{
     return (this->str() == a.str());;
 }
