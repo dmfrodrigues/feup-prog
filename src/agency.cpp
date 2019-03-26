@@ -30,6 +30,13 @@ void operator>>(std::istream& is, Agency& a){
 }
 
 void Agency::run(){
-    Client::print(vclient.begin(), vclient.end(), "table") << std::endl << std::endl;
-    TravelPack::print(vtravel.begin(), vtravel.end(), "table") << std::endl;
+    this->print();
+}
+
+void Agency::print(std::ostream& os){
+    const int n = (120-name.size())/2;
+    os << std::string('=', 2*n+name.size())                  << std::endl;
+    os << std::string(' ', n) << name << std::string(' ', n) << std::endl;
+    os << std::string('=', 2*n+name.size())                  << std::endl;
+
 }

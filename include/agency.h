@@ -62,6 +62,9 @@ public:
     void run();
 
     /***/
+    void run(std::ostream& os = std::cout);
+
+    /***/
     std::ostream& printHelp(std::ostream& os) const;
 };
 
