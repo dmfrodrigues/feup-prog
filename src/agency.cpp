@@ -13,7 +13,6 @@ Agency::Agency(){
         if(is.is_open()) break;
         std::cout << "Ficheiro da agência não foi aberto\n";
     }
-    std::cout << "L16" << std::endl;
     is >> *this;
 }
 
@@ -25,9 +24,13 @@ void operator>>(std::istream& is, Agency& a){
        !vin("", &Address::set, &a.address  , is, dummy) ||
        !vin("",                a.clientpath, is, dummy) ||
        !vin("",                a.travelpath, is, dummy))
-       throw std::invalid_argument("failed to find one of the required fields in agency file");
+        throw std::invalid_argument("failed to find one of the required fields in agency file");
+    std::cout << "L28" << std::endl;
     a.loadClients(a.clientpath);
-    a.loadPacks  (a.travelpath);
+    std::cout << "L30" << std::endl;
+    //a.loadPacks  (a.travelpath);
+    std::cout << "L32" << std::endl;
+
 }
 
 void Agency::run(){
