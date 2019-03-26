@@ -61,7 +61,7 @@ void Agency::run(){
         else if(b == "sclient") seeClient();    else if(b == "spack") seePack();
         else if(b == "+client") addClient();    else if(b == "+pack") addPack();
         //else if(b == "#client") changeClient(); else if(b == "#pack") changePack();
-        else if(b == "-client") deleteClient(); //else if(b == "-pack") deletePack(); //#DEV
+        else if(b == "-client") deleteClient(); else if(b == "-pack") deletePack(); //#DEV
         else if(b == "help"   ) printHelp();
         else if(b == "save"   ) save();         else if(b == "exit" ) return;
     }

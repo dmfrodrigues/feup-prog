@@ -39,3 +39,20 @@ void Agency::addPack(){
         std::cout << "Pacote turístico adicionado" << std::endl;
     }
 }
+
+void Agency::deletePack(){
+    auto p = seePack();
+    if(!p.second) return;
+    int id = p.first;
+    std::string b; std::cout << std::endl;
+    while(true){
+        if(!vin("Confirme que pretende eliminar o pacote com ID "+std::to_string(id)+" [y/n]: ", b)) return;
+        b = lower_case(b);
+        if(b == "y" || b == "n") break;
+        std::cout << "Apenas [y] (sim) ou [n] (não) são possibilidades válidas" << std::endl;
+    }
+    if(b == "y"){
+        vtravel.erase(id);
+        std::cout << "Pacote turístico eliminado" << std::endl;
+    }
+}
