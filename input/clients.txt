@@ -1,0 +1,29 @@
+António da Silva Gonçalves Pedrosa da Costa Antunes
+270047665
+2
+Rua das Pedras / 15 / 2oB / 5000-70 / Porto
+3 ; 5 ; 12
+::::::::::
+Armando da Silva Oliveira
+333346521
+4
+Rua das Amoreiras / 135 / - / 7000-190 / Vila Nova de Gaia
+1 ; 7 ; 5
+::::::::::
+Belmiro Miguel
+111987666
+2
+Avenida dos Grilos / 100 / - / 2300-101 / Coimbra
+100 ; 136 ; 20
+::::::::::
+Daniel Mota da Cruz
+333065495
+5
+Avenida de Portugal / 353 / - / 6740-390 / Santarém
+5 ; 3
+::::::::::
+Rui Manuel
+234987156
+4
+Rua Sem Fim / 200 / 5Esq / 1200-001 / Lisboa
+10 ; 36 ; 2
