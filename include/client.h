@@ -28,6 +28,8 @@ public:
 
     static std::vector<ID> makePacks(std::string s);
     /***/
+    std::string getPacks()const;
+    /***/
     bool userClient(std::istream& is = std::cin, std::ostream& os = std::cout);
     /***/
     bool userClientprop(int propn, std::istream& is = std::cin, std::ostream& os = std::cout);
@@ -57,16 +59,16 @@ public:
 
 
 
-            os << std::string(140, '-');
+            os << std::string(140, '-') << std::endl;
             unsigned i = 0;
             for(auto it = first; it != last; ++it, ++i){
                 const auto& c = *it;
-                os << std::endl;
                 os << setwidth(std::to_string(i)                ,  4) << "   ";
                 os << setwidth(c.name()                         , 42) << " \t";
                 os << setwidth(c.nif()                          ,  9) << "   ";
                 os << setwidth(std::to_string(c.numFamily())    ,  6) << " ";
                 os << setwidth(c.address().str()                , 60) << " \t";
+                os << std::endl;
             }
         }else if(f == "screenfull"){
             if(last != first){
@@ -81,7 +83,7 @@ public:
                     os << c.vtravel_[0];
                     for(unsigned i = 1; i < c.vtravel_.size(); ++i)
                         os << " ; " << c.vtravel_[i];
-                }
+                }os << std::endl;
             }
         } return os;
     }

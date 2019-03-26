@@ -13,6 +13,15 @@ std::istream& operator>>(std::istream& is, Client& c){
     return is;
 }
 
+std::ostream& operator<<(std::ostream& os, const Client& c){
+    os << c.name_      << std::endl;
+    os << c.nif_       << std::endl;
+    os << c.numFam_    << std::endl;
+    os << c.address_   << std::endl;
+    os << c.getPacks();
+    return os;
+}
+
 void Client::setPacks(Client* cptr, std::string s){
     cptr->vtravel_ = makePacks(s);
 }
@@ -22,6 +31,10 @@ std::vector<ID> Client::makePacks(std::string s){
     std::vector<std::string> v = parse(s, ';');
     for(auto s:v) ret.push_back(str_to<ID>(s));
     return ret;
+}
+
+std::string Client::getPacks() const{
+    AQUI
 }
 
 

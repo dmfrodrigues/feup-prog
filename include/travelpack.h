@@ -60,10 +60,9 @@ public:
                << setwidth("MaxPessoas"    , 10) << " "
                << setwidth("Vendidos"      ,  8) << " "
                << std::endl;
-            os << std::string(120, '-');
+            os << std::string(120, '-') << std::endl;;
             for(auto it = first; it != last; ++it){
                 const auto& t = it->second;
-                os << std::endl;
                 os << setwidth(std::to_string(t.id     ()),  4) << "   ";
                 os << setwidth((t.avail()? "sim" : "não") ,  4) << "\t";
                 os << setwidth(t.getPlaces()              , 53) << " \t";
@@ -72,6 +71,7 @@ public:
                 os << setwidth(std::to_string(t.price  ()),  5) << " ";
                 os << setwidth(std::to_string(t.numMax ()), 10) << " ";
                 os << setwidth(std::to_string(t.numSold()),  8) << " ";
+                os << std::endl;
             }
         }else if(f == "screenfull"){
             if(last != first){

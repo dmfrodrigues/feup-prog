@@ -13,7 +13,7 @@
 typedef std::string URL;
 
 struct Agency{
-friend void operator>>(std::istream& is,       Agency& a);
+friend std::istream& operator>>(std::istream& is,       Agency& a);
 friend std::ostream& operator<<(std::ostream& os, const Agency& a);
 private:
     std::string agencypath, travelpath, clientpath;
@@ -62,14 +62,14 @@ public:
     void run();
 
     /***/
-    void run(std::ostream& os = std::cout);
+    std::ostream& print(std::ostream& os = std::cout);
 
     /***/
-    std::ostream& printHelp(std::ostream& os) const;
+    std::ostream& printHelp(std::ostream& os = std::cout) const;
 };
 
 /***/
-void operator>>(std::istream& is, Agency& a);
+std::istream& operator>>(std::istream& is, Agency& a);
 
 /***/
 std::ostream& operator<<(std::ostream& os, const Agency& a);
