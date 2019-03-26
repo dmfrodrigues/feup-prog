@@ -22,7 +22,7 @@ std::string setwidth(std::string s, int sz){
     if(s.size() < sz)
         s += std::string(sz-s.size(), ' ');
     if(s.size() > sz)
-        s = std::string(s.begin(), s.end()-3) + "...";
+        s = std::string(s.begin(), s.begin()+sz-3) + "...";
     return s;
 }
 

@@ -8,6 +8,7 @@ void Agency::loadPacks(std::string fpath){
     if(!is.is_open()) throw std::invalid_argument("could not open packs file");
     vtravel.clear();
     TravelPack t; std::string b;
+    getline(is, b); lasttravel = str_to<unsigned>(b);
     while(is){
         is >> t;
         vtravel[t.id()] = t;

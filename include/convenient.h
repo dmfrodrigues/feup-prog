@@ -23,6 +23,7 @@ in a vector of strings. All the returned strings are trimmed.
 std::vector<std::string> parse(std::string s, char delim);
 
 /***/
+#include <iostream>
 template<typename T> T str_to(std::string s){
     std::stringstream ss(s);
     T ret; ss >> ret; return ret;

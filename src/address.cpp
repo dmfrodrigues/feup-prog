@@ -18,9 +18,10 @@ void Address::set(Address* aptr, std::string s){
     *aptr = Address(s);
 }
 
+#include <iostream>
 std::string Address::str(std::string s) const{
     char b[512];
-    sprintf(b, s.c_str(), street_, door_, floor_, postalCode_, city_);
+    sprintf(b, s.c_str(), street_.c_str(), door_.c_str(), floor_.c_str(), postalCode_.c_str(), city_.c_str());
     return std::string(b);
 }
 

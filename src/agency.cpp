@@ -25,14 +25,13 @@ void operator>>(std::istream& is, Agency& a){
        !vin("",                a.clientpath, is, dummy) ||
        !vin("",                a.travelpath, is, dummy))
         throw std::invalid_argument("failed to find one of the required fields in agency file");
-    std::cout << "L28" << std::endl;
     a.loadClients(a.clientpath);
     std::cout << "L30" << std::endl;
-    //a.loadPacks  (a.travelpath);
+    a.loadPacks  (a.travelpath);
     std::cout << "L32" << std::endl;
 
 }
 
 void Agency::run(){
-    Client::print(vclient.begin(), vclient.end(), "table");
+    Client::print(vclient.begin(), vclient.end(), "table") << std::endl << std::endl;
 }
