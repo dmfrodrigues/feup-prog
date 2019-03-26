@@ -24,9 +24,6 @@ private:
 
     static void setPacks(Client* cptr, std::string s);
 
-
-
-
 public:
 
     static std::vector<ID> makePacks(std::string s);
