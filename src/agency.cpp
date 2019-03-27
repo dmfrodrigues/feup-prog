@@ -9,8 +9,8 @@ Agency::Agency(){
         std::string fullpath = "input/agency.txt"; //#DEV
         auto n = fullpath.find_last_of('/');
         if(n != fullpath.npos){
-            inputpath  = std::string(fullpath.begin(), fullpath.begin()+n+1);
-            agencypath = std::string(fullpath.begin()+n+1, fullpath.end());
+            inputpath  = fullpath.substr(0,n+1);
+            agencypath = fullpath.substr(n+1, fullpath.npos);
         }else{
             inputpath  = "";
             agencypath = fullpath;
@@ -70,7 +70,7 @@ void Agency::run(){
 }
 
 std::ostream& Agency::print(std::ostream& os){
-    const int n = (120-name.size())/2;
+    const long unsigned n = (120-name.size())/2;
     os << std::string(2*n+name.size(), '=')                  << std::endl;
     os << std::string(n, ' ') << name << std::string(n, ' ') << std::endl;
     os << std::string(2*n+name.size(), '=')                  << std::endl;

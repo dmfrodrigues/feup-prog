@@ -31,7 +31,7 @@ public:
     /***/
     static std::vector<std::string> makePlaces(std::string s);
     /***/
-    bool userPack(unsigned lasttravel, std::istream& is = std::cin, std::ostream& os = std::cout);
+    bool userPack(ID lasttravel, std::istream& is = std::cin, std::ostream& os = std::cout);
     /***/
     bool userPackprop(int propn, std::istream& is = std::cin, std::ostream& os = std::cout);
 

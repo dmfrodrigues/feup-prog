@@ -6,7 +6,7 @@
 struct Date{
 friend std::ostream& operator<<(std::ostream& os, const Date& d);
 private:
-    int y, m, d;
+    int y_, m_, d_;
 public:
     Date(){}
     /***/
@@ -23,14 +23,16 @@ public:
     static Date end  (){ return Date("9999/12/31"); }
     /***/
     bool operator< (const Date& d) const{
-        if     (this->y != d.y) return (this->y < d.y);
-        else if(this->m != d.m) return (this->m < d.m);
-        else                    return (this->d < d.d);
+        if     (this->y_ != d.y_) return (this->y_ < d.y_);
+        else if(this->m_ != d.m_) return (this->m_ < d.m_);
+        else                      return (this->d_ < d.d_);
     }
     bool operator==(const Date& d) const{
-        return (this->y == d.y && this->m == d.m && this->d == d.d);
+        return (this->y_ == d.y_ && this->m_ == d.m_ && this->d_ == d.d_);
     }
     bool operator<=(const Date& d) const{ return (*this < d || *this == d); }
+
+    static bool isLeap(int y);
 };
 
 /***/

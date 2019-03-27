@@ -41,7 +41,7 @@ std::pair<unsigned, bool> Agency::seeClient() const{
 void Agency::changeClient(){
     auto p = seeClient();
     if(!p.second) return;
-    int i = p.first;
+    auto i = p.first;
     std::string b; std::cout << std::endl;
     int j;{
         while(true){
@@ -63,7 +63,7 @@ void Agency::changeClient(){
 void Agency::deleteClient(){
     auto p = seeClient();
     if(!p.second) return;
-    int i = p.first;
+    auto i = p.first;
     std::string b; std::cout << std::endl;
     while(true){
         if(!vin("Confirme que pretende eliminar o cliente #"+std::to_string(i)+" [y/n]: ", b)) return;

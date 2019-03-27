@@ -29,7 +29,7 @@ void Client::setPacks(Client& c, std::string s){
 std::vector<ID> Client::makePacks(std::string s){
     std::vector<ID> ret;
     std::vector<std::string> v = split(s, ';');
-    for(auto s:v) ret.push_back(str_to<ID>(s));
+    for(auto i:v) ret.push_back(std::stoi(i));
     return ret;
 }
 

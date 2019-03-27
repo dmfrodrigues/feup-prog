@@ -1,18 +1,17 @@
 #include "convenient.h"
 
-std::string trim(const std::string& s){
-    return std::string(s.begin()+s.find_first_not_of(' '),
-                       s.begin()+s.find_last_not_of(' ')+1);
+std::string trim(std::string s){
+    s = s.substr(s.find_first_not_of(' '));
+    return s.substr(0, s.find_last_not_of(' ')+1);
 }
 
 std::vector<std::string> split(std::string s, char delim){
     std::vector<std::string> ret;
     size_t i;
     while(true){
-        i = s.find(delim);
-        if(i == s.npos) break;
-        ret.push_back(trim(std::string(s.begin(), s.begin()+i)));
-        s = std::string(s.begin()+i+1, s.end());
+        i = s.find(delim); if(i == s.npos) break;
+        ret.push_back(trim(s.substr(0, i)));
+        s = s.substr(i+1, s.npos);
     }
     ret.push_back(trim(s));
     return ret;
@@ -21,8 +20,9 @@ std::vector<std::string> split(std::string s, char delim){
 std::string setwidth(std::string s, size_t sz){
     if(s.size() < sz)
         s += std::string(sz-s.size(), ' ');
-    if(s.size() > sz)
-        s = std::string(s.begin(), s.begin()+sz-3) + "...";
+    if(s.size() > sz){
+        s.erase(s.end()-3, s.end()); s += "...";
+    }
     return s;
 }
 

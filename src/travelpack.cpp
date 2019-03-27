@@ -29,7 +29,7 @@ std::ostream& operator<<(std::ostream& os, const TravelPack& t){
     return os;
 }
 
-bool TravelPack::userPack(unsigned lasttravel, std::istream&, std::ostream& os){
+bool TravelPack::userPack(ID lasttravel, std::istream&, std::ostream& os){
     id_ = lasttravel;
     avail_ = true;
     if(!vin("Destino (principal - secundários separados por ','): ", TravelPack::setPlaces, *this  ) ||

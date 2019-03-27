@@ -22,7 +22,7 @@ private:
     URL url;
     Address address;
     std::multiset<Client    > vclient;
-    std::map<ID, TravelPack> vtravel; unsigned lasttravel;
+    std::map<ID, TravelPack> vtravel; ID lasttravel;
 
     /**
     Loads client list from content of file
@@ -42,7 +42,7 @@ private:
     /***/
     void addPack();
     /***/
-    std::pair<unsigned, bool> seePack() const;
+    std::pair<ID, bool> seePack() const;
     /***/
     void changePack();
     /***/

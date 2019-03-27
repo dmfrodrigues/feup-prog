@@ -9,7 +9,7 @@ void Agency::loadPacks(std::string fpath){
     if(!is.is_open()) throw std::invalid_argument("could not open packs file");
     vtravel.clear();
     TravelPack t; std::string b;
-    getline(is, b); lasttravel = str_to<unsigned>(b);
+    getline(is, b); lasttravel = std::stoi(b);
     while(is){
         is >> t;
         vtravel[t.id()] = t;
@@ -26,7 +26,7 @@ void Agency::addPack(){
     }
 }
 
-std::pair<unsigned, bool> Agency::seePack() const{
+std::pair<ID, bool> Agency::seePack() const{
     TravelPack::print(vtravel.begin(), vtravel.end(), "table") << std::endl;
     int id;
     while(true){
@@ -63,7 +63,7 @@ void Agency::changePack(){
 void Agency::deletePack(){
     auto p = seePack();
     if(!p.second) return;
-    int id = p.first;
+    ID id = p.first;
     std::string b; std::cout << std::endl;
     while(true){
         if(!vin("Confirme que pretende eliminar o pacote com ID "+std::to_string(id)+" [y/n]: ", b)) return;

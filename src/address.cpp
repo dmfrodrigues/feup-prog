@@ -18,7 +18,6 @@ void Address::set(Address& a, std::string s){
     a = Address(s);
 }
 
-#include <iostream>
 std::string Address::str(std::string s) const{
     char b[512];
     sprintf(b, s.c_str(), street_.c_str(), door_.c_str(), floor_.c_str(), postalCode_.c_str(), city_.c_str());
@@ -27,14 +26,4 @@ std::string Address::str(std::string s) const{
 
 std::ostream& operator<<(std::ostream& os, const Address& a){
     return (os << a.str());
-}
-
-bool Address::operator==(const Address& a) const{
-    return (this->str() == a.str());;
-}
-bool Address::operator!=(const Address& a) const{
-    return !(*this == a);
-}
-bool Address::operator< (const Address& a) const{
-    return (this->str() < a.str());
 }

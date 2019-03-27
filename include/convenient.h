@@ -11,7 +11,7 @@ Trims a string (removes leading and trailing spaces).
 @param  s   string to be trimmed
 @return     trimmed version of s
 */
-std::string trim(const std::string& s);
+std::string trim(std::string s);
 
 /**
 Parses a string with a certain delimiter, saving each of the delimited strings
@@ -45,13 +45,6 @@ std::string join(ForwardIterator first, ForwardIterator last, std::string (*fptr
             ret += delim + fptr(*it);
     }
     return ret;
-}
-
-/***/
-#include <iostream>
-template<typename T> T str_to(std::string s){
-    std::stringstream ss(s);
-    T ret; ss >> ret; return ret;
 }
 
 /***/
