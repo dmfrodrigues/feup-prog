@@ -76,3 +76,59 @@ void Agency::deletePack(){
         std::cout << "Pacote turístico eliminado" << std::endl;
     }
 }
+
+void Agency::findPack(){
+    std::cout << "Se não pretender utilizar um campo de pesquisa, preencher com '-'" << std::endl;
+    std::set<std::string> splaces;{
+        std::string b;
+        if(!vin("Destinos (separados por ',' se for mais que um): ", b)) return;
+        if(b != "-"){
+            std::vector<std::string> v = split(b, ',');
+            splaces.insert(v.begin(), v.end());
+        }
+    }
+    Date first, last;{
+        std::string b;
+        while(true){
+            std::cout << "Data de início (yyyy/mm/dd): ";
+            getline(std::cin, b);
+            if(b == "-"){
+                first = Date::begin();
+                break;
+            }else{
+                try{
+                    first = Date(b);
+                    break;
+                }catch(const std::invalid_argument& e){
+                    std::cout << "Error: " << e.what() << std::endl;
+                }
+            }
+        }
+        while(true){
+            std::cout << "Data de fim (yyyy/mm/dd): ";
+             getline(std::cin, b);
+            if(b == "-"){
+                last = Date::end();
+                break;
+            }else{
+                try{
+                    last = Date(b);
+                    break;
+                }catch(const std::invalid_argument& e){
+                    std::cout << "Error: " << e.what() << std::endl;
+                }
+            }
+        }
+    }
+    std::map<ID, TravelPack> m;
+    for(const auto& p:vtravel){
+        const auto& t = p.second;
+        bool b = (first <= t.begin() && t.end() <= last);
+        for(const auto& s:splaces)
+            if(std::find(t.vplaces().begin(), t.vplaces().end(), s) == t.vplaces().end())
+                b = false;
+        if(b) m.insert(p);
+    }
+    std::cout << std::endl;
+    TravelPack::print(m.begin(), m.end(), "table");
+}
