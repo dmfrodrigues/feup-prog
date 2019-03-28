@@ -2,26 +2,6 @@
 
 #include "vin.h"
 
-std::istream& operator>>(std::istream& is, Client& c){
-    std::stringstream dummy;
-    if(!vin("",                   c.name_   , is, dummy) ||
-       !vin("",                   c.nif_    , is, dummy) ||
-       !vin("",                   c.numFam_ , is, dummy) ||
-       !vin("", Address::set    , c.address_, is, dummy) ||
-       !vin("", Client::setPacks, c         , is, dummy))
-       throw std::invalid_argument("could not read client file");
-    return is;
-}
-
-std::ostream& operator<<(std::ostream& os, const Client& c){
-    os << c.name_      << std::endl;
-    os << c.nif_       << std::endl;
-    os << c.numFam_    << std::endl;
-    os << c.address_   << std::endl;
-    os << c.getPacks();
-    return os;
-}
-
 void Client::setPacks(Client& c, std::string s){
     c.vtravel_ = makePacks(s);
 }
@@ -60,6 +40,44 @@ bool Client::userClientprop(int propn, std::istream& is, std::ostream& os){
     return true;
 }
 
+template<class InputIterator>
+std::ostream& Client::print(InputIterator first, InputIterator last, std::string f, std::ostream& os){
+    if(f == "table"){
+        os << setwidth("#"     ,     4) << "   "
+           << setwidth("Nome"  ,    42) << " \t"
+           << setwidth("NIF"   ,     9) << "   "
+           << setwidth("NumFam",     6) << " "
+           << setwidth("Morada",    60) << " \t"
+           << std::endl;
+        os << std::string(140, '-') << std::endl;
+        unsigned i = 0;
+        for(auto it = first; it != last; ++it, ++i){
+            const auto& c = *it;
+            os << setwidth(std::to_string(i)                ,  4) << "   ";
+            os << setwidth(c.name()                         , 42) << " \t";
+            os << setwidth(c.nif()                          ,  9) << "   ";
+            os << setwidth(std::to_string(c.numFamily())    ,  6) << " ";
+            os << setwidth(c.address().str()                , 60) << " \t";
+            os << std::endl;
+        }
+    }else if(f == "screenfull"){
+        if(last != first){
+            const auto& c = *first;
+            os << "#"                                                << std::endl;
+            os << "0      Nome:                            " << c.name_    << std::endl;
+            os << "1      NIF:                             " << c.nif_     << std::endl;
+            os << "2      Número de elementos da família:  " << c.numFam_  << std::endl;
+            os << "3      Morada:                          " << c.address_ << std::endl;
+            os << "4      Pacotes comprados:               ";
+            if(!c.vtravel_.empty()){
+                os << c.vtravel_[0];
+                for(unsigned i = 1; i < c.vtravel_.size(); ++i)
+                    os << " ; " << c.vtravel_[i];
+            }os << std::endl;
+        }
+    } return os;
+}
+template std::ostream& Client::print(std::multiset<Client>::iterator first, std::multiset<Client>::iterator last, std::string f, std::ostream& os);
 
 bool Client::operator<(const Client& c) const{
     if     (name_    != c.name_   ) return (name_    < c.name_   );
@@ -67,4 +85,24 @@ bool Client::operator<(const Client& c) const{
     else if(numFam_  != c.numFam_ ) return (numFam_  < c.numFam_ );
     else if(address_ != c.address_) return (address_ < c.address_);
     else                            return (vtravel_ < c.vtravel_);
+}
+
+std::istream& operator>>(std::istream& is, Client& c){
+    std::stringstream dummy;
+    if(!vin("",                   c.name_   , is, dummy) ||
+       !vin("",                   c.nif_    , is, dummy) ||
+       !vin("",                   c.numFam_ , is, dummy) ||
+       !vin("", Address::set    , c.address_, is, dummy) ||
+       !vin("", Client::setPacks, c         , is, dummy))
+       throw std::invalid_argument("could not read client file");
+    return is;
+}
+
+std::ostream& operator<<(std::ostream& os, const Client& c){
+    os << c.name_      << std::endl;
+    os << c.nif_       << std::endl;
+    os << c.numFam_    << std::endl;
+    os << c.address_   << std::endl;
+    os << c.getPacks();
+    return os;
 }

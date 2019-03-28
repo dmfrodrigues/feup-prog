@@ -28,7 +28,7 @@ public:
 
     static std::vector<ID> makePacks(std::string s);
     /***/
-    std::string getPacks()const;
+    std::string getPacks() const;
     /***/
     bool userClient(std::istream& is = std::cin, std::ostream& os = std::cout);
     /***/
@@ -42,48 +42,11 @@ public:
     const std::vector<ID>& vtravel  ()const{ return vtravel_; }
 
     /***/
-    bool operator<(const Client& obj) const;
-    /***/
     template<class InputIterator>
-    static std::ostream& print(InputIterator first, InputIterator last, std::string f, std::ostream& os = std::cout){
-        if(f == "table"){
-            os << setwidth("#"     ,     4) << "   "
-               << setwidth("Nome"  ,    42) << " \t"
-               << setwidth("NIF"   ,     9) << "   "
-               << setwidth("NumFam",     6) << " "
-               << setwidth("Morada",    60) << " \t"
-               << std::endl;
+    static std::ostream& print(InputIterator first, InputIterator last, std::string f, std::ostream& os = std::cout);
 
-
-
-            os << std::string(140, '-') << std::endl;
-            unsigned i = 0;
-            for(auto it = first; it != last; ++it, ++i){
-                const auto& c = *it;
-                os << setwidth(std::to_string(i)                ,  4) << "   ";
-                os << setwidth(c.name()                         , 42) << " \t";
-                os << setwidth(c.nif()                          ,  9) << "   ";
-                os << setwidth(std::to_string(c.numFamily())    ,  6) << " ";
-                os << setwidth(c.address().str()                , 60) << " \t";
-                os << std::endl;
-            }
-        }else if(f == "screenfull"){
-            if(last != first){
-                const auto& c = *first;
-                os << "#"                                                << std::endl;
-                os << "0      Nome:                            " << c.name_    << std::endl;
-                os << "1      NIF:                             " << c.nif_     << std::endl;
-                os << "2      Número de elementos da família:  " << c.numFam_  << std::endl;
-                os << "3      Morada:                          " << c.address_ << std::endl;
-                os << "4      Pacotes comprados:               ";
-                if(!c.vtravel_.empty()){
-                    os << c.vtravel_[0];
-                    for(unsigned i = 1; i < c.vtravel_.size(); ++i)
-                        os << " ; " << c.vtravel_[i];
-                }os << std::endl;
-            }
-        } return os;
-    }
+    /***/
+    bool operator<(const Client& obj) const;
 };
 
 /***/

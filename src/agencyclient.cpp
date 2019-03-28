@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include "vin.h"
 
-void Agency::loadClients(std::string fpath){
+void Agency::loadClients(const std::string& fpath){
     std::ifstream is(fpath);
     if(!is.is_open()) throw std::invalid_argument("could not open client file");
     vclient.clear();

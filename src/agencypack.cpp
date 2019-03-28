@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include "vin.h"
 
-void Agency::loadPacks(std::string fpath){
+void Agency::loadPacks(const std::string& fpath){
     std::ifstream is(fpath);
     if(!is.is_open()) throw std::invalid_argument("could not open packs file");
     vtravel.clear();
@@ -40,7 +40,6 @@ std::pair<ID, bool> Agency::seePack() const{
     return std::make_pair(id, true);
 }
 
-
 void Agency::changePack(){
     auto p = seePack();
     if(!p.second) return;
@@ -58,7 +57,6 @@ void Agency::changePack(){
         std::cout << "Propriedade alterada" << std::endl;
     }
 }
-
 
 void Agency::deletePack(){
     auto p = seePack();

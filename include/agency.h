@@ -21,16 +21,14 @@ private:
     NIF nif;
     URL url;
     Address address;
-    std::multiset<Client    > vclient;
+    std::multiset<Client   > vclient;
     std::map<ID, TravelPack> vtravel; ID lasttravel;
 
     /**
     Loads client list from content of file
     @param  fpath   string containing the location of the input file
     */
-    void loadClients(std::string fpath);
-    /***/
-    void loadPacks(std::string fpath);
+    void loadClients(const std::string& fpath);
     /***/
     void addClient();
     /***/
@@ -39,6 +37,8 @@ private:
     void changeClient();
     /***/
     void deleteClient();
+    /***/
+    void loadPacks(const std::string& fpath);
     /***/
     void addPack();
     /***/

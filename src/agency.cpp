@@ -24,30 +24,6 @@ Agency::Agency(){
     is >> *this;
 }
 
-std::istream& operator>>(std::istream& is, Agency& a){
-    std::stringstream dummy;
-    if(!vin("",               a.name      , is, dummy) ||
-       !vin("",               a.nif       , is, dummy) ||
-       !vin("",               a.url       , is, dummy) ||
-       !vin("", Address::set, a.address   , is, dummy) ||
-       !vin("",               a.clientpath, is, dummy) ||
-       !vin("",               a.travelpath, is, dummy))
-        throw std::invalid_argument("failed to find one of the required fields in agency file");
-    a.loadClients(a.inputpath + a.clientpath);
-    a.loadPacks  (a.inputpath + a.travelpath);
-    return is;
-}
-
-std::ostream& operator<<(std::ostream& os, const Agency& a){
-    os << a.name       << std::endl;
-    os << a.nif        << std::endl;
-    os << a.url        << std::endl;
-    os << a.address    << std::endl;
-    os << a.clientpath << std::endl;
-    os << a.travelpath;
-    return os;
-}
-
 void Agency::run(){
     this->print() << std::endl;
     this->printHelp();
@@ -68,6 +44,8 @@ void Agency::run(){
         else std::cout << "Comando inválido" << std::endl;
     }
 }
+
+
 
 std::ostream& Agency::print(std::ostream& os){
     const long unsigned n = (120-name.size())/2;
@@ -124,4 +102,28 @@ std::ostream& Agency::save(std::ostream& os) const{
         }
     }
     return (os << "Ficheiros guardados" << std::endl);
+}
+
+std::istream& operator>>(std::istream& is, Agency& a){
+    std::stringstream dummy;
+    if(!vin("",               a.name      , is, dummy) ||
+       !vin("",               a.nif       , is, dummy) ||
+       !vin("",               a.url       , is, dummy) ||
+       !vin("", Address::set, a.address   , is, dummy) ||
+       !vin("",               a.clientpath, is, dummy) ||
+       !vin("",               a.travelpath, is, dummy))
+        throw std::invalid_argument("failed to find one of the required fields in agency file");
+    a.loadClients(a.inputpath + a.clientpath);
+    a.loadPacks  (a.inputpath + a.travelpath);
+    return is;
+}
+
+std::ostream& operator<<(std::ostream& os, const Agency& a){
+    os << a.name       << std::endl;
+    os << a.nif        << std::endl;
+    os << a.url        << std::endl;
+    os << a.address    << std::endl;
+    os << a.clientpath << std::endl;
+    os << a.travelpath;
+    return os;
 }
