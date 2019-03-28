@@ -1,5 +1,7 @@
 #include "convenient.h"
 
+#include <set>
+
 std::string trim(std::string s){
     s = s.substr(s.find_first_not_of(' '));
     return s.substr(0, s.find_last_not_of(' ')+1);
@@ -41,7 +43,7 @@ std::string join(ForwardIterator first, ForwardIterator last, std::string fptr(T
     }
     return ret;
 }
-template std::string join(std::vector<int>::const_iterator first, std::vector<int>::const_iterator last, std::string fptr(long long), std::string delim);
+template std::string join(std::set<int>::const_iterator first, std::set<int>::const_iterator last, std::string fptr(long long), std::string delim);
 
 std::string setwidth(std::string s, size_t sz){
     if(s.size() < sz)

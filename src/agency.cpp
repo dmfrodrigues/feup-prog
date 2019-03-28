@@ -7,8 +7,8 @@ Agency::Agency(){
     std::ifstream is; is.exceptions(std::ifstream::failbit | std::ifstream::badbit);
     while(true){
         std::string fullpath;
-        std::cout << "Agency file: "; getline(std::cin, fullpath);
-        //fullpath = "input/agency.txt"; //#DEV
+        //std::cout << "Agency file: "; getline(std::cin, fullpath);
+        fullpath = "input/agency.txt"; //#DEV
         size_t n = fullpath.find_last_of('/');
         if(n != fullpath.npos){
             inputpath  = fullpath.substr(0,n+1);
@@ -34,7 +34,7 @@ void Agency::run(){
     std::string b;
     while(true){
         std::cout << std::endl;
-        std::cout << "Operação: "; getline(std::cin, b); b = trim(b);
+        std::cout << "Operation: "; getline(std::cin, b); b = trim(b);
         std::cout << std::endl;
 
         if     (b == "tclient")     Client::print(vclient.cbegin(), vclient.cend(), "table");
@@ -46,15 +46,15 @@ void Agency::run(){
         /*else if(b == "sell"   ) sell();*/     else if(b == "fpack") findPack();
         else if(b == "help"   ) printHelp();
         else if(b == "save"   ) save();         else if(b == "exit" ) return;
-        else std::cout << "Comando inválido" << std::endl;
+        else std::cout << "Invalid operation" << std::endl;
     }
 }
 
 std::ostream& Agency::print(std::ostream& os) const{
-    const long unsigned n = (120-name.size())/2;
-    os << std::string(2*n+name.size(), '=')                  << std::endl;
+    const long unsigned n = (74-name.size())/2;
+    os << std::string(2*n+name.size(), '#')                  << std::endl;
     os << std::string(n, ' ') << name << std::string(n, ' ') << std::endl;
-    os << std::string(2*n+name.size(), '=')                  << std::endl;
+    os << std::string(2*n+name.size(), '#')                  << std::endl;
     os                                                       << std::endl;
     os << "NIF: " << nif                                     << std::endl;
     os << address                                            << std::endl;
@@ -63,25 +63,33 @@ std::ostream& Agency::print(std::ostream& os) const{
 }
 
 std::ostream& Agency::printHelp(std::ostream& os) const{
-    os << "Mostrar clientes em tabela\t[tclient]\tMostrar pacotes em tabela\t[tpack]\n"
-          "Ver cliente               \t[sclient]\tVer pacote               \t[spack]\n"
-          "Adicionar cliente         \t[+client]\tAdicionar pacote         \t[+pack]\n"
-          "Alterar cliente           \t[#client]\tAlterar pacote           \t[#pack]\n"
-          "Eliminar cliente          \t[-client]\tEliminar pacote          \t[-pack]\n"
-          "Vender pacote a um cliente\t[sell]   \tProcurar pacotes         \t[fpack]\n"
-          "Lista de comandos         \t[help]   \t                         \t       \n"
-          "Guardar                   \t[save]   \tSair                     \t[exit] \n";
+    os << "Client management:                       Travel pack management:          \n"
+          "=================================        =================================\n"
+          "Add client              [+client]        Add pack                  [+pack]\n"
+          "Change client           [#client]        Change pack               [#pack]\n"
+          "Delete client           [-client]        Delete pack               [-pack]\n"
+          "Sell pack to client     [sell]                                            \n"
+          "                                                                          \n"
+          "Information visualization:               Other operations:                \n"
+          "=================================        =================================\n"
+          "Clients table           [tclient]        Command list (help)       [help] \n"
+          "See client              [sclient]        Save                      [save] \n"
+          "Packs table               [tpack]        Exit                      [exit] \n"
+          "See pack                  [spack]                                         \n"
+          "Find (search) packs       [fpack]                                         \n";
     return os << std::flush;
 }
 
 std::ostream& Agency::save(std::ostream& os) const{
-    /*Save agency*/{
+    try{
+        //Save agency
         std::ofstream of_agency(inputpath + agencypath);
+        if(!of_agency.is_open()) throw std::ios_base::failure("failed to open agency file for write");
         of_agency << *this;
         of_agency.close();
-    }
-    /*Save clients*/{
+        //Save clients
         std::ofstream of_client(inputpath + clientpath);
+        if(!of_client.is_open()) throw std::ios_base::failure("failed to open client file for write");
         if(vclient.size() >= 1){
             auto it = vclient.begin();
             of_client << *(it++) << std::endl;
@@ -91,9 +99,9 @@ std::ostream& Agency::save(std::ostream& os) const{
             }
         }
         of_client.close();
-    }
-    /*Save travel packs*/{
+        //Save travel packs
         std::ofstream of_pack(inputpath + travelpath);
+        if(!of_pack.is_open()) throw std::ios_base::failure("failed to open travelpack file for write");
         of_pack << lasttravel << std::endl;
         if(vtravel.size() >= 1){
             auto it = vtravel.begin();
@@ -103,12 +111,13 @@ std::ostream& Agency::save(std::ostream& os) const{
                 of_pack << it->second << std::endl;
             }
         }
+        return (os << "Files saved" << std::endl);
+    }catch(...){
+        return (os << "Error: could not save files");
     }
-    return (os << "Files saved" << std::endl);
 }
 
 std::istream& operator>>(std::istream& is, Agency& a){
-    std::stringstream dummy;
     vin(              a.name      , is);
     vin(              a.nif       , is);
     vin(              a.url       , is);

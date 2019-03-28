@@ -5,8 +5,8 @@
 #include "vin.h"
 
 void Agency::loadClients(const std::string& fpath){
-    std::ifstream is(fpath);
-    if(!is.is_open()) throw std::invalid_argument("could not open client file");
+    std::ifstream is(fpath, std::ios_base::in);
+    if(!is.is_open()) throw std::ios_base::failure("failed to open clients file for read");
     vclient.clear();
     Client c; std::string b;
     while(is){
@@ -20,7 +20,7 @@ void Agency::addClient(){
     Client c;
     if(c.userClient()){
         vclient.insert(c);
-        std::cout << "Cliente adicionado" << std::endl;
+        std::cout << "Client added" << std::endl;
     }
 }
 
@@ -28,9 +28,9 @@ std::pair<unsigned, bool> Agency::seeClient() const{
     Client::print(vclient.begin(), vclient.end(), "table") << std::endl;
     int i;
     while(true){
-        if(!vin("# do cliente a visualizar: ", i)) return std::make_pair(0, false);
+        if(!vin("# of client to see: ", i)) return std::make_pair(0, false);
         if(0 <= i && i < (int)vclient.size())      break;
-        else std::cout << "Número fora do intervalo permitido [0," << vclient.size()-1 << "]" << std::endl;
+        else std::cout << "Error: # outside valid input range [0," << vclient.size()-1 << "]" << std::endl;
     }
     std::cout << std::endl;
     auto it = vclient.begin(); std::advance(it, i);

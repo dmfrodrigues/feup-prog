@@ -19,14 +19,14 @@ private:
     NIF nif_;
     int numFam_;
     Address address_;
-    std::vector<ID> vtravel_;
+    std::set<ID> vtravel_;
     //TOTAL DE COMPRAS EFETUADAS?
 
     static void setPacks(Client& c, std::string s);
 
 public:
 
-    static std::vector<ID> makePacks(std::string s);
+    static std::set<ID> makePacks(std::string s);
     /***/
     std::string getPacks() const;
     /***/
@@ -35,11 +35,11 @@ public:
     bool userClientprop(int propn, std::istream& is = std::cin, std::ostream& os = std::cout);
 
     /***/
-    const std::string&     name     ()const{ return name_   ; }
-    const NIF&             nif      ()const{ return nif_    ; }
-    const int&             numFamily()const{ return numFam_ ; }
-    const Address&         address  ()const{ return address_; }
-    const std::vector<ID>& vtravel  ()const{ return vtravel_; }
+    const std::string&  name     ()const{ return name_   ; }
+    const NIF&          nif      ()const{ return nif_    ; }
+    const int&          numFamily()const{ return numFam_ ; }
+    const Address&      address  ()const{ return address_; }
+    const std::set<ID>& vtravel  ()const{ return vtravel_; }
 
     /***/
     template<class ForwardIterator>

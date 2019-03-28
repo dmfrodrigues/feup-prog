@@ -6,15 +6,15 @@ void Client::setPacks(Client& c, std::string s){
     c.vtravel_ = makePacks(s);
 }
 
-std::vector<ID> Client::makePacks(std::string s){
-    std::vector<ID> ret;
+std::set<ID> Client::makePacks(std::string s){
+    std::set<ID> ret;
     std::vector<std::string> v = split(s, ';');
-    for(auto i:v) ret.push_back(std::stoi(i));
+    for(auto i:v) ret.insert(std::stoi(i));
     return ret;
 }
 
 std::string Client::getPacks() const{
-    std::string ret = join(vtravel_.begin(), vtravel_.end(), std::to_string, " ; ");
+    std::string ret = join(vtravel_.cbegin(), vtravel_.cend(), std::to_string, " ; ");
     return ret;
 }
 
@@ -70,9 +70,10 @@ std::ostream& Client::print(ForwardIterator first, ForwardIterator last, std::st
             os << "3      Morada:                          " << c.address_ << std::endl;
             os << "4      Pacotes comprados:               ";
             if(!c.vtravel_.empty()){
-                os << c.vtravel_[0];
-                for(unsigned i = 1; i < c.vtravel_.size(); ++i)
-                    os << " ; " << c.vtravel_[i];
+                auto it = c.vtravel_.begin();
+                os << *(it++);
+                for(; it != c.vtravel_.end(); ++it)
+                    os << " ; " << *it;
             }os << std::endl;
         }
     } return os;

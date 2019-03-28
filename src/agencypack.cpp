@@ -5,8 +5,8 @@
 #include "vin.h"
 
 void Agency::loadPacks(const std::string& fpath){
-    std::ifstream is(fpath);
-    if(!is.is_open()) throw std::invalid_argument("could not open packs file");
+    std::ifstream is(fpath, std::ios_base::in);
+    if(!is.is_open()) throw std::ios_base::failure("failed to open travelpacks file for read");
     vtravel.clear();
     TravelPack t; std::string b;
     getline(is, b); lasttravel = std::stoi(b);
