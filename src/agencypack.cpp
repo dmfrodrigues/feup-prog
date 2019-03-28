@@ -75,7 +75,7 @@ void Agency::deletePack(){
     }
 }
 
-void Agency::findPack(){
+void Agency::findPack() const{
     std::cout << "Se não pretender utilizar um campo de pesquisa, preencher com '-'" << std::endl;
     std::set<std::string> splaces;{
         std::string b;
@@ -128,5 +128,5 @@ void Agency::findPack(){
         if(b) m.insert(p);
     }
     std::cout << std::endl;
-    TravelPack::print(m.begin(), m.end(), "table");
+    TravelPack::print(m.cbegin(), m.cend(), "table");
 }

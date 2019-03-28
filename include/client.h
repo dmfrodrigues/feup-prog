@@ -42,8 +42,8 @@ public:
     const std::vector<ID>& vtravel  ()const{ return vtravel_; }
 
     /***/
-    template<class InputIterator>
-    static std::ostream& print(InputIterator first, InputIterator last, std::string f, std::ostream& os = std::cout);
+    template<class ForwardIterator>
+    static std::ostream& print(ForwardIterator first, ForwardIterator last, std::string f, std::ostream& os = std::cout);
 
     /***/
     bool operator<(const Client& obj) const;

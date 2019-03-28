@@ -3,12 +3,6 @@
 #include <vector>
 #include "convenient.h"
 
-Date::operator std::string() const{
-    char b[32];
-    sprintf(b, "%04d/%02d/%02d", y_, m_, d_);
-    return std::string(b);
-}
-
 Date::Date(std::string s){
     std::vector<std::string> v = split(s, '/');
     if(v.size() != 3){
@@ -24,6 +18,12 @@ Date::Date(std::string s){
 
 void Date::set(Date& d, std::string s){
     d = Date(s);
+}
+
+Date::operator std::string() const{
+    char b[32];
+    sprintf(b, "%04d/%02d/%02d", y_, m_, d_);
+    return std::string(b);
 }
 
 int days[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};

@@ -42,4 +42,23 @@ template<class T> inline bool vin(const std::string& q, void fptr(T&, std::strin
     return true;
 }
 
+template<class T> inline void vin(T& obj, std::istream& is = std::cin){
+    std::string b; std::stringstream ss; ss.exceptions(std::stringstream::failbit | std::stringstream::badbit);
+    getline(is, b);
+    ss.clear(); ss.str(b);
+    ss >> obj;
+}
+
+template<> inline void vin(std::string& obj, std::istream& is){
+    std::string b;
+    getline(is, b);
+    obj = b;
+}
+
+template<class T> inline void vin(void fptr(T&, std::string), T& obj, std::istream& is = std::cin){
+    std::string b;
+    getline(is, b);
+    fptr(obj, b);
+}
+
 #endif

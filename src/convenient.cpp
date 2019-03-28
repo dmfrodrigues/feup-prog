@@ -17,6 +17,32 @@ std::vector<std::string> split(std::string s, char delim){
     return ret;
 }
 
+template<class ForwardIterator>
+std::string join(ForwardIterator first, ForwardIterator last, std::string delim){
+    std::string ret;
+    if(first != last){
+        auto it = first;
+        ret += *it;
+        while(++it != last)
+            ret += delim + *it;
+    }
+    return ret;
+}
+template std::string join(std::vector<std::string>::const_iterator first, std::vector<std::string>::const_iterator last, std::string delim);
+
+template<class ForwardIterator, class T = long long>
+std::string join(ForwardIterator first, ForwardIterator last, std::string fptr(T), std::string delim){
+    std::string ret;
+    if(first != last){
+        auto it = first;
+        ret += fptr(*it);
+        while(++it != last)
+            ret += delim + fptr(*it);
+    }
+    return ret;
+}
+template std::string join(std::vector<int>::const_iterator first, std::vector<int>::const_iterator last, std::string fptr(long long), std::string delim);
+
 std::string setwidth(std::string s, size_t sz){
     if(s.size() < sz)
         s += std::string(sz-s.size(), ' ');
@@ -27,6 +53,6 @@ std::string setwidth(std::string s, size_t sz){
 }
 
 std::string lower_case(std::string s){
-    for(auto& c:s) c = tolower(c);
+    std::transform(s.begin(), s.end(), s.begin(), tolower);
     return s;
 }

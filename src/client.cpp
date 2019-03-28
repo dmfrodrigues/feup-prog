@@ -14,7 +14,7 @@ std::vector<ID> Client::makePacks(std::string s){
 }
 
 std::string Client::getPacks() const{
-    std::string ret = join(vtravel_.begin(), vtravel_.end(), &std::to_string, " ; ");
+    std::string ret = join(vtravel_.begin(), vtravel_.end(), std::to_string, " ; ");
     return ret;
 }
 
@@ -40,8 +40,8 @@ bool Client::userClientprop(int propn, std::istream& is, std::ostream& os){
     return true;
 }
 
-template<class InputIterator>
-std::ostream& Client::print(InputIterator first, InputIterator last, std::string f, std::ostream& os){
+template<class ForwardIterator>
+std::ostream& Client::print(ForwardIterator first, ForwardIterator last, std::string f, std::ostream& os){
     if(f == "table"){
         os << setwidth("#"     ,     4) << "   "
            << setwidth("Nome"  ,    42) << " \t"
@@ -57,7 +57,7 @@ std::ostream& Client::print(InputIterator first, InputIterator last, std::string
             os << setwidth(c.name()                         , 42) << " \t";
             os << setwidth(c.nif()                          ,  9) << "   ";
             os << setwidth(std::to_string(c.numFamily())    ,  6) << " ";
-            os << setwidth(c.address().str()                , 60) << " \t";
+            os << setwidth(std::string(c.address())         , 60) << " \t";
             os << std::endl;
         }
     }else if(f == "screenfull"){
@@ -77,7 +77,7 @@ std::ostream& Client::print(InputIterator first, InputIterator last, std::string
         }
     } return os;
 }
-template std::ostream& Client::print(std::multiset<Client>::iterator first, std::multiset<Client>::iterator last, std::string f, std::ostream& os);
+template std::ostream& Client::print(std::multiset<Client>::const_iterator first, std::multiset<Client>::const_iterator last, std::string f, std::ostream& os);
 
 bool Client::operator<(const Client& c) const{
     if     (name_    != c.name_   ) return (name_    < c.name_   );

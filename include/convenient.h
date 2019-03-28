@@ -24,28 +24,10 @@ std::vector<std::string> split(std::string s, char delim);
 
 /***/
 template<class ForwardIterator>
-std::string join(ForwardIterator first, ForwardIterator last, std::string delim){
-    std::string ret;
-    if(first != last){
-        auto it = first;
-        ret += *it;
-        while(++it != last)
-            ret += delim + *it;
-    }
-    return ret;
-}
+std::string join(ForwardIterator first, ForwardIterator last, std::string delim);
 
 template<class ForwardIterator, class T = long long>
-std::string join(ForwardIterator first, ForwardIterator last, std::string (*fptr)(T), std::string delim){
-    std::string ret;
-    if(first != last){
-        auto it = first;
-        ret += fptr(*it);
-        while(++it != last)
-            ret += delim + fptr(*it);
-    }
-    return ret;
-}
+std::string join(ForwardIterator first, ForwardIterator last, std::string fptr(T), std::string delim);
 
 /***/
 std::string setwidth(std::string s, size_t sz);

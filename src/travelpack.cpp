@@ -3,31 +3,27 @@
 #include <map>
 #include "vin.h"
 
-std::istream& operator>>(std::istream& is, TravelPack& t){
-    std::stringstream dummy;
-    ID id;
-    if(!vin("",                        id        , is, dummy) ||
-       !vin("", TravelPack::setPlaces, t         , is, dummy) ||
-       !vin("", Date::set            , t.begin_  , is, dummy) ||
-       !vin("", Date::set            , t.end_    , is, dummy) ||
-       !vin("",                        t.price_  , is, dummy) ||
-       !vin("",                        t.numMax_ , is, dummy) ||
-       !vin("",                        t.numSold_, is, dummy))
-       throw std::invalid_argument("could not read client file");
-    t.id_ = abs(id);
-    t.avail_ = (id >= 0);
-    return is;
+std::string TravelPack::getPlaces() const{
+    std::string ret = vplaces_[0];
+    if(vplaces_.size() > 1)
+        ret += " - " + join(vplaces_.begin()+1, vplaces_.end(), ", ");
+    return ret;
 }
 
-std::ostream& operator<<(std::ostream& os, const TravelPack& t){
-    os << t.id()*(t.avail()?1:-1) << std::endl;
-    os << t.getPlaces()           << std::endl;
-    os << t.begin()               << std::endl;
-    os << t.end()                 << std::endl;
-    os << t.price()               << std::endl;
-    os << t.numMax()              << std::endl;
-    os << t.numSold()             << std::flush;
-    return os;
+void TravelPack::setPlaces(TravelPack& t, std::string s){
+    t.vplaces_ = makePlaces(s);
+}
+
+std::vector<std::string> TravelPack::makePlaces(std::string s){
+    std::vector<std::string> ret;
+    std::vector<std::string> v = split(s, '-');
+    if(v.size() < 1) throw std::invalid_argument("could not find at least one place");
+    ret.push_back(v[0]);
+    if(v.size() == 2){
+        v = split(v[1], ',');
+        ret.insert(ret.end(), v.begin(), v.end());
+    }
+    return ret;
 }
 
 bool TravelPack::userPack(ID lasttravel, std::istream&, std::ostream& os){
@@ -66,31 +62,8 @@ bool TravelPack::userPackprop(int propn, std::istream& is, std::ostream& os){
     return true;
 }
 
-void TravelPack::setPlaces(TravelPack& t, std::string s){
-    t.vplaces_ = makePlaces(s);
-}
-
-std::string TravelPack::getPlaces() const{
-    std::string ret = vplaces_[0];
-    if(vplaces_.size() > 1)
-        ret += " - " + join(vplaces_.begin()+1, vplaces_.end(), ", ");
-    return ret;
-}
-
-std::vector<std::string> TravelPack::makePlaces(std::string s){
-    std::vector<std::string> ret;
-    std::vector<std::string> v = split(s, '-');
-    if(v.size() < 1) throw std::invalid_argument("could not find at least one place");
-    ret.push_back(v[0]);
-    if(v.size() == 2){
-        v = split(v[1], ',');
-        ret.insert(ret.end(), v.begin(), v.end());
-    }
-    return ret;
-}
-
-template<class InputIterator>
-std::ostream& TravelPack::print(InputIterator first, InputIterator last, std::string f, std::ostream& os){
+template<class ForwardIterator>
+std::ostream& TravelPack::print(ForwardIterator first, ForwardIterator last, std::string f, std::ostream& os){
     if(f == "table"){
         os << setwidth("ID"            ,  4) << "   "
            << setwidth("Disp"          ,  4) << "\t"
@@ -130,4 +103,30 @@ std::ostream& TravelPack::print(InputIterator first, InputIterator last, std::st
     } return os;
 }
 template std::ostream& TravelPack::print(std::map<ID, TravelPack>::const_iterator first, std::map<ID, TravelPack>::const_iterator last, std::string f, std::ostream& os);
-template std::ostream& TravelPack::print(std::map<ID, TravelPack>::iterator       first, std::map<ID, TravelPack>::iterator       last, std::string f, std::ostream& os);
+
+std::istream& operator>>(std::istream& is, TravelPack& t){
+    std::stringstream dummy;
+    ID id;
+    if(!vin("",                        id        , is, dummy) ||
+       !vin("", TravelPack::setPlaces, t         , is, dummy) ||
+       !vin("", Date::set            , t.begin_  , is, dummy) ||
+       !vin("", Date::set            , t.end_    , is, dummy) ||
+       !vin("",                        t.price_  , is, dummy) ||
+       !vin("",                        t.numMax_ , is, dummy) ||
+       !vin("",                        t.numSold_, is, dummy))
+       throw std::invalid_argument("could not read client file");
+    t.id_ = abs(id);
+    t.avail_ = (id >= 0);
+    return is;
+}
+
+std::ostream& operator<<(std::ostream& os, const TravelPack& t){
+    os << t.id()*(t.avail()?1:-1) << std::endl;
+    os << t.getPlaces()           << std::endl;
+    os << t.begin()               << std::endl;
+    os << t.end()                 << std::endl;
+    os << t.price()               << std::endl;
+    os << t.numMax()              << std::endl;
+    os << t.numSold()             << std::flush;
+    return os;
+}

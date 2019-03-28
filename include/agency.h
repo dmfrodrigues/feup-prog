@@ -48,7 +48,7 @@ private:
     /***/
     void deletePack();
     /***/
-    void findPack();
+    void findPack() const;
     /***/
     std::ostream& save(std::ostream& os = std::cout) const;
 public:
@@ -62,7 +62,7 @@ public:
     void run();
 
     /***/
-    std::ostream& print(std::ostream& os = std::cout);
+    std::ostream& print(std::ostream& os = std::cout) const;
 
     /***/
     std::ostream& printHelp(std::ostream& os = std::cout) const;

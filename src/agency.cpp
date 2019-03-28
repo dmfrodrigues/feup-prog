@@ -4,10 +4,12 @@
 #include "vin.h"
 
 Agency::Agency(){
-    std::ifstream is;
+    std::ifstream is; is.exceptions(std::ifstream::failbit | std::ifstream::badbit);
     while(true){
-        std::string fullpath = "input/agency.txt"; //#DEV
-        auto n = fullpath.find_last_of('/');
+        std::string fullpath;
+        std::cout << "Agency file: "; getline(std::cin, fullpath);
+        //fullpath = "input/agency.txt"; //#DEV
+        size_t n = fullpath.find_last_of('/');
         if(n != fullpath.npos){
             inputpath  = fullpath.substr(0,n+1);
             agencypath = fullpath.substr(n+1, fullpath.npos);
@@ -15,13 +17,15 @@ Agency::Agency(){
             inputpath  = "";
             agencypath = fullpath;
         }
-
         is.clear();
-        is.open(inputpath + agencypath, std::ifstream::in);
-        if(is.is_open()) break;
-        std::cout << "Ficheiro da agência não foi aberto\n";
+        try{
+            is.open(inputpath + agencypath, std::ifstream::in);
+            is >> *this;
+            break;
+        }catch(const std::ios_base::failure& e){
+            std::cout << "Error: file open/read failed" << std::endl;
+        }
     }
-    is >> *this;
 }
 
 void Agency::run(){
@@ -32,8 +36,9 @@ void Agency::run(){
         std::cout << std::endl;
         std::cout << "Operação: "; getline(std::cin, b); b = trim(b);
         std::cout << std::endl;
-        if     (b == "tclient")     Client::print(vclient.begin(), vclient.end(), "table");
-        else if(b == "tpack"  ) TravelPack::print(vtravel.begin(), vtravel.end(), "table");
+
+        if     (b == "tclient")     Client::print(vclient.cbegin(), vclient.cend(), "table");
+        else if(b == "tpack"  ) TravelPack::print(vtravel.cbegin(), vtravel.cend(), "table");
         else if(b == "sclient") seeClient();    else if(b == "spack") seePack();
         else if(b == "+client") addClient();    else if(b == "+pack") addPack();
         else if(b == "#client") changeClient(); else if(b == "#pack") changePack(); //#DEV
@@ -45,9 +50,7 @@ void Agency::run(){
     }
 }
 
-
-
-std::ostream& Agency::print(std::ostream& os){
+std::ostream& Agency::print(std::ostream& os) const{
     const long unsigned n = (120-name.size())/2;
     os << std::string(2*n+name.size(), '=')                  << std::endl;
     os << std::string(n, ' ') << name << std::string(n, ' ') << std::endl;
@@ -60,24 +63,24 @@ std::ostream& Agency::print(std::ostream& os){
 }
 
 std::ostream& Agency::printHelp(std::ostream& os) const{
-    os << "Mostrar clientes em tabela\t[tclient]" << "\t" << "Mostrar pacotes em tabela\t[tpack]" << std::endl;
-    os << "Ver cliente               \t[sclient]" << "\t" << "Ver pacote               \t[spack]" << std::endl;
-    os << "Adicionar cliente         \t[+client]" << "\t" << "Adicionar pacote         \t[+pack]" << std::endl;
-    os << "Alterar cliente           \t[#client]" << "\t" << "Alterar pacote           \t[#pack]" << std::endl;
-    os << "Eliminar cliente          \t[-client]" << "\t" << "Eliminar pacote          \t[-pack]" << std::endl;
-    os << "Vender pacote a um cliente\t[sell]   " << "\t" << "Procurar pacotes         \t[fpack]" << std::endl;
-    os << "Lista de comandos         \t[help]   " << "\t" << "                         \t       " << std::endl;
-    os << "Guardar                   \t[save]   " << "\t" << "Sair                     \t[exit] " << std::endl;
-    return os;
+    os << "Mostrar clientes em tabela\t[tclient]\tMostrar pacotes em tabela\t[tpack]\n"
+          "Ver cliente               \t[sclient]\tVer pacote               \t[spack]\n"
+          "Adicionar cliente         \t[+client]\tAdicionar pacote         \t[+pack]\n"
+          "Alterar cliente           \t[#client]\tAlterar pacote           \t[#pack]\n"
+          "Eliminar cliente          \t[-client]\tEliminar pacote          \t[-pack]\n"
+          "Vender pacote a um cliente\t[sell]   \tProcurar pacotes         \t[fpack]\n"
+          "Lista de comandos         \t[help]   \t                         \t       \n"
+          "Guardar                   \t[save]   \tSair                     \t[exit] \n";
+    return os << std::flush;
 }
 
 std::ostream& Agency::save(std::ostream& os) const{
-    {
+    /*Save agency*/{
         std::ofstream of_agency(inputpath + agencypath);
         of_agency << *this;
         of_agency.close();
     }
-    {
+    /*Save clients*/{
         std::ofstream of_client(inputpath + clientpath);
         if(vclient.size() >= 1){
             auto it = vclient.begin();
@@ -89,7 +92,7 @@ std::ostream& Agency::save(std::ostream& os) const{
         }
         of_client.close();
     }
-    {
+    /*Save travel packs*/{
         std::ofstream of_pack(inputpath + travelpath);
         of_pack << lasttravel << std::endl;
         if(vtravel.size() >= 1){
@@ -101,18 +104,17 @@ std::ostream& Agency::save(std::ostream& os) const{
             }
         }
     }
-    return (os << "Ficheiros guardados" << std::endl);
+    return (os << "Files saved" << std::endl);
 }
 
 std::istream& operator>>(std::istream& is, Agency& a){
     std::stringstream dummy;
-    if(!vin("",               a.name      , is, dummy) ||
-       !vin("",               a.nif       , is, dummy) ||
-       !vin("",               a.url       , is, dummy) ||
-       !vin("", Address::set, a.address   , is, dummy) ||
-       !vin("",               a.clientpath, is, dummy) ||
-       !vin("",               a.travelpath, is, dummy))
-        throw std::invalid_argument("failed to find one of the required fields in agency file");
+    vin(              a.name      , is);
+    vin(              a.nif       , is);
+    vin(              a.url       , is);
+    vin(Address::set, a.address   , is);
+    vin(              a.clientpath, is);
+    vin(              a.travelpath, is);
     a.loadClients(a.inputpath + a.clientpath);
     a.loadPacks  (a.inputpath + a.travelpath);
     return is;

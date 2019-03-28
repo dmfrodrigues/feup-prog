@@ -1,13 +1,13 @@
 #ifndef TRAVELPACK_H_INCLUDED
 #define TRAVELPACK_H_INCLUDED
 
-#include <string>
-#include <vector>
 
 #include <iostream>
-#include "globaldefs.h"
-#include "date.h"
+#include <string>
+#include <vector>
 #include "convenient.h"
+#include "date.h"
+#include "globaldefs.h"
 
 typedef int ID;
 
@@ -46,8 +46,8 @@ public:
     const int&                      numSold()const{ return numSold_; }
 
     /***/
-    template<class InputIterator>
-    static std::ostream& print(InputIterator first, InputIterator last, std::string f, std::ostream& os = std::cout);
+    template<class ForwardIterator>
+    static std::ostream& print(ForwardIterator first, ForwardIterator last, std::string f, std::ostream& os = std::cout);
 };
 
 /***/

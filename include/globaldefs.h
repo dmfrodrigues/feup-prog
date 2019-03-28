@@ -8,8 +8,6 @@ typedef std::string Name;
 
 const int NIFsize = 9;
 struct NIF{
-//friend std::ostream& operator<<(std::ostream& os, const NIF& obj);
-//friend std::istream& operator>>(std::istream& os,       NIF& obj);
 private:
     std::string s_;
 public:

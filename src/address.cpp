@@ -18,12 +18,16 @@ void Address::set(Address& a, std::string s){
     a = Address(s);
 }
 
-std::string Address::str(std::string s) const{
+std::string Address::str(const char* format) const{
     char b[512];
-    sprintf(b, s.c_str(), street_.c_str(), door_.c_str(), floor_.c_str(), postalCode_.c_str(), city_.c_str());
+    sprintf(b, format, street_.c_str(), door_.c_str(), floor_.c_str(), postalCode_.c_str(), city_.c_str());
     return std::string(b);
 }
 
+Address::operator std::string()const{
+    return (this->str());
+}
+
 std::ostream& operator<<(std::ostream& os, const Address& a){
-    return (os << a.str());
+    return (os << std::string(a));
 }

@@ -29,7 +29,9 @@ public:
     inline const std::string& city      ()const{ return city_      ; }
 
     /***/
-    std::string str(std::string s = "%s / %s / %s / %s / %s") const;
+    std::string str(const char* format = "%s / %s / %s / %s / %s") const;
+    /***/
+    operator std::string() const;
 
     /***/
     inline bool operator==(const Address& a) const{ return (str() == a.str()); }
