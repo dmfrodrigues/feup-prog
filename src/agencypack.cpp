@@ -22,7 +22,7 @@ void Agency::addPack(){
     if(t.userPack(lasttravel+1)){
         ++lasttravel;
         vtravel[t.id()] = t;
-        std::cout << "Pacote turístico adicionado" << std::endl;
+        std::cout << "Travel pack added" << std::endl;
     }
 }
 
@@ -30,9 +30,9 @@ std::pair<ID, bool> Agency::seePack() const{
     TravelPack::print(vtravel.begin(), vtravel.end(), "table") << std::endl;
     int id;
     while(true){
-        if(!vin("ID do pacote turístico a visualizar: ", id)) return std::make_pair(0, false);
+        if(!vin("ID of travel pack to see: ", id)) return std::make_pair(0, false);
         if(vtravel.find(id) != vtravel.end()) break;
-        else std::cout << "ID não atribuído a nenhum pacote turístico" << std::endl;
+        else std::cout << "Error: ID not attributed to any travel pack" << std::endl;
     }
     std::cout << std::endl;
     auto it = vtravel.find(id);
@@ -47,14 +47,14 @@ void Agency::changePack(){
     std::string b; std::cout << std::endl;
     int j;{
         while(true){
-            if(!vin("# da propriedade a alterar: ", j)) return;
+            if(!vin("# of property to change: ", j)) return;
             if(0 <= j && j < 8)      break;
-            else std::cout << "Número fora do intervalo permitido [0,7]" << std::endl;
+            else std::cout << "Error: # outside valid input range [0,7]" << std::endl;
         }
     }
     auto& it = vtravel[id];
     if(it.userPackprop(j)){
-        std::cout << "Propriedade alterada" << std::endl;
+        std::cout << "Property changed" << std::endl;
     }
 }
 
@@ -64,22 +64,22 @@ void Agency::deletePack(){
     ID id = p.first;
     std::string b; std::cout << std::endl;
     while(true){
-        if(!vin("Confirme que pretende eliminar o pacote com ID "+std::to_string(id)+" [y/n]: ", b)) return;
+        if(!vin("Confirm you want to delete travel pack with ID "+std::to_string(id)+" [y/n]: ", b)) return;
         b = lower_case(b);
         if(b == "y" || b == "n") break;
-        std::cout << "Apenas [y] (sim) ou [n] (não) são possibilidades válidas" << std::endl;
+        std::cout << "Error: only [y] (yes) or [n] (no) are valid possiblities" << std::endl;
     }
     if(b == "y"){
         vtravel.erase(id);
-        std::cout << "Pacote turístico eliminado" << std::endl;
+        std::cout << "Travel pack deleted" << std::endl;
     }
 }
 
 void Agency::findPack() const{
-    std::cout << "Se não pretender utilizar um campo de pesquisa, preencher com '-'" << std::endl;
+    std::cout << "If you do not want to use a search field, fill with '-'" << std::endl;
     std::set<std::string> splaces;{
         std::string b;
-        if(!vin("Destinos (separados por ',' se for mais que um): ", b)) return;
+        if(!vin("Destinations (separated by ',' if more than one): ", b)) return;
         if(b != "-"){
             std::vector<std::string> v = split(b, ',');
             splaces.insert(v.begin(), v.end());
@@ -88,7 +88,7 @@ void Agency::findPack() const{
     Date first, last;{
         std::string b;
         while(true){
-            std::cout << "Data de início (yyyy/mm/dd): ";
+            std::cout << "Begin date (yyyy/mm/dd): ";
             getline(std::cin, b);
             if(b == "-"){
                 first = Date::begin();
@@ -103,7 +103,7 @@ void Agency::findPack() const{
             }
         }
         while(true){
-            std::cout << "Data de fim (yyyy/mm/dd): ";
+            std::cout << "End date (yyyy/mm/dd): ";
              getline(std::cin, b);
             if(b == "-"){
                 last = Date::end();

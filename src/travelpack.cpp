@@ -29,11 +29,11 @@ std::vector<std::string> TravelPack::makePlaces(std::string s){
 bool TravelPack::userPack(ID lasttravel, std::istream&, std::ostream& os){
     id_ = lasttravel;
     avail_ = true;
-    if(!vin("Destino (principal - secundários separados por ','): ", TravelPack::setPlaces, *this  ) ||
-       !vin("Data de início (yyyy/mm/dd): "                        , Date::set            , begin_ ) ||
-       !vin("Data de fim (yyyy/mm/dd): "                           , Date::set            , end_   ) ||
-       !vin("Preço por pessoa: "                                   ,                        price_ ) ||
-       !vin("Número máximo de pessoas: "                           ,                        numMax_))
+    if(!vin("Destination (main - secondary separated by ','): ", TravelPack::setPlaces, *this  ) ||
+       !vin("Begin date (yyyy/mm/dd): "                        , Date::set            , begin_ ) ||
+       !vin("End date   (yyyy/mm/dd): "                        , Date::set            , end_   ) ||
+       !vin("Price per person: "                               ,                        price_ ) ||
+       !vin("Max number of people: "                           ,                        numMax_))
         return false;
     numSold_ = 0;
     return true;
@@ -42,21 +42,21 @@ bool TravelPack::userPack(ID lasttravel, std::istream&, std::ostream& os){
 bool TravelPack::userPackprop(int propn, std::istream& is, std::ostream& os){
     std::string b;
     switch(propn){
-        case 0: os << "O ID de um pacote turístico não pode ser alterado" << std::endl; return false; break;
-        case 1: os << "Disponibilidade: "          << (avail_?"sim":"não") << std::endl;
+        case 0: os << "Travel pack ID can not be changed" << std::endl; return false; break;
+        case 1: os << "Availability: "                    << (avail_?"yes":"no") << std::endl;
             while(true){
-                if(!vin("Novo valor de disponibilidade [sim/não]: ", b)) return false;
-                if(b == "sim" || b == "não") break;
-                else os << "Apenas os valores [sim] e [não] são válidos" << std::endl;
+                if(!vin("New availability value [yes/no]: ", b)) return false;
+                if(b == "yes" || b == "no") break;
+                else os << "Error: only [y] (yes) or [n] (no) are valid possiblities" << std::endl;
             }
-            avail_ = (b == "sim");
+            avail_ = (b == "yes");
             break;
-        case 2: os << "Destino: "                  << getPlaces() << std::endl; if(!vin("Novo destino: "         , TravelPack::setPlaces, *this  )) return false; break;
-        case 3: os << "Data de início: "           << begin_      << std::endl; if(!vin("Nova data de início: "  , Date::set            , begin_ )) return false; break;
-        case 4: os << "Data de fim: "              << end_        << std::endl; if(!vin("Nova data de fim: "     , Date::set            , end_   )) return false; break;
-        case 5: os << "Preço por pessoa: "         << price_      << std::endl; if(!vin("Novo preço por pessoa: ",                        price_ )) return false; break;
-        case 6: os << "Número máximo de pessoas: " << numMax_     << std::endl; if(!vin("Novo número máximo de pessoas: ",                numMax_)) return false; break;
-        case 7: os << "Vendas de lugares devem ser processadas através da operação [sell]" << std::endl; return false; break;
+        case 2: os << "Destination: "          << getPlaces() << std::endl; if(!vin("New destination: "         , TravelPack::setPlaces, *this  )) return false; break;
+        case 3: os << "Begin date: "           << begin_      << std::endl; if(!vin("New begin date: "          , Date::set            , begin_ )) return false; break;
+        case 4: os << "End date: "             << end_        << std::endl; if(!vin("New end date: "            , Date::set            , end_   )) return false; break;
+        case 5: os << "Price per person: "     << price_      << std::endl; if(!vin("New price per person: "    ,                        price_ )) return false; break;
+        case 6: os << "Max number of people: " << numMax_     << std::endl; if(!vin("New max number of people: ",                        numMax_)) return false; break;
+        case 7: os << "Travel pack sells should be handled by operation [sell]" << std::endl; return false; break;
         default: throw std::invalid_argument("trying to access travelpack property that does not exist");
     }
     return true;
@@ -65,40 +65,40 @@ bool TravelPack::userPackprop(int propn, std::istream& is, std::ostream& os){
 template<class ForwardIterator>
 std::ostream& TravelPack::print(ForwardIterator first, ForwardIterator last, std::string f, std::ostream& os){
     if(f == "table"){
-        os << setwidth("ID"            ,  4) << "   "
-           << setwidth("Disp"          ,  4) << "\t"
-           << setwidth("Destino"       , 53) << " \t"
-           << setwidth("Inicio"        , 12) << " "
-           << setwidth("Fim"           , 12) << " "
-           << setwidth("Preco"         ,  5) << " "
-           << setwidth("MaxPessoas"    , 10) << " "
-           << setwidth("Vendidos"      ,  8) << " "
+        os << setwidth("ID"         ,  4) << "   "
+           << setwidth("Avail"      ,  5) << "\t"
+           << setwidth("Destination", 53) << " \t"
+           << setwidth("Begin"      , 12) << " "
+           << setwidth("End"        , 12) << " "
+           << setwidth("Price"      ,  5) << " "
+           << setwidth("MaxPeople"  ,  9) << " "
+           << setwidth("Sold"       ,  4) << " "
            << std::endl;
-        os << std::string(120, '-') << std::endl;;
+        os << std::string(118, '-') << std::endl;;
         for(auto it = first; it != last; ++it){
             const auto& t = it->second;
             os << setwidth(std::to_string(t.id     ()),  4) << "   ";
-            os << setwidth((t.avail()? "sim" : "não") ,  4) << "\t";
+            os << setwidth((t.avail()? "yes" : "no")  ,  5) << "\t";
             os << setwidth(t.getPlaces()              , 53) << " \t";
             os << setwidth(std::string(t.begin())     , 12) << " ";
             os << setwidth(std::string(t.end())       , 12) << " ";
             os << setwidth(std::to_string(t.price  ()),  5) << " ";
-            os << setwidth(std::to_string(t.numMax ()), 10) << " ";
-            os << setwidth(std::to_string(t.numSold()),  8) << " ";
+            os << setwidth(std::to_string(t.numMax ()),  9) << " ";
+            os << setwidth(std::to_string(t.numSold()),  4) << " ";
             os << std::endl;
         }
     }else if(f == "screenfull"){
         if(last != first){
             const auto& t = first->second;
-            os << "#"                                                    << std::endl;
-            os << "0      ID:                " << t.id_                  << std::endl;
-            os << "1      Disponibilidade:   " << (t.avail_?"sim":"não") << std::endl;
-            os << "2      Destino:           " << t.getPlaces()          << std::endl;
-            os << "3      Data de início:    " << t.begin_               << std::endl;
-            os << "4      Data de fim:       " << t.end_                 << std::endl;
-            os << "5      Preço por pessoa:  " << t.price_               << std::endl;
-            os << "6      Máximo de pessoas: " << t.numMax_              << std::endl;
-            os << "7      Lugares vendidos:  " << t.numSold_             << std::endl;
+            os << "#"                                                      << std::endl;
+            os << "0      ID:                   " << t.id_                 << std::endl;
+            os << "1      Availability:         " << (t.avail_?"yes":"no") << std::endl;
+            os << "2      Destination:          " << t.getPlaces()         << std::endl;
+            os << "3      Begin date:           " << t.begin_              << std::endl;
+            os << "4      End date:             " << t.end_                << std::endl;
+            os << "5      Price per person:     " << t.price_              << std::endl;
+            os << "6      Max number of people: " << t.numMax_             << std::endl;
+            os << "7      Sold:                 " << t.numSold_            << std::endl;
         }
     } return os;
 }

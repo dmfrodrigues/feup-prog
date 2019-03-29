@@ -28,12 +28,10 @@ Date::operator std::string() const{
 
 int days[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 bool Date::isLeap(int y){
-    if (y%4 == 0){
-        if (y%100 == 0){
-            if (y%400 == 0) return true;
-            else            return false;
-        } else return true;
-    } else return false;
+    if (y%4 == 0)
+        if (y%100 == 0) return (y%400 == 0);
+        else return true;
+    else return false;
 }
 bool Date::checkValid()const{
     if(!(1 <= m_ && m_ <= 12)) return false;

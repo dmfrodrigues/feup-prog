@@ -19,22 +19,22 @@ std::string Client::getPacks() const{
 }
 
 bool Client::userClient(std::istream& is, std::ostream& os){
-    if(!vin("Nome: "                                 ,                   name_   ) ||
-       !vin("NIF: "                                  ,                   nif_    ) ||
-       !vin("Número de elementos da família: "       ,                   numFam_ ) ||
-       !vin("Morada: "                               , Address::set    , address_) ||
-       !vin("Pacotes comprados (separados por ';'): ", Client::setPacks, *this   ))
+    if(!vin("Name: "                           ,                   name_   ) ||
+       !vin("NIF: "                            ,                   nif_    ) ||
+       !vin("Number of household members: "    ,                   numFam_ ) ||
+       !vin("Address: "                        , Address::set    , address_) ||
+       !vin("Bought packs (separated by ';'): ", Client::setPacks, *this   ))
         return false;
     return true;
 }
 
 bool Client::userClientprop(int propn, std::istream& is, std::ostream& os){
     switch(propn){
-        case 0: os << "Nome: "                           << name_      << std::endl; if(!vin("Novo nome: "                          ,                   name_   )) return false; break;
-        case 1: os << "NIF: "                            << nif_       << std::endl; if(!vin("Novo NIF: "                           ,                   nif_    )) return false; break;
-        case 2: os << "Número de elementos da família: " << numFam_    << std::endl; if(!vin("Novo número de elementos da família: ",                   numFam_ )) return false; break;
-        case 3: os << "Morada: "                         << address_   << std::endl; if(!vin("Nova morada: "                        , Address::set    , address_)) return false; break;
-        case 4: os << "Compras de pacotes devem ser processadas através da operação [sell]" << std::endl; return false; break;
+        case 0: os << "Name: "                        << name_      << std::endl; if(!vin("New name: "                       ,                   name_   )) return false; break;
+        case 1: os << "NIF: "                         << nif_       << std::endl; if(!vin("New NIF: "                        ,                   nif_    )) return false; break;
+        case 2: os << "Number of household members: " << numFam_    << std::endl; if(!vin("New number of household members: ",                   numFam_ )) return false; break;
+        case 3: os << "Address: "                     << address_   << std::endl; if(!vin("New address: "                    , Address::set    , address_)) return false; break;
+        case 4: os << "Travel pack sells should be handled by operation [sell]" << std::endl; return false; break;
         default: throw std::invalid_argument("trying to access client property that does not exist");
     }
     return true;
@@ -43,20 +43,20 @@ bool Client::userClientprop(int propn, std::istream& is, std::ostream& os){
 template<class ForwardIterator>
 std::ostream& Client::print(ForwardIterator first, ForwardIterator last, std::string f, std::ostream& os){
     if(f == "table"){
-        os << setwidth("#"     ,     4) << "   "
-           << setwidth("Nome"  ,    42) << " \t"
-           << setwidth("NIF"   ,     9) << "   "
-           << setwidth("NumFam",     6) << " "
-           << setwidth("Morada",    60) << " \t"
+        os << setwidth("#"         ,  4) << "   "
+           << setwidth("Name"      , 48) << " \t"
+           << setwidth("NIF"       ,  9) << "   "
+           << setwidth("#Household", 10) << " "
+           << setwidth("Address"   , 60) << " \t"
            << std::endl;
-        os << std::string(140, '-') << std::endl;
+        os << std::string(150, '-') << std::endl;
         unsigned i = 0;
         for(auto it = first; it != last; ++it, ++i){
             const auto& c = *it;
             os << setwidth(std::to_string(i)                ,  4) << "   ";
-            os << setwidth(c.name()                         , 42) << " \t";
+            os << setwidth(c.name()                         , 48) << " \t";
             os << setwidth(c.nif()                          ,  9) << "   ";
-            os << setwidth(std::to_string(c.numFamily())    ,  6) << " ";
+            os << setwidth(std::to_string(c.numFamily())    , 10) << " ";
             os << setwidth(std::string(c.address())         , 60) << " \t";
             os << std::endl;
         }
@@ -64,11 +64,11 @@ std::ostream& Client::print(ForwardIterator first, ForwardIterator last, std::st
         if(last != first){
             const auto& c = *first;
             os << "#"                                                << std::endl;
-            os << "0      Nome:                            " << c.name_    << std::endl;
-            os << "1      NIF:                             " << c.nif_     << std::endl;
-            os << "2      Número de elementos da família:  " << c.numFam_  << std::endl;
-            os << "3      Morada:                          " << c.address_ << std::endl;
-            os << "4      Pacotes comprados:               ";
+            os << "0      Name:                        " << c.name_    << std::endl;
+            os << "1      NIF:                         " << c.nif_     << std::endl;
+            os << "2      Number of household members: " << c.numFam_  << std::endl;
+            os << "3      Address:                     " << c.address_ << std::endl;
+            os << "4      Bought packs:                ";
             if(!c.vtravel_.empty()){
                 auto it = c.vtravel_.begin();
                 os << *(it++);
@@ -89,13 +89,11 @@ bool Client::operator<(const Client& c) const{
 }
 
 std::istream& operator>>(std::istream& is, Client& c){
-    std::stringstream dummy;
-    if(!vin("",                   c.name_   , is, dummy) ||
-       !vin("",                   c.nif_    , is, dummy) ||
-       !vin("",                   c.numFam_ , is, dummy) ||
-       !vin("", Address::set    , c.address_, is, dummy) ||
-       !vin("", Client::setPacks, c         , is, dummy))
-       throw std::invalid_argument("could not read client file");
+    vin(                  c.name_   , is);
+    vin(                  c.nif_    , is);
+    vin(                  c.numFam_ , is);
+    vin(Address::set    , c.address_, is);
+    vin(Client::setPacks, c         , is);
     return is;
 }
 
