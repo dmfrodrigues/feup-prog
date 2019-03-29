@@ -65,28 +65,62 @@ bool TravelPack::userPackprop(int propn, std::istream& is, std::ostream& os){
 template<class ForwardIterator>
 std::ostream& TravelPack::print(ForwardIterator first, ForwardIterator last, std::string f, std::ostream& os){
     if(f == "table"){
-        os << setwidth("ID"         ,  4) << "   "
-           << setwidth("Avail"      ,  5) << "\t"
-           << setwidth("Destination", 53) << " \t"
-           << setwidth("Begin"      , 12) << " "
-           << setwidth("End"        , 12) << " "
-           << setwidth("Price"      ,  5) << " "
-           << setwidth("MaxPeople"  ,  9) << " "
-           << setwidth("Sold"       ,  4) << " "
+        os << setwidth("ID"         ,  4)
+           << setwidth("Avail"      ,  7)
+           << setwidth("Destination", 50) << " \t"
+           << setwidth("Begin"      , 12)
+           << setwidth("End"        , 12)
+           << setwidth("Price"      ,  7)
+           << setwidth("MaxPeople"  , 11)
+           << setwidth("Sold"       ,  6)
            << std::endl;
-        os << std::string(118, '-') << std::endl;;
+        os << std::string(112, '=') << std::endl;;
         for(auto it = first; it != last; ++it){
             const auto& t = it->second;
-            os << setwidth(std::to_string(t.id     ()),  4) << "   ";
-            os << setwidth((t.avail()? "yes" : "no")  ,  5) << "\t";
-            os << setwidth(t.getPlaces()              , 53) << " \t";
-            os << setwidth(std::string(t.begin())     , 12) << " ";
-            os << setwidth(std::string(t.end())       , 12) << " ";
-            os << setwidth(std::to_string(t.price  ()),  5) << " ";
-            os << setwidth(std::to_string(t.numMax ()),  9) << " ";
-            os << setwidth(std::to_string(t.numSold()),  4) << " ";
+            os << setwidth(std::to_string(t.id     ()),  4);
+            os << setwidth((t.avail()? "yes" : "no")  ,  7);
+            os << setwidth(t.getPlaces()              , 50) << " \t";
+            os << setwidth(std::string(t.begin())     , 12);
+            os << setwidth(std::string(t.end())       , 12);
+            os << setwidth(std::to_string(t.price  ()),  7);
+            os << setwidth(std::to_string(t.numMax ()), 11);
+            os << setwidth(std::to_string(t.numSold()),  6);
             os << std::endl;
         }
+    }else if(f == "sold"){
+        int maxpeople = 0, sold = 0, revenue = 0, r;
+        os << setwidth("ID"         ,  4)
+           << setwidth("Avail"      ,  7)
+           << setwidth("Destination", 50) << " \t"
+           << setwidth("Begin"      , 12)
+           << setwidth("End"        , 12)
+           << setwidth("Price"      ,  7)
+           << setwidth("MaxPeople"  , 11)
+           << setwidth("Sold"       ,  6)
+           << setwidth("Revenue"    ,  9)
+           << std::endl;
+        os << std::string(121, '=') << std::endl;;
+        for(auto it = first; it != last; ++it){
+            const auto& t = it->second;
+            r = t.price()*t.numSold();
+            revenue += r;
+            maxpeople += t.numMax();
+            sold += t.numSold();
+            os << setwidth(std::to_string(t.id     ()),  4);
+            os << setwidth((t.avail()? "yes" : "no")  ,  7);
+            os << setwidth(t.getPlaces()              , 50) << " \t";
+            os << setwidth(std::string(t.begin())     , 12);
+            os << setwidth(std::string(t.end())       , 12);
+            os << setwidth(std::to_string(t.price  ()),  7);
+            os << setwidth(std::to_string(t.numMax ()), 11);
+            os << setwidth(std::to_string(t.numSold()),  6);
+            os << setwidth(std::to_string(r)          ,  9);
+            os << std::endl;
+        }
+        os << std::string(121,'=') << std::endl;
+        os << "TOTAL" + std::string(99, ' ') + setwidth(std::to_string(maxpeople), 9) + " "
+                                             + setwidth(std::to_string(sold), 4) + " "
+                                             + setwidth(std::to_string(revenue), 7) + " "<< std::endl;
     }else if(f == "screenfull"){
         if(last != first){
             const auto& t = first->second;
@@ -100,7 +134,8 @@ std::ostream& TravelPack::print(ForwardIterator first, ForwardIterator last, std
             os << "6      Max number of people: " << t.numMax_             << std::endl;
             os << "7      Sold:                 " << t.numSold_            << std::endl;
         }
-    } return os;
+    }
+    return os;
 }
 template std::ostream& TravelPack::print(std::map<ID, TravelPack>::const_iterator first, std::map<ID, TravelPack>::const_iterator last, std::string f, std::ostream& os);
 

@@ -43,7 +43,7 @@ void Agency::run(){
         else if(b == "+client") addClient();    else if(b == "+pack") addPack();
         else if(b == "#client") changeClient(); else if(b == "#pack") changePack(); //#DEV
         else if(b == "-client") deleteClient(); else if(b == "-pack") deletePack();
-        /*else if(b == "sell"   ) sell();*/     else if(b == "fpack") findPack();
+        else if(b == "sell"   ) sell();         else if(b == "fpack") findPack();
         else if(b == "sold"   ) seeSold();
         else if(b == "help"   ) printHelp();
         else if(b == "save"   ) save();         else if(b == "exit" ) return;
@@ -144,7 +144,25 @@ void Agency::seeSold() const{
             if(vtravel.find(id) != vtravel.end())
                 m[id] = vtravel.at(id);
     }
-    TravelPack::print(m.cbegin(), m.cend(), "table");
+    TravelPack::print(m.cbegin(), m.cend(), "sold");
+}
+
+void Agency::sell(){
+    auto p = seeClient(); unsigned i  = p.first; if(!p.second) return;
+    auto q = seePack  (); ID       id = q.first; if(!q.second) return;
+    auto it = vclient.begin(); std::advance(it, i);
+    std::cout << std::endl;
+    if(!vtravel[id].avail() || vtravel[id].numMax() <= vtravel[id].numSold()){
+        std::cout << "Travel pack can no longer be sold (not available or sold out)" << std::endl;
+    }else if(it->vtravel().find(id) != it->vtravel().end()){
+        std::cout << "Client #" << i <<" has already bought travel pack with ID " << id << std::endl;
+    }else{
+        Client c = *it;
+        vtravel[id].sell();
+        c.sell(id);
+        vclient.erase(it);
+        vclient.insert(c);
+    }
 }
 
 std::istream& operator>>(std::istream& is, Agency& a){

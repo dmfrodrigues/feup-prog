@@ -42,6 +42,9 @@ public:
     const std::set<ID>& vtravel  ()const{ return vtravel_; }
 
     /***/
+    void sell(ID id){ vtravel_.insert(id); }
+
+    /***/
     template<class ForwardIterator>
     static std::ostream& print(ForwardIterator first, ForwardIterator last, std::string f, std::ostream& os = std::cout);
 

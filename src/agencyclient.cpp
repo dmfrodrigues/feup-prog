@@ -51,11 +51,10 @@ void Agency::changeClient(){
         }
     }
     auto it = vclient.begin(); std::advance(it, i);
-    Client cbef = *it;
-    Client caft = cbef;
-    if(caft.userClientprop(j)){
-        vclient.erase(cbef);
-        vclient.insert(caft);
+    Client c = *it;
+    if(c.userClientprop(j)){
+        vclient.erase(it);
+        vclient.insert(c);
         std::cout << "Property changed" << std::endl;
     }
 }

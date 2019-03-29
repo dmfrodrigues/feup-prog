@@ -52,6 +52,8 @@ private:
     /***/
     void seeSold() const;
     /***/
+    void sell();
+    /***/
     std::ostream& save(std::ostream& os = std::cout) const;
 public:
     /**

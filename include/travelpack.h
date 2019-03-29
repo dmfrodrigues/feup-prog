@@ -46,6 +46,9 @@ public:
     const int&                      numSold()const{ return numSold_; }
 
     /***/
+    void sell(){ if(numSold_ >= numMax_) throw std::logic_error("travel pack sold out"); ++numSold_; }
+
+    /***/
     template<class ForwardIterator>
     static std::ostream& print(ForwardIterator first, ForwardIterator last, std::string f, std::ostream& os = std::cout);
 };

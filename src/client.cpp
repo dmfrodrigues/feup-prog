@@ -50,7 +50,7 @@ std::ostream& Client::print(ForwardIterator first, ForwardIterator last, std::st
            << setwidth("Address"     , 60) << " \t"
            << setwidth("Bought packs", 18) << " "
            << std::endl;
-        os << std::string(170, '-') << std::endl;
+        os << std::string(170, '=') << std::endl;
         unsigned i = 0;
         for(auto it = first; it != last; ++it, ++i){
             const auto& c = *it;
