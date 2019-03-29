@@ -62,17 +62,10 @@ void Agency::deletePack(){
     auto p = seePack();
     if(!p.second) return;
     ID id = p.first;
-    std::string b; std::cout << std::endl;
-    while(true){
-        if(!vin("Confirm you want to delete travel pack with ID "+std::to_string(id)+" [y/n]: ", b)) return;
-        b = lower_case(b);
-        if(b == "y" || b == "n") break;
-        std::cout << "Error: only [y] (yes) or [n] (no) are valid possiblities" << std::endl;
-    }
-    if(b == "y"){
-        vtravel.erase(id);
-        std::cout << "Travel pack deleted" << std::endl;
-    }
+    std::cout << std::endl;
+    if(!confirm("Confirm you want to delete travel pack with ID "+std::to_string(id)+" [y/n]: ")) return;
+    vtravel.erase(id);
+    std::cout << "Travel pack deleted" << std::endl;
 }
 
 void Agency::findPack() const{

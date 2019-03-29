@@ -36,7 +36,7 @@ template<class T> inline bool vin(const std::string& q, void fptr(T&, std::strin
             fptr(obj, b);
             break;
         }catch(...){
-            os << "Input failed, try again" << std::endl;
+            os << "Error: input failed" << std::endl;
         }
     }
     return true;

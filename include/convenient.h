@@ -1,10 +1,11 @@
 #ifndef STRMANIP_H_INCLUDED
 #define STRMANIP_H_INCLUDED
 
+#include <algorithm>
+#include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
-#include <sstream>
-#include <algorithm>
 
 /**
 Trims a string (removes leading and trailing spaces).
@@ -30,9 +31,15 @@ template<class ForwardIterator, class T = long long>
 std::string join(ForwardIterator first, ForwardIterator last, std::string fptr(T), std::string delim);
 
 /***/
-std::string setwidth(std::string s, size_t sz);
+std::string ljust(std::string s, size_t sz);
+
+/***/
+std::string rjust(std::string s, size_t sz);
 
 /***/
 std::string lower_case(std::string s);
+
+/***/
+bool confirm(std::string q, std::istream& is = std::cin, std::ostream& os = std::cout);
 
 #endif

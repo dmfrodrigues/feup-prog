@@ -42,7 +42,7 @@ void Agency::changeClient(){
     auto p = seeClient();
     if(!p.second) return;
     auto i = p.first;
-    std::string b; std::cout << std::endl;
+    std::string b;
     int j;{
         while(true){
             if(!vin("# of property to change: ", j)) return;
@@ -63,16 +63,9 @@ void Agency::deleteClient(){
     auto p = seeClient();
     if(!p.second) return;
     auto i = p.first;
-    std::string b; std::cout << std::endl;
-    while(true){
-        if(!vin("Confirm you want to delete client #"+std::to_string(i)+" [y/n]: ", b)) return;
-        b = lower_case(b);
-        if(b == "y" || b == "n") break;
-        std::cout << "Error: only [y] (yes) or [n] (no) are valid possiblities" << std::endl;
-    }
-    if(b == "y"){
-        auto it = vclient.begin(); std::advance(it, i);
-        vclient.erase(it);
-        std::cout << "Client deleted" << std::endl;
-    }
+    std::cout << std::endl;
+    if(!confirm("Confirm you want to delete client #"+std::to_string(i)+" [y/n]: ")) return;
+    auto it = vclient.begin(); std::advance(it, i);
+    vclient.erase(it);
+    std::cout << "Client deleted" << std::endl;
 }

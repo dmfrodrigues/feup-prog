@@ -19,11 +19,11 @@ std::string Client::getPacks(const std::string& delim) const{
 }
 
 bool Client::userClient(std::istream& is, std::ostream& os){
-    if(!vin("Name: "                           ,                   name_   ) ||
-       !vin("NIF: "                            ,                   nif_    ) ||
-       !vin("Household members:  "             ,                   numFam_ ) ||
-       !vin("Address: "                        , Address::set    , address_) ||
-       !vin("Bought packs (separated by ';'): ", Client::setPacks, *this   ))
+    if(!vin("Name: "                                       ,                   name_   ) ||
+       !vin("NIF: "                                        ,                   nif_    ) ||
+       !vin("Household members: "                          ,                   numFam_ ) ||
+       !vin("Address (street/door/floor/postalcode/city): ", Address::set    , address_) ||
+       !vin("Bought packs (separated by ';'): "            , Client::setPacks, *this   ))
         return false;
     return true;
 }
@@ -42,36 +42,38 @@ bool Client::userClientprop(int propn, std::istream& is, std::ostream& os){
 
 template<class ForwardIterator>
 std::ostream& Client::print(ForwardIterator first, ForwardIterator last, std::string f, std::ostream& os){
+    if(first == last){
+        return (os << "No clients were found" << std::endl);
+    }
     if(f == "table"){
-        os << setwidth("#"           ,  4) << "   "
-           << setwidth("Name"        , 48) << " \t"
-           << setwidth("NIF"         ,  9) << "   "
-           << setwidth("#Household"  , 10) << " "
-           << setwidth("Address"     , 60) << " \t"
-           << setwidth("Bought packs", 18) << " "
+        os << ljust("#"           ,  4)
+           << ljust("Name"        , 54) << "\t"
+           << ljust("NIF"         ,  9)
+           << rjust("#Household"  , 12) << "  "
+           << ljust("Address"     , 60) << "\t"
+           << ljust("Bought packs", 18)
            << std::endl;
         os << std::string(170, '=') << std::endl;
         unsigned i = 0;
         for(auto it = first; it != last; ++it, ++i){
             const auto& c = *it;
-            os << setwidth(std::to_string(i)                ,  4) << "   ";
-            os << setwidth(c.name()                         , 48) << " \t";
-            os << setwidth(c.nif()                          ,  9) << "   ";
-            os << setwidth(std::to_string(c.numFamily())    , 10) << " ";
-            os << setwidth(std::string(c.address())         , 60) << " \t";
-            os << setwidth(c.getPacks("; ")                 , 18) << " ";
+            os << ljust(std::to_string(i)                ,  4);
+            os << ljust(c.name()                         , 54) << "\t";
+            os << ljust(c.nif()                          ,  9);
+            os << rjust(std::to_string(c.numFamily())    , 12) << "  ";
+            os << ljust(std::string(c.address())         , 60) << "\t";
+            os << ljust(c.getPacks("; ")                 , 18);
             os << std::endl;
         }
     }else if(f == "screenfull"){
         if(last != first){
             const auto& c = *first;
-            os << "#"                                       << std::endl;
-            os << "0      Name:           " << c.name_      << std::endl;
-            os << "1      NIF:            " << c.nif_       << std::endl;
-            os << "2      Household size: " << c.numFam_    << std::endl;
-            os << "3      Address:        " << c.address_   << std::endl;
-            os << "4      Bought packs:   " << c.getPacks() << std::endl;
-            os << std::endl;
+            os << "#"                                        << std::endl;
+            os << "0   Name:           " << c.name_          << std::endl;
+            os << "1   NIF:            " << c.nif_           << std::endl;
+            os << "2   Household size: " << c.numFam_        << std::endl;
+            os << "3   Address:        " << c.address_       << std::endl;
+            os << "4   Bought packs:   " << c.getPacks("; ") << std::endl;
         }
     } return os;
 }

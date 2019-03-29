@@ -34,7 +34,7 @@ void Agency::run(){
     std::string b;
     while(true){
         std::cout << std::endl;
-        std::cout << "Operation: "; getline(std::cin, b); b = trim(b);
+        std::cout << "Operation$ "; getline(std::cin, b); b = trim(b);
         std::cout << std::endl;
 
         if     (b == "tclient")     Client::print(vclient.cbegin(), vclient.cend(), "table");
@@ -157,6 +157,7 @@ void Agency::sell(){
     }else if(it->vtravel().find(id) != it->vtravel().end()){
         std::cout << "Client #" << i <<" has already bought travel pack with ID " << id << std::endl;
     }else{
+        if(!confirm("Confirm you want to sell the pack with ID "+std::to_string(id)+" to client #"+std::to_string(i))) return;
         Client c = *it;
         vtravel[id].sell();
         c.sell(id);

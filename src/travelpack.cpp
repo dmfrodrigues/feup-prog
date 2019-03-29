@@ -64,40 +64,43 @@ bool TravelPack::userPackprop(int propn, std::istream& is, std::ostream& os){
 
 template<class ForwardIterator>
 std::ostream& TravelPack::print(ForwardIterator first, ForwardIterator last, std::string f, std::ostream& os){
+    if(first == last){
+        return (os << "No clients were found" << std::endl);
+    }
     if(f == "table"){
-        os << setwidth("ID"         ,  4)
-           << setwidth("Avail"      ,  7)
-           << setwidth("Destination", 50) << " \t"
-           << setwidth("Begin"      , 12)
-           << setwidth("End"        , 12)
-           << setwidth("Price"      ,  7)
-           << setwidth("MaxPeople"  , 11)
-           << setwidth("Sold"       ,  6)
+        os << ljust("ID"         ,  4)
+           << ljust("Avail"      ,  7)
+           << ljust("Destination", 50) << " \t"
+           << ljust("Begin"      , 12)
+           << ljust("End"        , 12)
+           << rjust("Price"      ,  7)
+           << rjust("MaxPeople"  , 11)
+           << rjust("Sold"       ,  6)
            << std::endl;
         os << std::string(112, '=') << std::endl;;
         for(auto it = first; it != last; ++it){
             const auto& t = it->second;
-            os << setwidth(std::to_string(t.id     ()),  4);
-            os << setwidth((t.avail()? "yes" : "no")  ,  7);
-            os << setwidth(t.getPlaces()              , 50) << " \t";
-            os << setwidth(std::string(t.begin())     , 12);
-            os << setwidth(std::string(t.end())       , 12);
-            os << setwidth(std::to_string(t.price  ()),  7);
-            os << setwidth(std::to_string(t.numMax ()), 11);
-            os << setwidth(std::to_string(t.numSold()),  6);
+            os << ljust(std::to_string(t.id     ()),  4);
+            os << ljust((t.avail()? "yes" : "no")  ,  7);
+            os << ljust(t.getPlaces()              , 50) << " \t";
+            os << ljust(std::string(t.begin())     , 12);
+            os << ljust(std::string(t.end())       , 12);
+            os << rjust(std::to_string(t.price  ()),  7);
+            os << rjust(std::to_string(t.numMax ()), 11);
+            os << rjust(std::to_string(t.numSold()),  6);
             os << std::endl;
         }
     }else if(f == "sold"){
         int maxpeople = 0, sold = 0, revenue = 0, r;
-        os << setwidth("ID"         ,  4)
-           << setwidth("Avail"      ,  7)
-           << setwidth("Destination", 50) << " \t"
-           << setwidth("Begin"      , 12)
-           << setwidth("End"        , 12)
-           << setwidth("Price"      ,  7)
-           << setwidth("MaxPeople"  , 11)
-           << setwidth("Sold"       ,  6)
-           << setwidth("Revenue"    ,  9)
+        os << ljust("ID"         ,  4)
+           << ljust("Avail"      ,  7)
+           << ljust("Destination", 50) << " \t"
+           << ljust("Begin"      , 12)
+           << ljust("End"        , 12)
+           << rjust("Price"      ,  7)
+           << rjust("MaxPeople"  , 11)
+           << rjust("Sold"       ,  6)
+           << rjust("Revenue"    ,  9)
            << std::endl;
         os << std::string(121, '=') << std::endl;;
         for(auto it = first; it != last; ++it){
@@ -106,33 +109,33 @@ std::ostream& TravelPack::print(ForwardIterator first, ForwardIterator last, std
             revenue += r;
             maxpeople += t.numMax();
             sold += t.numSold();
-            os << setwidth(std::to_string(t.id     ()),  4);
-            os << setwidth((t.avail()? "yes" : "no")  ,  7);
-            os << setwidth(t.getPlaces()              , 50) << " \t";
-            os << setwidth(std::string(t.begin())     , 12);
-            os << setwidth(std::string(t.end())       , 12);
-            os << setwidth(std::to_string(t.price  ()),  7);
-            os << setwidth(std::to_string(t.numMax ()), 11);
-            os << setwidth(std::to_string(t.numSold()),  6);
-            os << setwidth(std::to_string(r)          ,  9);
+            os << ljust(std::to_string(t.id     ()),  4);
+            os << ljust((t.avail()? "yes" : "no")  ,  7);
+            os << ljust(t.getPlaces()              , 50) << " \t";
+            os << ljust(std::string(t.begin())     , 12);
+            os << ljust(std::string(t.end())       , 12);
+            os << rjust(std::to_string(t.price  ()),  7);
+            os << rjust(std::to_string(t.numMax ()), 11);
+            os << rjust(std::to_string(t.numSold()),  6);
+            os << rjust(std::to_string(r)          ,  9);
             os << std::endl;
         }
         os << std::string(121,'=') << std::endl;
-        os << "TOTAL" + std::string(99, ' ') + setwidth(std::to_string(maxpeople), 9) + " "
-                                             + setwidth(std::to_string(sold), 4) + " "
-                                             + setwidth(std::to_string(revenue), 7) + " "<< std::endl;
+        os << "TOTAL" + std::string(90, ' ') + rjust(std::to_string(maxpeople), 11)
+                                             + rjust(std::to_string(sold), 6)
+                                             + rjust(std::to_string(revenue), 9) << std::endl;
     }else if(f == "screenfull"){
         if(last != first){
             const auto& t = first->second;
             os << "#"                                                      << std::endl;
-            os << "0      ID:                   " << t.id_                 << std::endl;
-            os << "1      Availability:         " << (t.avail_?"yes":"no") << std::endl;
-            os << "2      Destination:          " << t.getPlaces()         << std::endl;
-            os << "3      Begin date:           " << t.begin_              << std::endl;
-            os << "4      End date:             " << t.end_                << std::endl;
-            os << "5      Price per person:     " << t.price_              << std::endl;
-            os << "6      Max number of people: " << t.numMax_             << std::endl;
-            os << "7      Sold:                 " << t.numSold_            << std::endl;
+            os << "0   ID:                   " << t.id_                 << std::endl;
+            os << "1   Availability:         " << (t.avail_?"yes":"no") << std::endl;
+            os << "2   Destination:          " << t.getPlaces()         << std::endl;
+            os << "3   Begin date:           " << t.begin_              << std::endl;
+            os << "4   End date:             " << t.end_                << std::endl;
+            os << "5   Price per person:     " << t.price_              << std::endl;
+            os << "6   Max number of people: " << t.numMax_             << std::endl;
+            os << "7   Sold:                 " << t.numSold_            << std::endl;
         }
     }
     return os;
