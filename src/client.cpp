@@ -21,7 +21,7 @@ std::string Client::getPacks() const{
 bool Client::userClient(std::istream& is, std::ostream& os){
     if(!vin("Name: "                           ,                   name_   ) ||
        !vin("NIF: "                            ,                   nif_    ) ||
-       !vin("Number of household members: "    ,                   numFam_ ) ||
+       !vin("Household members:  "             ,                   numFam_ ) ||
        !vin("Address: "                        , Address::set    , address_) ||
        !vin("Bought packs (separated by ';'): ", Client::setPacks, *this   ))
         return false;
@@ -30,10 +30,10 @@ bool Client::userClient(std::istream& is, std::ostream& os){
 
 bool Client::userClientprop(int propn, std::istream& is, std::ostream& os){
     switch(propn){
-        case 0: os << "Name: "                        << name_      << std::endl; if(!vin("New name: "                       ,                   name_   )) return false; break;
-        case 1: os << "NIF: "                         << nif_       << std::endl; if(!vin("New NIF: "                        ,                   nif_    )) return false; break;
-        case 2: os << "Number of household members: " << numFam_    << std::endl; if(!vin("New number of household members: ",                   numFam_ )) return false; break;
-        case 3: os << "Address: "                     << address_   << std::endl; if(!vin("New address: "                    , Address::set    , address_)) return false; break;
+        case 0: os << "Name: "           << name_      << std::endl; if(!vin("New name: "          ,                   name_   )) return false; break;
+        case 1: os << "NIF: "            << nif_       << std::endl; if(!vin("New NIF: "           ,                   nif_    )) return false; break;
+        case 2: os << "Household size: " << numFam_    << std::endl; if(!vin("New household size: ",                   numFam_ )) return false; break;
+        case 3: os << "Address: "        << address_   << std::endl; if(!vin("New address: "       , Address::set    , address_)) return false; break;
         case 4: os << "Travel pack sells should be handled by operation [sell]" << std::endl; return false; break;
         default: throw std::invalid_argument("trying to access client property that does not exist");
     }
@@ -63,12 +63,12 @@ std::ostream& Client::print(ForwardIterator first, ForwardIterator last, std::st
     }else if(f == "screenfull"){
         if(last != first){
             const auto& c = *first;
-            os << "#"                                                << std::endl;
-            os << "0      Name:                        " << c.name_    << std::endl;
-            os << "1      NIF:                         " << c.nif_     << std::endl;
-            os << "2      Number of household members: " << c.numFam_  << std::endl;
-            os << "3      Address:                     " << c.address_ << std::endl;
-            os << "4      Bought packs:                ";
+            os << "#"                                     << std::endl;
+            os << "0      Name:           " << c.name_    << std::endl;
+            os << "1      NIF:            " << c.nif_     << std::endl;
+            os << "2      Household size: " << c.numFam_  << std::endl;
+            os << "3      Address:        " << c.address_ << std::endl;
+            os << "4      Bought packs:   ";
             if(!c.vtravel_.empty()){
                 auto it = c.vtravel_.begin();
                 os << *(it++);
