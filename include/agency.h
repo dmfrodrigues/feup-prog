@@ -50,6 +50,8 @@ private:
     /***/
     void findPack() const;
     /***/
+    void seeSold() const;
+    /***/
     std::ostream& save(std::ostream& os = std::cout) const;
 public:
     /**

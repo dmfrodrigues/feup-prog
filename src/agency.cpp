@@ -44,6 +44,7 @@ void Agency::run(){
         else if(b == "#client") changeClient(); else if(b == "#pack") changePack(); //#DEV
         else if(b == "-client") deleteClient(); else if(b == "-pack") deletePack();
         /*else if(b == "sell"   ) sell();*/     else if(b == "fpack") findPack();
+        else if(b == "sold"   ) seeSold();
         else if(b == "help"   ) printHelp();
         else if(b == "save"   ) save();         else if(b == "exit" ) return;
         else std::cout << "Invalid operation" << std::endl;
@@ -68,15 +69,16 @@ std::ostream& Agency::printHelp(std::ostream& os) const{
           "Add client              [+client]        Add pack                  [+pack]\n"
           "Change client           [#client]        Change pack               [#pack]\n"
           "Delete client           [-client]        Delete pack               [-pack]\n"
-          "Sell pack to client     [sell]                                            \n"
+          "Sell pack to client        [sell]                                         \n"
           "                                                                          \n"
           "Information visualization:               Other operations:                \n"
           "=================================        =================================\n"
-          "Clients table           [tclient]        Command list (help)       [help] \n"
-          "See client              [sclient]        Save                      [save] \n"
-          "Packs table               [tpack]        Exit                      [exit] \n"
+          "Clients table           [tclient]        Command list (help)        [help]\n"
+          "See client              [sclient]        Save                       [save]\n"
+          "Packs table               [tpack]        Exit                       [exit]\n"
           "See pack                  [spack]                                         \n"
-          "Find (search) packs       [fpack]                                         \n";
+          "Find (search) packs       [fpack]                                         \n"
+          "See packs sold to clients  [sold]                                         \n";
     return os << std::flush;
 }
 
@@ -115,6 +117,34 @@ std::ostream& Agency::save(std::ostream& os) const{
     }catch(...){
         return (os << "Error: could not save files");
     }
+}
+
+void Agency::seeSold() const{
+    Client::print(vclient.begin(), vclient.end(), "table") << std::endl;
+    std::string b; int i;
+    while(true){
+        if(!vin("# of client to see (if all clients, fill with '-'): ", b)) return;
+        b = trim(b); if(b == "-") break;
+        i = std::stoi(b);
+        if(0 <= i && i < (int)vclient.size()) break;
+        else std::cout << "Error: # outside valid input range [0," << vclient.size()-1 << "]" << std::endl;
+    }
+    std::cout << std::endl;
+    std::map<ID, TravelPack> m;
+    if(b == "-"){
+        std::cout << "Travel packs bought by at least one client:" << std::endl;
+        for(const auto& it:vclient)
+            for(const auto& id:it.vtravel())
+                if(vtravel.find(id) != vtravel.end())
+                    m[id] = vtravel.at(id);
+    }else{
+        std::cout << "Travel packs bought by client #" << i << ": " << std::endl;
+        auto it = vclient.begin(); std::advance(it, i);
+        for(const auto& id:it->vtravel())
+            if(vtravel.find(id) != vtravel.end())
+                m[id] = vtravel.at(id);
+    }
+    TravelPack::print(m.cbegin(), m.cend(), "table");
 }
 
 std::istream& operator>>(std::istream& is, Agency& a){

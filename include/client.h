@@ -28,7 +28,7 @@ public:
 
     static std::set<ID> makePacks(std::string s);
     /***/
-    std::string getPacks() const;
+    std::string getPacks(const std::string& delim = " ; ") const;
     /***/
     bool userClient(std::istream& is = std::cin, std::ostream& os = std::cout);
     /***/

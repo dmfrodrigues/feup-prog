@@ -13,8 +13,8 @@ std::set<ID> Client::makePacks(std::string s){
     return ret;
 }
 
-std::string Client::getPacks() const{
-    std::string ret = join(vtravel_.cbegin(), vtravel_.cend(), std::to_string, " ; ");
+std::string Client::getPacks(const std::string& delim) const{
+    std::string ret = join(vtravel_.cbegin(), vtravel_.cend(), std::to_string, delim);
     return ret;
 }
 
@@ -43,13 +43,14 @@ bool Client::userClientprop(int propn, std::istream& is, std::ostream& os){
 template<class ForwardIterator>
 std::ostream& Client::print(ForwardIterator first, ForwardIterator last, std::string f, std::ostream& os){
     if(f == "table"){
-        os << setwidth("#"         ,  4) << "   "
-           << setwidth("Name"      , 48) << " \t"
-           << setwidth("NIF"       ,  9) << "   "
-           << setwidth("#Household", 10) << " "
-           << setwidth("Address"   , 60) << " \t"
+        os << setwidth("#"           ,  4) << "   "
+           << setwidth("Name"        , 48) << " \t"
+           << setwidth("NIF"         ,  9) << "   "
+           << setwidth("#Household"  , 10) << " "
+           << setwidth("Address"     , 60) << " \t"
+           << setwidth("Bought packs", 18) << " "
            << std::endl;
-        os << std::string(150, '-') << std::endl;
+        os << std::string(170, '-') << std::endl;
         unsigned i = 0;
         for(auto it = first; it != last; ++it, ++i){
             const auto& c = *it;
@@ -58,23 +59,19 @@ std::ostream& Client::print(ForwardIterator first, ForwardIterator last, std::st
             os << setwidth(c.nif()                          ,  9) << "   ";
             os << setwidth(std::to_string(c.numFamily())    , 10) << " ";
             os << setwidth(std::string(c.address())         , 60) << " \t";
+            os << setwidth(c.getPacks("; ")                 , 18) << " ";
             os << std::endl;
         }
     }else if(f == "screenfull"){
         if(last != first){
             const auto& c = *first;
-            os << "#"                                     << std::endl;
-            os << "0      Name:           " << c.name_    << std::endl;
-            os << "1      NIF:            " << c.nif_     << std::endl;
-            os << "2      Household size: " << c.numFam_  << std::endl;
-            os << "3      Address:        " << c.address_ << std::endl;
-            os << "4      Bought packs:   ";
-            if(!c.vtravel_.empty()){
-                auto it = c.vtravel_.begin();
-                os << *(it++);
-                for(; it != c.vtravel_.end(); ++it)
-                    os << " ; " << *it;
-            }os << std::endl;
+            os << "#"                                       << std::endl;
+            os << "0      Name:           " << c.name_      << std::endl;
+            os << "1      NIF:            " << c.nif_       << std::endl;
+            os << "2      Household size: " << c.numFam_    << std::endl;
+            os << "3      Address:        " << c.address_   << std::endl;
+            os << "4      Bought packs:   " << c.getPacks() << std::endl;
+            os << std::endl;
         }
     } return os;
 }
