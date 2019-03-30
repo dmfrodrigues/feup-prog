@@ -1,6 +1,6 @@
+#pragma once
 #ifndef TRAVELPACK_H_INCLUDED
 #define TRAVELPACK_H_INCLUDED
-
 
 #include <iostream>
 #include <string>

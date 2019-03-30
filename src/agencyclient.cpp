@@ -64,7 +64,7 @@ void Agency::deleteClient(){
     if(!p.second) return;
     auto i = p.first;
     std::cout << std::endl;
-    if(!confirm("Confirm you want to delete client #"+std::to_string(i)+" [y/n]: ")) return;
+    if(!confirm("Confirm you want to delete client #"+std::to_string(i)+" [y/n]: ", cis, cos)) return;
     auto it = vclient.begin(); std::advance(it, i);
     vclient.erase(it);
     std::cout << "Client deleted" << std::endl;

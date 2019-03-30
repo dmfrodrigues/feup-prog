@@ -1,7 +1,5 @@
 #include "address.h"
 
-#include <stdexcept>
-#include <vector>
 #include "convenient.h"
 
 Address::Address(std::string s){
@@ -18,9 +16,10 @@ void Address::set(Address& a, std::string s){
     a = Address(s);
 }
 
-std::string Address::str(const char* format) const{
+std::string Address::str(const char* fmt) const{
     char b[512];
-    sprintf(b, format, street_.c_str(), door_.c_str(), floor_.c_str(), postalCode_.c_str(), city_.c_str());
+    if(sprintf(b, fmt, street_.c_str(), door_.c_str(), floor_.c_str(), postalCode_.c_str(), city_.c_str()) < 0)
+        throw std::runtime_error("sprintf failed");
     return std::string(b);
 }
 
@@ -29,5 +28,5 @@ Address::operator std::string()const{
 }
 
 std::ostream& operator<<(std::ostream& os, const Address& a){
-    return (os << std::string(a));
+    return (os << a.str());
 }

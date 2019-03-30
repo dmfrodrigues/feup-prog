@@ -1,3 +1,4 @@
+#pragma once
 #ifndef STRMANIP_H_INCLUDED
 #define STRMANIP_H_INCLUDED
 
@@ -8,38 +9,56 @@
 #include <vector>
 
 /**
-Trims a string (removes leading and trailing spaces).
+Trims a string, removing leading and trailing spaces
 @param  s   string to be trimmed
 @return     trimmed version of s
+@exceptsafe	no-throw
 */
-std::string trim(std::string s);
+std::string trim(std::string s) noexcept;
 
 /**
-Parses a string with a certain delimiter, saving each of the delimited strings
-in a vector of strings. All the returned strings are trimmed.
-@param  s       string to be parsed
-@param  delim   delimiter to parse the string
+Splits a string into a vector of words delimited by character delim
+All elements of the returned vector are trimmed
+@param  s       string to be split
+@param  delim   delimiter
 @return         vector of strings of s delimited by delim
+@exceptsafe     no-throw
 */
-std::vector<std::string> split(std::string s, char delim);
+std::vector<std::string> split(std::string s, char delim) noexcept;
 
 /***/
 template<class ForwardIterator>
 std::string join(ForwardIterator first, ForwardIterator last, std::string delim);
-
+/***/
 template<class ForwardIterator, class T = long long>
 std::string join(ForwardIterator first, ForwardIterator last, std::string fptr(T), std::string delim);
 
-/***/
+/**
+Left-justifies text by adding spaces to the end of the string
+Truncates string if its size is greater than sz
+@param  s   string to left-justify
+@param  sz  size of the returned string
+@return     string padded with spaces at the end
+@throws std::invalid_argument   thrown if sz is not at least 3
+*/
 std::string ljust(std::string s, size_t sz);
 
-/***/
+/**
+Right-justifies text by adding spaces to the end of the string
+Truncates string if its size is greater than sz
+@param  s   string to right-justify
+@param  sz  size of the returned string
+@return     string padded with spaces at the beginning
+@throws std::invalid_argument   thrown if sz is not at least 3
+*/
 std::string rjust(std::string s, size_t sz);
 
-/***/
-std::string lower_case(std::string s);
-
-/***/
-bool confirm(std::string q, std::istream& is = std::cin, std::ostream& os = std::cout);
+/**
+Convert characters in string to their lowercase equivalent
+@param  s   string to convert to lower lowercase
+@return     lowercase version of s
+@exceptsafe no-throw
+*/
+std::string lower_case(std::string s) noexcept;
 
 #endif

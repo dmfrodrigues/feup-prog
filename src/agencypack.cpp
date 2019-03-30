@@ -63,7 +63,7 @@ void Agency::deletePack(){
     if(!p.second) return;
     ID id = p.first;
     std::cout << std::endl;
-    if(!confirm("Confirm you want to delete travel pack with ID "+std::to_string(id)+" [y/n]: ")) return;
+    if(!confirm("Confirm you want to delete travel pack with ID "+std::to_string(id)+" [y/n]: ", cis, cos)) return;
     vtravel.erase(id);
     std::cout << "Travel pack deleted" << std::endl;
 }

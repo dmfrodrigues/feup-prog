@@ -3,11 +3,11 @@
 #include <fstream>
 #include "vin.h"
 
-Agency::Agency(){
-    std::ifstream is; is.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+Agency::Agency(std::istream& is, std::ostream& os) noexcept :cis(is),cos(os){
+    std::ifstream ifs; ifs.exceptions(std::ifstream::failbit | std::ifstream::badbit);
     while(true){
         std::string fullpath;
-        //std::cout << "Agency file: "; getline(std::cin, fullpath);
+        //os << "Agency file: "; getline(is, fullpath);
         fullpath = "input/agency.txt"; //#DEV
         size_t n = fullpath.find_last_of('/');
         if(n != fullpath.npos){
@@ -17,10 +17,10 @@ Agency::Agency(){
             inputpath  = "";
             agencypath = fullpath;
         }
-        is.clear();
+        ifs.clear();
         try{
-            is.open(inputpath + agencypath, std::ifstream::in);
-            is >> *this;
+            ifs.open(inputpath + agencypath, std::ifstream::in);
+            ifs >> *this;
             break;
         }catch(const std::ios_base::failure& e){
             std::cout << "Error: file open/read failed" << std::endl;
@@ -52,7 +52,7 @@ void Agency::run(){
 }
 
 std::ostream& Agency::print(std::ostream& os) const{
-    const long unsigned n = (74-name.size())/2;
+    const long unsigned n = std::max(0lu, 74-name.size())/2;
     os << std::string(2*n+name.size(), '#')                  << std::endl;
     os << std::string(n, ' ') << name << std::string(n, ' ') << std::endl;
     os << std::string(2*n+name.size(), '#')                  << std::endl;
@@ -157,7 +157,7 @@ void Agency::sell(){
     }else if(it->vtravel().find(id) != it->vtravel().end()){
         std::cout << "Client #" << i <<" has already bought travel pack with ID " << id << std::endl;
     }else{
-        if(!confirm("Confirm you want to sell the pack with ID "+std::to_string(id)+" to client #"+std::to_string(i))) return;
+        if(!confirm("Confirm you want to sell the pack with ID "+std::to_string(id)+" to client #"+std::to_string(i),cis,cos)) return;
         Client c = *it;
         vtravel[id].sell();
         c.sell(id);

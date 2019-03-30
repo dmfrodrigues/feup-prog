@@ -1,32 +1,38 @@
+#pragma once
 #ifndef AGENCY_H_INCLUDED
 #define AGENCY_H_INCLUDED
 
-#include <string>
-#include <vector>
-#include <set>
 #include <map>
-#include "globaldefs.h"
-#include "address.h"
-#include "travelpack.h"
 #include "client.h"
 
 typedef std::string URL;
 
+/**
+* Allows to manage a tourist Agency
+*/
 struct Agency{
 friend std::istream& operator>>(std::istream& is,       Agency& a);
 friend std::ostream& operator<<(std::ostream& os, const Agency& a);
 private:
-    std::string agencypath, travelpath, clientpath, inputpath;
+    std::string inputpath;  ///folder where all the files are
+    std::string agencypath; ///name of agency file
+    std::string travelpath; ///name of travelpacks' file
+    std::string clientpath; ///name of clients' file
     std::string name;
     NIF nif;
     URL url;
     Address address;
-    std::multiset<Client   > vclient;
-    std::map<ID, TravelPack> vtravel; ID lasttravel;
+    std::multiset<Client   > vclient; ///multiset with the agency clients
+    std::map<ID, TravelPack> vtravel; ///map with the agency travelpacks
+    ID lasttravel;                    ///ID of the last added travelpack
+
+    std::istream& cis;                ///default input stream
+    std::ostream& cos;                ///default output stream
 
     /**
-    Loads client list from content of file
+    Loads client list from content of file to vclient
     @param  fpath   string containing the location of the input file
+    @throws         std::ios_base::failure  when std::ifstream fails to open file
     */
     void loadClients(const std::string& fpath);
     /***/
@@ -54,22 +60,31 @@ private:
     /***/
     void sell();
     /***/
-    std::ostream& save(std::ostream& os = std::cout) const;
+    std::ostream& save(std::ostream& os) const;
+    std::ostream& save() const{ return save(cos); }
 public:
     /**
-    Constructs Agency object from content of file.
+    Constructs Agency object. Asks the user for path of agency file
     @param fpath string containing the location of the input file
+    @exceptsafe no-throw
     */
-    Agency();
+    Agency(std::istream& is = std::cin, std::ostream& os = std::cout) noexcept;
 
     /***/
+    std::ostream& print(std::ostream& os) const;
+    std::ostream& print() const{ return print(cos); }
+
+    /***/
+    std::ostream& printHelp(std::ostream& os) const;
+    std::ostream& printHelp() const{ return printHelp(cos); }
+
+    /**
+    Runs the agency, allowing the user to execute the operations
+
+    */
     void run();
 
-    /***/
-    std::ostream& print(std::ostream& os = std::cout) const;
 
-    /***/
-    std::ostream& printHelp(std::ostream& os = std::cout) const;
 };
 
 /***/
