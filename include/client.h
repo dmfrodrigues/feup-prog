@@ -6,11 +6,11 @@
 #include <vector>
 #include <iostream>
 #include <set>
-#include "globaldefs.h"
 #include "address.h"
-#include "travelpack.h"
 #include "convenient.h"
-
+#include "globaldefs.h"
+#include "nif.h"
+#include "travelpack.h"
 
 struct Client{
 friend std::istream& operator>>(std::istream& is,       Client& c);
