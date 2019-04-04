@@ -13,12 +13,12 @@ std::set<ID> Client::makePacks(std::string s){
     return ret;
 }
 
-std::string Client::getPacks(const std::string& delim) const{
+std::string Client::getPacks(const std::string& delim) const noexcept{
     std::string ret = join(vtravel_.cbegin(), vtravel_.cend(), std::to_string, delim);
     return ret;
 }
 
-bool Client::userClient(std::istream& is, std::ostream& os){
+bool Client::userClient(std::istream& is, std::ostream& os) noexcept{
     if(!vin("Name: "                                       ,                   name_   ) ||
        !vin("NIF: "                                        ,                   nif_    ) ||
        !vin("Household members: "                          ,                   numFam_ ) ||
@@ -35,7 +35,7 @@ bool Client::userClientprop(int propn, std::istream& is, std::ostream& os){
         case 2: os << "Household size: " << numFam_    << std::endl; if(!vin("New household size: ",                   numFam_ )) return false; break;
         case 3: os << "Address: "        << address_   << std::endl; if(!vin("New address: "       , Address::set    , address_)) return false; break;
         case 4: os << "Travel pack sells should be handled by operation [sell]" << std::endl; return false; break;
-        default: throw std::invalid_argument("trying to access client property that does not exist");
+        default: throw std::out_of_range("trying to access client property that does not exist");
     }
     return true;
 }
@@ -79,7 +79,7 @@ std::ostream& Client::print(ForwardIterator first, ForwardIterator last, std::st
 }
 template std::ostream& Client::print(std::multiset<Client>::const_iterator first, std::multiset<Client>::const_iterator last, std::string f, std::ostream& os);
 
-bool Client::operator<(const Client& c) const{
+bool Client::operator<(const Client& c) const noexcept{
     if     (name_    != c.name_   ) return (name_    < c.name_   );
     else if(nif_     != c.nif_    ) return (nif_     < c.nif_    );
     else if(numFam_  != c.numFam_ ) return (numFam_  < c.numFam_ );

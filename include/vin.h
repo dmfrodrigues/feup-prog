@@ -57,9 +57,9 @@ Exceptions thrown by is, os are not handled
 @param  is  input stream
 @param  os  output stream
 @return     boolean value, true if input succeeded, false if cancelled
-@exceptsafe no-throw
+@throws     std::ios_base::failure  inherent to 'is', 'os'
 */
-template<class T> inline bool vin(const std::string& q, void f(T&, std::string), T& obj, std::istream& is = std::cin, std::ostream& os = std::cout) noexcept{
+template<class T> inline bool vin(const std::string& q, void f(T&, std::string), T& obj, std::istream& is = std::cin, std::ostream& os = std::cout){
     std::string b;
     while(true){
         os << q; getline(is, b);

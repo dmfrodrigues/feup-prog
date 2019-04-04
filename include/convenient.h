@@ -26,10 +26,27 @@ All elements of the returned vector are trimmed
 */
 std::vector<std::string> split(std::string s, char delim) noexcept;
 
-/***/
+/**
+Joins elements stored in [first, last) with delim, creating a string with elements
+pointed by the iterators and delimited by delim
+@param  first input iterator to the initial position of the sequence
+@param  last  input iterator to the past-the-end position of the sequence
+@param  delim delimiter
+@return       delim-separated list of elements in [first, last)
+@throws       all exceptions thrown by iterators
+*/
 template<class ForwardIterator>
 std::string join(ForwardIterator first, ForwardIterator last, std::string delim);
-/***/
+
+/**
+Same as join(ForwardIterator, ForwardIterator, std::string), but uses a function
+to convert the elements pointed by the iterators to string
+@param  first input iterator to the initial position of the sequence
+@param  last  input iterator to the past-the-end position of the sequence
+@param  fptr  function to convert elements pointed by iterators to strings
+@return       delim-separated list of elements in [first, last)
+@throws       all exceptions thrown by iterators and fptr
+*/
 template<class ForwardIterator, class T = long long>
 std::string join(ForwardIterator first, ForwardIterator last, std::string fptr(T), std::string delim);
 

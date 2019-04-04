@@ -12,51 +12,113 @@
 #include "nif.h"
 #include "travelpack.h"
 
+/**
+ * Stores client data, provides some helpers
+ */
 struct Client{
 friend std::istream& operator>>(std::istream& is,       Client& c);
 friend std::ostream& operator<<(std::ostream& os, const Client& c);
 private:
-    Name name_;
-    NIF nif_;
-    int numFam_;
-    Address address_;
-    std::set<ID> vtravel_;
-    //TOTAL DE COMPRAS EFETUADAS?
+    Name name_;             ///name of client
+    NIF nif_;               ///numero de identificacao fiscal
+    int numFam_;            ///number of household members
+    Address address_;       ///address
+    std::set<ID> vtravel_;  ///set of bought packs
 
+    /**
+     * Changes content of vtravel_ by parsing the contents of a string
+     * @param c 'Client' object of which vtravel_ will be changed
+     * @param s string with several semicolon-separated IDs
+     * @throws   std::invalid_argument no conversion could be performed (from Client::makePacks)
+     * @throws   std::out_of_range value read is out of int range (from Client::makePacks)
+     */
     static void setPacks(Client& c, std::string s);
 
 public:
-
+    /**
+     * From a semicolon-separated list of integers, returns their values in a std::set
+     * @param  s semicolon-separated list of integers
+     * @return   std::set containing all integers in s
+     * @throws   std::invalid_argument no conversion could be performed (from std::stoi)
+     * @throws   std::out_of_range value read is out of int range (from std::stoi)
+     */
     static std::set<ID> makePacks(std::string s);
-    /***/
-    std::string getPacks(const std::string& delim = " ; ") const;
-    /***/
-    bool userClient(std::istream& is = std::cin, std::ostream& os = std::cout);
-    /***/
+
+    /**
+     * Returns string containing delim-separated elements of vtravel_
+     * @param  delim delimiter
+     * @return       string with delim-separated elements of vtravel_
+     * @exceptsafe   no-throw (may throw bad_alloc from string constructor, but
+     *      if that failed then it is not even worth to keep trying)
+     */
+    std::string getPacks(const std::string& delim = " ; ") const noexcept;
+
+    /**
+     * Queries user about properties of new client object
+     * @param  is input stream
+     * @param  os output stream
+     * @return    true if new client was created successfully, false if cancelled
+     * @throws    when vin throws
+     */
+    bool userClient(std::istream& is = std::cin, std::ostream& os = std::cout) noexcept;
+
+    /**
+     * Change one property of Client
+     * @param  propn index of property (check src code to see which index corresponds to which property)
+     * @param  is    input stream
+     * @param  os    output stream
+     * @return       true if property was changed successfully, false if cancelled
+     * @throws       when 'is', 'os' throw
+     * @throws       when vin throws
+     * @throws  std::out_of_range when propn is not in the valid range
+     */
     bool userClientprop(int propn, std::istream& is = std::cin, std::ostream& os = std::cout);
 
-    /***/
-    const std::string&  name     ()const{ return name_   ; }
-    const NIF&          nif      ()const{ return nif_    ; }
-    const int&          numFamily()const{ return numFam_ ; }
-    const Address&      address  ()const{ return address_; }
-    const std::set<ID>& vtravel  ()const{ return vtravel_; }
+    /**
+     * 'Get' functions
+     * @return const reference to corresponding member variable
+     * @exceptsafe  no-throw
+     */
+    const std::string&  name     ()const noexcept{ return name_   ; }
+    const NIF&          nif      ()const noexcept{ return nif_    ; }
+    const int&          numFamily()const noexcept{ return numFam_ ; }
+    const Address&      address  ()const noexcept{ return address_; }
+    const std::set<ID>& vtravel  ()const noexcept{ return vtravel_; }
 
-    /***/
-    void sell(ID id){ vtravel_.insert(id); }
+    /**
+     * Sell pack with certain ID to the client
+     * @param id ID of the travel pack
+     * @exceptsafe  no-throw
+     */
+    void sell(ID id) noexcept{ vtravel_.insert(id); }
 
-    /***/
+    /**
+     * Print clients to screen.
+     * options:
+     *      "table":        print in table
+     *      "screenfull":   print all properties of *first
+     * @param  first input iterator to first element
+     * @param  last  input iterator to past-the-end element
+     * @param  f     options
+     * @param  os    output stream
+     * @return       the same output stream
+     */
     template<class ForwardIterator>
     static std::ostream& print(ForwardIterator first, ForwardIterator last, std::string f, std::ostream& os = std::cout);
 
-    /***/
-    bool operator<(const Client& obj) const;
+    /**
+     * Compare clients (meant for comparator in std::set)
+     * @param obj right-hand side of the comparison
+     * @return    true if *this is smaller than obj, false otherwise
+     * @exceptsafe no-throw
+     */
+    bool operator<(const Client& obj) const noexcept;
 };
 
-/***/
+/**#DEV*/
 std::istream& operator>>(std::istream& is, Client& c);
 
-/***/
+/**#DEV*/
 std::ostream& operator<<(std::ostream& os, const Client& c);
 
 #endif

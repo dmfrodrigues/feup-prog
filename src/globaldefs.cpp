@@ -3,7 +3,7 @@
 #include "convenient.h"
 #include "vin.h"
 
-bool confirm(std::string q, std::istream& is, std::ostream& os){
+bool confirm(std::string q, std::istream& is, std::ostream& os) noexcept{
     std::string b;
     while(true){
         if(!vin(q, b, is, os)) return false;
