@@ -13,8 +13,8 @@ typedef std::string Name;
  * @param  is Input stream
  * @param  os Output stream
  * @return    true if user confirmed, false if user answered 'no' or cancelled
- * @exceptsafe no-throw
+ * @throws    when is, os throw
  */
-bool confirm(std::string q, std::istream& is = std::cin, std::ostream& os = std::cout) noexcept;
+bool confirm(std::string q, std::istream& is = std::cin, std::ostream& os = std::cout);
 
 #endif

@@ -115,10 +115,25 @@ public:
     bool operator<(const Client& obj) const noexcept;
 };
 
-/**#DEV*/
+/**
+ * Extracts content to fill 'Client' object
+ * Destined to be used to write to files
+ * @param is input stream where Client will be read from
+ * @param c  receiver of the extracted information
+ * @return   the same parameter as is
+ * @throws   when is throws
+ *
+ */
 std::istream& operator>>(std::istream& is, Client& c);
 
-/**#DEV*/
+/**
+ * Inserts the content of a 'Client' object into a ostream
+ * Destined to be used to write to files
+ * @param os output stream
+ * @param c  'Client' object with the content to insert
+ * @return   the same as parameter os
+ * @throws   when vin() throws
+ */
 std::ostream& operator<<(std::ostream& os, const Client& c);
 
 #endif

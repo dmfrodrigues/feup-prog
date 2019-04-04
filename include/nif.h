@@ -67,14 +67,4 @@ by 'is'
 */
 std::istream& operator>>(std::istream& is,       NIF& obj);
 
-/**
-Requests the user to confirm an action by writing [y] (yes), [n] (no) or [cancel]
-The user is requested to provide a command until it is valid
-@param  q   string to information to query the user
-@param  is  input stream
-@param  os  output stream
-@return     boolean value, true when the user confirms the action, false otherwise
-@throws     std::ios_base::failure  inherent to 'is', 'os'
-*/
-
 #endif

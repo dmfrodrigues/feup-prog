@@ -20,7 +20,7 @@ Exceptions thrown by is, os are not handled
 @param  is  input stream
 @param  os  output stream
 @return     boolean value, true if input succeeded, false if cancelled
-@throws     std::ios_base::failure  inherent to 'is', 'os'
+@throws     when is, os throw
 */
 template<class T> inline bool vin(const std::string& q, T& obj, std::istream& is = std::cin, std::ostream& os = std::cout){
     std::string b; std::stringstream ss; ss.exceptions(std::stringstream::failbit | std::stringstream::badbit);
