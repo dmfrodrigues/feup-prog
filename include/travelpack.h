@@ -11,52 +11,132 @@
 
 typedef int ID;
 
+/**
+ * Stores travel pack data, provides some helpers
+ */
 struct TravelPack{
 friend std::istream& operator>>(std::istream& is,       TravelPack& t);
 friend std::ostream& operator<<(std::ostream& os, const TravelPack& t);
 private:
-    ID id_;
-    bool avail_;
-    std::vector<std::string> vplaces_;
-    Date begin_;
-    Date end_;
-    Price price_;
-    int numMax_;
-    int numSold_;
-    /***/
-    std::string getPlaces()const;
-    /***/
+    ID id_;                             ///ID of the pack
+    bool avail_;                        ///availability
+    std::vector<std::string> vplaces_;  ///vector of destination places
+    Date begin_;                        ///begin date
+    Date end_;                          ///end date
+    Price price_;                       ///price per person
+    int numMax_;                        ///max number of people
+    int numSold_;                       ///number of sold tickets
+
+    /**
+     * Changes content of vplaces_ by parsing the contents of a string
+     * @param t 'TravelPack' object of which vplaces_ will be changed
+     * @param s string with several dash- and comma-separated destinations
+     * @throws  invalid_argument    s does not have at least 1 field (same as makePlaces)
+     */
     static void setPlaces(TravelPack& t, std::string s);
+
+    /**
+     * Returns string containing destinations from vtravel_
+     * @return string with comma- and dash-separated elements of vtravel_
+     * @exceptsafe  no-throw
+     */
+    std::string getPlaces() const noexcept;
+
 public:
-    /***/
+
+    /**
+     * From a dash- and comma-separated list of destinations, returns the string of destinations
+     * @param s dash- and comma-separated list of destinations
+     * @return  vector containing all destinations in s
+     * @throws  invalid_argument    s does not have at least 1 field
+     */
     static std::vector<std::string> makePlaces(std::string s);
-    /***/
+
+    /**
+     * Queries user about properties of new travelpack object
+     * @param  lasttravel index of last travel (so the new travelpack has a unique ID)
+     * @param  is         input stream
+     * @param  os         output stream
+     * @return            true if the new travelpack was created successfully, false if cancelled
+     * @throws            when vin throws
+     */
     bool userPack(ID lasttravel, std::istream& is = std::cin, std::ostream& os = std::cout);
-    /***/
+
+    /**
+     * Change one property of TravelPack
+     * @param  propn index of property (check src code to see which index corresponds to which property)
+     * @param  is    input stream
+     * @param  os    output stream
+     * @return       true if property was changed successfully, false if cancelled
+     * @throws       when is, os throw
+     * @throws       when vin throws
+     * @throws  out_of_range when propn is not in the valid range
+     */
     bool userPackprop(int propn, std::istream& is = std::cin, std::ostream& os = std::cout);
 
-    /***/
-    const ID&                       id     ()const{ return id_     ; }
-    const bool&                     avail  ()const{ return avail_  ; }
-    const std::vector<std::string>& vplaces()const{ return vplaces_; }
-    const Date&                     begin  ()const{ return begin_  ; }
-    const Date&                     end    ()const{ return end_    ; }
-    const Price&                    price  ()const{ return price_  ; }
-    const int&                      numMax ()const{ return numMax_ ; }
-    const int&                      numSold()const{ return numSold_; }
+    /**
+     * 'Get' functions
+     * @return const reference to corresponding member variable
+     * @exceptsafe  no-throw
+     */
+    const ID&                       id     ()const noexcept{ return id_     ; }
+    const bool&                     avail  ()const noexcept{ return avail_  ; }
+    const std::vector<std::string>& vplaces()const noexcept{ return vplaces_; }
+    const Date&                     begin  ()const noexcept{ return begin_  ; }
+    const Date&                     end    ()const noexcept{ return end_    ; }
+    const Price&                    price  ()const noexcept{ return price_  ; }
+    const int&                      numMax ()const noexcept{ return numMax_ ; }
+    const int&                      numSold()const noexcept{ return numSold_; }
 
-    /***/
-    void sell(){ if(numSold_ >= numMax_) throw std::logic_error("travel pack sold out"); ++numSold_; }
+    /**
+     * Checks if this travelpack can be sold
+     * @return true if can be sold, false if not available or sold out
+     * exceptsafe   no-throw
+     */
+    bool sellable() noexcept{ return (avail_ && numSold_ < numMax_); }
 
-    /***/
+    /**
+     * Sell this pack to someone
+     * @return  true if pack was successfully bought, false if it sold out
+     * @exceptsafe  no-throw
+     */
+    bool sell() noexcept{ if(sellable()){ ++numSold_; return true;} return false; }
+
+    /**
+     * Print travelpacks to screen
+     * options:
+     *      "table":        print in table
+     *      "sold":         print in table, with additional revenue stats
+     *      "screenfull":   print all properties of *first
+     * @param  first input iterator to first element
+     * @param  last  input iterator to past-the-end element
+     * @param  f     options
+     * @param  os    output stream
+     * @return       the same output stream
+     * @throws       when os throws
+     */
     template<class ForwardIterator>
     static std::ostream& print(ForwardIterator first, ForwardIterator last, std::string f, std::ostream& os = std::cout);
 };
 
-/***/
+/**
+ * Extracts content to fill 'TravelPack' object
+ * Destined to be used to read from files
+ * @param is input stream where TravelPack will be read from
+ * @param t  receiver of the extracted information
+ * @return   the same parameter as is
+ * @throws   when vin(), is throws
+ */
 std::istream& operator>>(std::istream& is, TravelPack& t);
 
-/***/
+/**
+ * Inserts the content of a 'TravelPack' object into a ostream
+ * Destined to be used to write to files
+ * @param os output stream
+ * @param t  'TravelPack' object with the content to insert
+ * @return   the same as parameter os
+ * @throws   when os throws
+ */
 std::ostream& operator<<(std::ostream& os, const TravelPack& t);
 
 #endif

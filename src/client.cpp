@@ -57,12 +57,12 @@ std::ostream& Client::print(ForwardIterator first, ForwardIterator last, std::st
         unsigned i = 0;
         for(auto it = first; it != last; ++it, ++i){
             const auto& c = *it;
-            os << ljust(std::to_string(i)                ,  4);
-            os << ljust(c.name()                         , 54) << "\t";
-            os << ljust(c.nif()                          ,  9);
-            os << rjust(std::to_string(c.numFamily())    , 12) << "  ";
-            os << ljust(std::string(c.address())         , 60) << "\t";
-            os << ljust(c.getPacks("; ")                 , 18);
+            os << ljust(std::to_string(i)            ,  4);
+            os << ljust(c.name()                     , 54) << "\t";
+            os << ljust(c.nif()                      ,  9);
+            os << rjust(std::to_string(c.numFamily()), 12) << "  ";
+            os << ljust(std::string(c.address())     , 60) << "\t";
+            os << ljust(c.getPacks("; ")             , 18);
             os << std::endl;
         }
     }else if(f == "screenfull"){

@@ -152,18 +152,20 @@ void Agency::sell(){
     auto q = seePack  (); ID       id = q.first; if(!q.second) return;
     auto it = vclient.begin(); std::advance(it, i);
     std::cout << std::endl;
-    if(!vtravel[id].avail() || vtravel[id].numMax() <= vtravel[id].numSold()){
-        std::cout << "Travel pack can no longer be sold (not available or sold out)" << std::endl;
-    }else if(it->vtravel().find(id) != it->vtravel().end()){
+    if(it->vtravel().find(id) != it->vtravel().end()){
         std::cout << "Client #" << i <<" has already bought travel pack with ID " << id << std::endl;
-    }else{
-        if(!confirm("Confirm you want to sell the pack with ID "+std::to_string(id)+" to client #"+std::to_string(i),cis,cos)) return;
-        Client c = *it;
-        vtravel[id].sell();
-        c.sell(id);
-        vclient.erase(it);
-        vclient.insert(c);
+        return;
     }
+    if(!vtravel[id].sellable()){
+        std::cout << "Travel pack can no longer be sold (not available or sold out)" << std::endl;
+        return;
+    }
+    if(!confirm("Confirm you want to sell the pack with ID "+std::to_string(id)+" to client #"+std::to_string(i),cis,cos)) return;
+    Client c = *it;
+    vtravel[id].sell();
+    c.sell(id);
+    vclient.erase(it);
+    vclient.insert(c);
 }
 
 std::istream& operator>>(std::istream& is, Agency& a){

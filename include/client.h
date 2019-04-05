@@ -34,6 +34,15 @@ private:
      */
     static void setPacks(Client& c, std::string s);
 
+    /**
+     * Returns string containing delim-separated elements of vtravel_
+     * @param  delim delimiter
+     * @return       string with delim-separated elements of vtravel_
+     * @exceptsafe   no-throw (may throw bad_alloc from string constructor, but
+     *      if that failed then it is not even worth to keep trying)
+     */
+    std::string getPacks(const std::string& delim = " ; ") const noexcept;
+
 public:
     /**
      * From a semicolon-separated list of integers, returns their values in a std::set
@@ -43,15 +52,6 @@ public:
      * @throws   std::out_of_range value read is out of int range (from std::stoi)
      */
     static std::set<ID> makePacks(std::string s);
-
-    /**
-     * Returns string containing delim-separated elements of vtravel_
-     * @param  delim delimiter
-     * @return       string with delim-separated elements of vtravel_
-     * @exceptsafe   no-throw (may throw bad_alloc from string constructor, but
-     *      if that failed then it is not even worth to keep trying)
-     */
-    std::string getPacks(const std::string& delim = " ; ") const noexcept;
 
     /**
      * Queries user about properties of new client object
@@ -93,7 +93,7 @@ public:
     void sell(ID id) noexcept{ vtravel_.insert(id); }
 
     /**
-     * Print clients to screen.
+     * Print clients to screen
      * options:
      *      "table":        print in table
      *      "screenfull":   print all properties of *first
@@ -102,6 +102,7 @@ public:
      * @param  f     options
      * @param  os    output stream
      * @return       the same output stream
+     * @throws       if os throws
      */
     template<class ForwardIterator>
     static std::ostream& print(ForwardIterator first, ForwardIterator last, std::string f, std::ostream& os = std::cout);
@@ -117,12 +118,11 @@ public:
 
 /**
  * Extracts content to fill 'Client' object
- * Destined to be used to write to files
+ * Destined to be used to read from files
  * @param is input stream where Client will be read from
  * @param c  receiver of the extracted information
  * @return   the same parameter as is
- * @throws   when is throws
- *
+ * @throws   when vin(), is throws
  */
 std::istream& operator>>(std::istream& is, Client& c);
 
@@ -132,7 +132,7 @@ std::istream& operator>>(std::istream& is, Client& c);
  * @param os output stream
  * @param c  'Client' object with the content to insert
  * @return   the same as parameter os
- * @throws   when vin() throws
+ * @throws   when os throws
  */
 std::ostream& operator<<(std::ostream& os, const Client& c);
 

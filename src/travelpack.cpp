@@ -3,15 +3,15 @@
 #include <map>
 #include "vin.h"
 
-std::string TravelPack::getPlaces() const{
+void TravelPack::setPlaces(TravelPack& t, std::string s){
+    t.vplaces_ = makePlaces(s);
+}
+
+std::string TravelPack::getPlaces() const noexcept{
     std::string ret = vplaces_[0];
     if(vplaces_.size() > 1)
         ret += " - " + join(vplaces_.begin()+1, vplaces_.end(), ", ");
     return ret;
-}
-
-void TravelPack::setPlaces(TravelPack& t, std::string s){
-    t.vplaces_ = makePlaces(s);
 }
 
 std::vector<std::string> TravelPack::makePlaces(std::string s){
