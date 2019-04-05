@@ -52,7 +52,7 @@ void Agency::run(){
 }
 
 std::ostream& Agency::print(std::ostream& os) const{
-    const long unsigned n = std::max(0lu, 74-name.size())/2;
+    const long unsigned n = std::max(0u, 74-name.size())/2;
     os << std::string(2*n+name.size(), '#')                  << std::endl;
     os << std::string(n, ' ') << name << std::string(n, ' ') << std::endl;
     os << std::string(2*n+name.size(), '#')                  << std::endl;

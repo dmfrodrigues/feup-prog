@@ -1,6 +1,6 @@
 NiceHolidays
 133331148
 http://www.niceholidays.pt
-Rua Sem Nome / 100 / - / 4400‐345 / Porto
+Rua Sem Nome / 100 / - / 4400-345 / Porto
 clients.txt
 packs.txt
