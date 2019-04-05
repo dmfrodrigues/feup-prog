@@ -1,5 +1,6 @@
 import os
 import platform
+import time
 
 w_lst =    ["-Wpedantic",\
             "-Wall",\
@@ -28,26 +29,32 @@ w_lst =    ["-Wpedantic",\
             "-Wno-unused"]
 w_str = " ".join(w_lst)
 
+now = time.time()
+
 if platform.system() == "Linux":
-    print("Create build/linux/obj/, remove all content")
-    os.system("mkdir -p build/linux/obj/")
-    for f in os.listdir("build/linux/obj/"):
-        os.remove("build/linux/obj/"+f)
+    pmain = "build/linux/bin/main.app"
+    fobj = "build/linux/obj/"
+    fbin = "build/linux/bin/"
+
+    print("Create", fobj)
+    os.makedirs(fobj)
     print('Done')
     print("Creating .o files...")
     lst = os.listdir("src/")
     N = max(len(s) for s in lst)+1;
     for f in lst:
+        ffrom = "src/"+f
+        fto   = ("%s%s.o"%(fobj, f.split("/")[-1])[:-4])
         if f[-4:] != ".cpp": continue
+        if (not os.path.isfile(fto)) or os.path.getmtime(ffrom) < os.path.getmtime(fmain): continue #DEV, recompile when needed
         print("    compiling", f)
-        cmd = "g++ " + w_str + " -std=c++11 -c " + ("src/%s"%f).ljust(N+4) + " -o " + ("build/linux/obj/%s.o"%(f.split("/")[-1])[:-4]).ljust(N+14) + " -I./include/"
+        cmd = "g++ " + w_str + " -std=c++11 -c " + ffrom.ljust(N+4) + " -o " + fto.ljust(N+14) + " -I./include/"
         assert os.system(cmd) == 0
     print('Done')
-    print("Create build/linux/bin/, link .o files...")
-    os.system("mkdir -p build/linux/bin/")
-    assert os.system("g++ -o build/linux/bin/main.app build/linux/obj/*.o") == 0
+    print("Create %s, link .o files..."%fbin)
+    os.makedirs(fbin)
+    assert os.system("g++ -o %s %s*.o"%(pmain, fobj)) == 0
     print("Done")
-
 
 """
 elif platform.system() == "Windows":
