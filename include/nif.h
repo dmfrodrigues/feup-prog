@@ -4,13 +4,12 @@
 
 #include <iostream>
 
-const int NIFsize = 9; ///size of NIF in Portugal
-
 /**
 * Represents NIF (numero de identificacao fiscal), providing some encapsulation
 */
 struct NIF{
 private:
+    static const size_t NIFsize = 9; ///size of NIF in Portugal
     std::string s_;
 public:
     /**
@@ -23,7 +22,8 @@ public:
     Constructs NIF from a string of *NIFsize* digits
     @param  s   string with *NIFsize* digits
     @throws     std::invalid_argument   when s does not have size equal to *NIFsize*,
-        or when at least one of the characters is not a digit
+        when at least one of the characters is not a digit,
+        or when it is not a valid NIF (modulus)
     */
     NIF(std::string s);
 

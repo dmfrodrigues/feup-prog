@@ -32,14 +32,21 @@ private:
     /**
     Loads client list from content of file to vclient
     @param  fpath   string containing the location of the input file
-    @throws         std::ios_base::failure  when std::ifstream fails to open file
+    @throws         ios_base::failure  when ifstream fails to open file
     */
     void loadClients(const std::string& fpath);
-    /***/
+    /**
+     * Add client by asking to user its data
+     */
     void addClient();
-    /***/
+    /**
+     * Select and see all data of a client
+     * @return pair, first element is index, second element is false if cancelled, true otherwise
+     */
     std::pair<unsigned, bool> seeClient() const;
-    /***/
+    /**
+     * [changeClient description]
+     */
     void changeClient();
     /***/
     void deleteClient();
