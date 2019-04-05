@@ -51,7 +51,9 @@ for f in lst:
     pfrom = "src/"+f
     pto   = fobj+(f.split("/")[-1])[:-4]+".o"
     if f[-4:] != ".cpp": continue
-    if os.path.isfile(pto) and os.path.getmtime(pfrom) < os.path.getmtime(pmain): continue #DEV, recompile when needed
+    if os.path.isfile(pto):
+        if os.path.getmtime(pfrom) < os.path.getmtime(pmain):
+            continue #DEV, recompile when needed
     print("    compiling", f)
     cmd = "g++ " + w_str + " -std=c++11 -c " + pfrom.ljust(N+4) + " -o " + pto.ljust(N+14) + " -I./include/"
     assert os.system(cmd) == 0
