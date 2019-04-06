@@ -121,7 +121,7 @@ void Agency::seeSold() const{
     Client::print(vclient.begin(), vclient.end(), "table") << std::endl;
     std::string b; int i;
     while(true){
-        if(!vin("# of client to see (if all clients, fill with '-'): ", b)) return;
+        if(!vin(b, "# of client to see (if all clients, fill with '-'): ")) return;
         b = trim(b); if(b == "-") break;
         i = std::stoi(b);
         if(0 <= i && i < (int)vclient.size()) break;
