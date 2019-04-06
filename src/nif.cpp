@@ -6,8 +6,8 @@
 NIF::NIF(std::string s){
     s = trim(s);
     //Some validity checks
-    if(s.size() != NIFsize) throw std::invalid_argument("NIF has wrong size");
     for(const auto& c:s) if(!isdigit(c)) throw std::invalid_argument("NIF has nonnumeric character");
+    if(s.size() != NIFsize) throw std::invalid_argument("NIF has wrong size");
     //NIF digit check
     {
         unsigned sum = 0; for(unsigned i = 0; i < 8; ++i) sum += (9-i)*unsigned(s[i]-'0');

@@ -33,9 +33,12 @@ template<class T> inline bool vin(const std::string& q, T& obj, std::istream& is
             return true;
         }catch(const std::ios_base::failure& e){
             os << "Error: input failed" << std::endl;
+        }catch(const std::exception& e){
+            os << "Error: " << e.what() << std::endl;
         }
     }
 }
+
 /**
 Specialization for obj of type string
 */
@@ -46,6 +49,7 @@ template<> inline bool vin(const std::string& q, std::string& obj, std::istream&
     obj = b;
     return true;
 }
+
 /**
 Recieves verified input from the user. Queries the user until a valid input is provided.
 Processes input through function fptr and saves the result in obj
@@ -57,7 +61,7 @@ Exceptions thrown by is, os are not handled
 @param  is  input stream
 @param  os  output stream
 @return     boolean value, true if input succeeded, false if cancelled
-@throws     std::ios_base::failure  inherent to 'is', 'os'
+@throws     when os::operator<<() throws
 */
 template<class T> inline bool vin(const std::string& q, void f(T&, std::string), T& obj, std::istream& is = std::cin, std::ostream& os = std::cout){
     std::string b;
@@ -69,21 +73,28 @@ template<class T> inline bool vin(const std::string& q, void f(T&, std::string),
             return true;
         }catch(const std::ios_base::failure& e){
             os << "Error: input failed" << std::endl;
+        }catch(const std::exception& e){
+            os << "Error: " << e.what() << std::endl;
         }
     }
 }
 
 /**
-Recieves input to obj, only tries once. All exceptions are unhandled
+Recieves input to obj, only tries once
 @param  obj object to be changed
 @param  is  input stream
 @throws     std::ios_base::failure  from operator>>(std::istream&,T&)
 */
 template<class T> inline void vin(T& obj, std::istream& is = std::cin){
-    std::string b; std::stringstream ss; ss.exceptions(std::stringstream::failbit | std::stringstream::badbit);
+    std::string b; std::stringstream ss;
+    ss.exceptions(std::stringstream::failbit | std::stringstream::badbit);
     getline(is, b);
-    ss.clear(); ss.str(b);
-    ss >> obj;
+    try{
+        ss.clear(); ss.str(b);
+        ss >> obj;
+    }catch(...){
+        is.setstate(std::ios::badbit);
+    }
 }
 
 /**
@@ -96,7 +107,7 @@ template<> inline void vin(std::string& obj, std::istream& is){
 }
 
 /**
-Recieves input, throwing exceptions if input failed. Provides input to f, which alters obj
+Recieves input. Provides input to f, which alters obj
 All exceptions are unhandled
 @param  f   function that alters obj based on an input string
 @param  obj object to be changed
@@ -107,7 +118,11 @@ All exceptions are unhandled
 template<class T> inline void vin(void fptr(T&, std::string), T& obj, std::istream& is = std::cin){
     std::string b;
     getline(is, b);
-    fptr(obj, b);
+    try{
+        fptr(obj, b);
+    }catch(...){
+        is.setstate(std::ios::badbit);
+    }
 }
 
 #endif
