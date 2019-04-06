@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include "vin.h"
 
-void Agency::loadPacks(const std::string& fpath){
+bool Agency::loadPacks(const std::string& fpath){
     std::ifstream is(fpath, std::ios_base::in);
     if(!is.is_open()) throw std::ios_base::failure("failed to open travelpacks file for read");
     vtravel.clear();
@@ -12,9 +12,11 @@ void Agency::loadPacks(const std::string& fpath){
     getline(is, b); lasttravel = std::stoi(b);
     while(is){
         is >> t;
+        if(!is) return false;
         vtravel[t.id()] = t;
         getline(is, b);
     }
+    return true;
 }
 
 void Agency::addPack(){
@@ -30,7 +32,7 @@ std::pair<ID, bool> Agency::seePack() const{
     TravelPack::print(vtravel.begin(), vtravel.end(), "table") << std::endl;
     int id;
     while(true){
-        if(!vin("ID of travel pack to see: ", id)) return std::make_pair(0, false);
+        if(!vin(id, "ID of travel pack to see: ")) return std::make_pair(0, false);
         if(vtravel.find(id) != vtravel.end()) break;
         else std::cout << "Error: ID not attributed to any travel pack" << std::endl;
     }
@@ -47,7 +49,7 @@ void Agency::changePack(){
     std::string b; std::cout << std::endl;
     int j;{
         while(true){
-            if(!vin("# of property to change: ", j)) return;
+            if(!vin(j,"# of property to change: ")) return;
             if(0 <= j && j < 8)      break;
             else std::cout << "Error: # outside valid input range [0,7]" << std::endl;
         }
@@ -72,7 +74,7 @@ void Agency::findPack() const{
     std::cout << "If you do not want to use a search field, fill with '-'" << std::endl;
     std::set<std::string> splaces;{
         std::string b;
-        if(!vin("Destinations (separated by ',' if more than one): ", b)) return;
+        if(!vin(b, "Destinations (separated by ',' if more than one): ")) return;
         if(b != "-"){
             std::vector<std::string> v = split(b, ',');
             splaces.insert(v.begin(), v.end());

@@ -34,11 +34,13 @@ private:
     @param  fpath   string containing the location of the input file
     @throws         ios_base::failure  when ifstream fails to open file
     */
-    void loadClients(const std::string& fpath);
+    bool loadClients(const std::string& fpath);
+
     /**
-     * Add client by asking to user its data
+     * Add client by asking the user its data
      */
     void addClient();
+
     /**
      * Select and see all data of a client
      * @return pair, first element is index, second element is false if cancelled, true otherwise
@@ -51,7 +53,7 @@ private:
     /***/
     void deleteClient();
     /***/
-    void loadPacks(const std::string& fpath);
+    bool loadPacks(const std::string& fpath);
     /***/
     void addPack();
     /***/

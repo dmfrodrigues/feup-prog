@@ -4,7 +4,7 @@
 #include "vin.h"
 
 Agency::Agency(std::istream& is, std::ostream& os) noexcept :cis(is),cos(os){
-    std::ifstream ifs; ifs.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    std::ifstream ifs;
     while(true){
         std::string fullpath;
         //os << "Agency file: "; getline(is, fullpath);
@@ -17,14 +17,12 @@ Agency::Agency(std::istream& is, std::ostream& os) noexcept :cis(is),cos(os){
             inputpath  = "";
             agencypath = fullpath;
         }
+
         ifs.clear();
-        try{
-            ifs.open(inputpath + agencypath, std::ifstream::in);
-            ifs >> *this;
-            break;
-        }catch(const std::ios_base::failure& e){
-            std::cout << "Error: file open/read failed" << std::endl;
-        }
+        ifs.open(inputpath + agencypath, std::ifstream::in);
+        ifs >> *this;
+        if(ifs) break;
+        else std::cout << "Error: failed to read agency file" << std::endl;
     }
 }
 
@@ -123,7 +121,7 @@ void Agency::seeSold() const{
     Client::print(vclient.begin(), vclient.end(), "table") << std::endl;
     std::string b; int i;
     while(true){
-        if(!vin("# of client to see (if all clients, fill with '-'): ", b)) return;
+        if(!vin(b, "# of client to see (if all clients, fill with '-'): ")) return;
         b = trim(b); if(b == "-") break;
         i = std::stoi(b);
         if(0 <= i && i < (int)vclient.size()) break;
@@ -175,8 +173,10 @@ std::istream& operator>>(std::istream& is, Agency& a){
     vin(Address::set, a.address   , is);
     vin(              a.clientpath, is);
     vin(              a.travelpath, is);
-    a.loadClients(a.inputpath + a.clientpath);
-    a.loadPacks  (a.inputpath + a.travelpath);
+    if(!a.loadClients(a.inputpath + a.clientpath) ||
+       !a.loadPacks  (a.inputpath + a.travelpath)){
+        is.setstate(std::ios::badbit);
+    }
     return is;
 }
 
