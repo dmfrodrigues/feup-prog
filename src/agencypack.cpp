@@ -32,7 +32,7 @@ std::pair<ID, bool> Agency::seePack() const{
     TravelPack::print(vtravel.begin(), vtravel.end(), "table") << std::endl;
     int id;
     while(true){
-        if(!vin(id, "ID of travel pack to see: ")) return std::make_pair(0, false);
+        if(!vin("ID of travel pack to see: ", id)) return std::make_pair(0, false);
         if(vtravel.find(id) != vtravel.end()) break;
         else std::cout << "Error: ID not attributed to any travel pack" << std::endl;
     }
@@ -49,7 +49,7 @@ void Agency::changePack(){
     std::string b; std::cout << std::endl;
     int j;{
         while(true){
-            if(!vin(j,"# of property to change: ")) return;
+            if(!vin("# of property to change: ", j)) return;
             if(0 <= j && j < 8)      break;
             else std::cout << "Error: # outside valid input range [0,7]" << std::endl;
         }
@@ -74,7 +74,7 @@ void Agency::findPack() const{
     std::cout << "If you do not want to use a search field, fill with '-'" << std::endl;
     std::set<std::string> splaces;{
         std::string b;
-        if(!vin(b, "Destinations (separated by ',' if more than one): ")) return;
+        if(!vin("Destinations (separated by ',' if more than one): ", b)) return;
         if(b != "-"){
             std::vector<std::string> v = split(b, ',');
             splaces.insert(v.begin(), v.end());

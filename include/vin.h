@@ -22,7 +22,7 @@ Exceptions thrown by is, os are not handled
 @return     boolean value, true if input succeeded, false if cancelled
 @throws     when is, os throw
 */
-template<class T> inline bool vin(const std::string& q, T& obj, std::istream& is = std::cin, std::ostream& os = std::cout){
+template<class T> inline bool vin(const char *q, T& obj, std::istream& is = std::cin, std::ostream& os = std::cout){
     std::string b; std::stringstream ss; ss.exceptions(std::stringstream::failbit | std::stringstream::badbit);
     while(true){
         os << q; getline(is, b);
@@ -42,7 +42,7 @@ template<class T> inline bool vin(const std::string& q, T& obj, std::istream& is
 /**
 Specialization for obj of type string
 */
-template<> inline bool vin(const std::string& q, std::string& obj, std::istream& is, std::ostream& os){
+template<> inline bool vin(const char *q, std::string& obj, std::istream& is, std::ostream& os){
     std::string b;
     os << q; getline(is, b);
     if(isCancel(b)) return false;
@@ -63,7 +63,7 @@ Exceptions thrown by is, os are not handled
 @return     boolean value, true if input succeeded, false if cancelled
 @throws     when os::operator<<() throws
 */
-template<class T> inline bool vin(const std::string& q, void f(T&, std::string), T& obj, std::istream& is = std::cin, std::ostream& os = std::cout){
+template<class T> inline bool vin(const char *q, void f(T&, std::string), T& obj, std::istream& is = std::cin, std::ostream& os = std::cout){
     std::string b;
     while(true){
         os << q; getline(is, b);
