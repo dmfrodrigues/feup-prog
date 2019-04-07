@@ -22,7 +22,7 @@ Exceptions thrown by is, os are not handled
 @return     boolean value, true if input succeeded, false if cancelled
 @throws     when is, os throw
 */
-template<class T> inline bool vin(const char *q, T& obj, std::istream& is = std::cin, std::ostream& os = std::cout){
+template<class T> inline bool vin(const char *q, T& obj, std::istream& is, std::ostream& os){
     std::string b; std::stringstream ss; ss.exceptions(std::stringstream::failbit | std::stringstream::badbit);
     while(true){
         os << q; getline(is, b);
@@ -63,7 +63,7 @@ Exceptions thrown by is, os are not handled
 @return     boolean value, true if input succeeded, false if cancelled
 @throws     when os::operator<<() throws
 */
-template<class T> inline bool vin(const char *q, void f(T&, std::string), T& obj, std::istream& is = std::cin, std::ostream& os = std::cout){
+template<class T> inline bool vin(const char *q, void f(T&, std::string), T& obj, std::istream& is, std::ostream& os){
     std::string b;
     while(true){
         os << q; getline(is, b);
@@ -85,7 +85,7 @@ Recieves input to obj, only tries once
 @param  is  input stream
 @throws     std::ios_base::failure  from operator>>(std::istream&,T&)
 */
-template<class T> inline void vin(T& obj, std::istream& is = std::cin){
+template<class T> inline void vin(T& obj, std::istream& is){
     std::string b; std::stringstream ss;
     ss.exceptions(std::stringstream::failbit | std::stringstream::badbit);
     getline(is, b);
@@ -115,7 +115,7 @@ All exceptions are unhandled
 @throws     std::ios_base::failure  inherent to 'is'
 @throws     std::ios_base::failure  converts all exceptions to failure
 */
-template<class T> inline void vin(void fptr(T&, std::string), T& obj, std::istream& is = std::cin){
+template<class T> inline void vin(void fptr(T&, std::string), T& obj, std::istream& is){
     std::string b;
     getline(is, b);
     try{

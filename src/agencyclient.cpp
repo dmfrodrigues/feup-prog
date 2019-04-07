@@ -6,12 +6,18 @@
 
 bool Agency::loadClients(const std::string& fpath){
     std::ifstream is(fpath, std::ios_base::in);
-    if(!is.is_open()) throw std::ios_base::failure("failed to open clients file for read");
+    if(!is){
+        cos << "Error: could not open clients file " << fpath << std::endl;
+        return false;
+    }
     vclient.clear();
     Client c; std::string b;
     while(is){
         is >> c;
-        if(!is) return false;
+        if(!is){
+            cos << "Error: could not read client from " << fpath << std::endl;
+            return false;
+        }
         vclient.insert(c);
         getline(is, b);
     }
@@ -20,23 +26,23 @@ bool Agency::loadClients(const std::string& fpath){
 
 void Agency::addClient(){
     Client c;
-    if(c.userClient()){
+    if(c.userClient(cis, cos)){
         vclient.insert(c);
         std::cout << "Client added" << std::endl;
     }
 }
 
 std::pair<unsigned, bool> Agency::seeClient() const{
-    Client::print(vclient.begin(), vclient.end(), "table") << std::endl;
+    Client::print(vclient.begin(), vclient.end(), "table", cos) << std::endl;
     int i;
     while(true){
-        if(!vin("# of client to see: ", i)) return std::make_pair(0, false);
+        if(!vin("# of client to see: ", i, cis, cos)) return std::make_pair(0, false);
         if(0 <= i && i < (int)vclient.size())      break;
         else std::cout << "Error: # outside valid input range [0," << vclient.size()-1 << "]" << std::endl;
     }
     std::cout << std::endl;
     auto it = vclient.begin(); std::advance(it, i);
-    Client::print(it, std::next(it), "screenfull");
+    Client::print(it, std::next(it), "screenfull", cos);
     return std::make_pair(i, true);
 }
 
@@ -47,14 +53,14 @@ void Agency::changeClient(){
     std::string b;
     int j;{
         while(true){
-            if(!vin("# of property to change: ", j)) return;
+            if(!vin("# of property to change: ", j, cis, cos)) return;
             if(0 <= j && j < 5)      break;
             else std::cout << "Error: # outside valid input range [0,4]" << std::endl;
         }
     }
     auto it = vclient.begin(); std::advance(it, i);
     Client c = *it;
-    if(c.userClientprop(j)){
+    if(c.userClientprop(j, cis, cos)){
         vclient.erase(it);
         vclient.insert(c);
         std::cout << "Property changed" << std::endl;

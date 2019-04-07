@@ -60,7 +60,7 @@ public:
      * @return    true if new client was created successfully, false if cancelled
      * @throws    when vin throws
      */
-    bool userClient(std::istream& is = std::cin, std::ostream& os = std::cout) noexcept;
+    bool userClient(std::istream& is, std::ostream& os) noexcept;
 
     /**
      * Change one property of Client
@@ -72,7 +72,7 @@ public:
      * @throws       when vin throws
      * @throws  std::out_of_range when propn is not in the valid range
      */
-    bool userClientprop(int propn, std::istream& is = std::cin, std::ostream& os = std::cout);
+    bool userClientprop(int propn, std::istream& is, std::ostream& os);
 
     /**
      * 'Get' functions
@@ -105,7 +105,7 @@ public:
      * @throws       if os throws
      */
     template<class ForwardIterator>
-    static std::ostream& print(ForwardIterator first, ForwardIterator last, std::string f, std::ostream& os = std::cout);
+    static std::ostream& print(ForwardIterator first, ForwardIterator last, std::string f, std::ostream& os);
 
     /**
      * Compare clients (meant for comparator in std::set)

@@ -19,21 +19,21 @@ std::string Client::getPacks(const std::string& delim) const noexcept{
 }
 
 bool Client::userClient(std::istream& is, std::ostream& os) noexcept{
-    if(!vin("Name: "                                       ,                   name_   ) ||
-       !vin("NIF: "                                        ,                   nif_    ) ||
-       !vin("Household members: "                          ,                   numFam_ ) ||
-       !vin("Address (street/door/floor/postalcode/city): ", Address::set    , address_) ||
-       !vin("Bought packs (separated by ';'): "            , Client::setPacks, *this   ))
+    if(!vin("Name: "                                       ,                   name_   , is, os) ||
+       !vin("NIF: "                                        ,                   nif_    , is, os) ||
+       !vin("Household members: "                          ,                   numFam_ , is, os) ||
+       !vin("Address (street/door/floor/postalcode/city): ", Address::set    , address_, is, os) ||
+       !vin("Bought packs (separated by ';'): "            , Client::setPacks, *this   , is, os))
         return false;
     return true;
 }
 
 bool Client::userClientprop(int propn, std::istream& is, std::ostream& os){
     switch(propn){
-        case 0: os << "Name: "           << name_      << std::endl; if(!vin("New name: "          ,                   name_   )) return false; break;
-        case 1: os << "NIF: "            << nif_       << std::endl; if(!vin("New NIF: "           ,                   nif_    )) return false; break;
-        case 2: os << "Household size: " << numFam_    << std::endl; if(!vin("New household size: ",                   numFam_ )) return false; break;
-        case 3: os << "Address: "        << address_   << std::endl; if(!vin("New address: "       , Address::set    , address_)) return false; break;
+        case 0: os << "Name: "           << name_      << std::endl; if(!vin("New name: "          ,                   name_   , is, os)) return false; break;
+        case 1: os << "NIF: "            << nif_       << std::endl; if(!vin("New NIF: "           ,                   nif_    , is, os)) return false; break;
+        case 2: os << "Household size: " << numFam_    << std::endl; if(!vin("New household size: ",                   numFam_ , is, os)) return false; break;
+        case 3: os << "Address: "        << address_   << std::endl; if(!vin("New address: "       , Address::set    , address_, is, os)) return false; break;
         case 4: os << "Travel pack sells should be handled by operation [sell]" << std::endl; return false; break;
         default: throw std::out_of_range("trying to access client property that does not exist");
     }

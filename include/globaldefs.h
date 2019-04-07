@@ -15,6 +15,6 @@ typedef std::string Name;
  * @return    true if user confirmed, false if user answered 'no' or cancelled
  * @throws    when is, os throw
  */
-bool confirm(std::string q, std::istream& is = std::cin, std::ostream& os = std::cout);
+bool confirm(std::string q, std::istream& is, std::ostream& os);
 
 #endif

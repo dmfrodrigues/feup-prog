@@ -11,8 +11,6 @@ typedef std::string URL;
 * Allows to manage a tourist Agency
 */
 struct Agency{
-friend std::istream& operator>>(std::istream& is,       Agency& a);
-friend std::ostream& operator<<(std::ostream& os, const Agency& a);
 private:
     std::string inputpath;  ///folder where all the files are
     std::string agencypath; ///name of agency file
@@ -28,6 +26,8 @@ private:
 
     std::istream& cis;                ///default input stream
     std::ostream& cos;                ///default output stream
+
+    bool loadAgency(const std::string& fpath);
 
     /**
     Loads client list from content of file to vclient
@@ -95,12 +95,5 @@ public:
 
 
 };
-
-/***/
-std::istream& operator>>(std::istream& is, Agency& a);
-
-/***/
-std::ostream& operator<<(std::ostream& os, const Agency& a);
-
 
 #endif

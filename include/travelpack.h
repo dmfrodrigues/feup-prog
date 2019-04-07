@@ -60,7 +60,7 @@ public:
      * @return            true if the new travelpack was created successfully, false if cancelled
      * @throws            when vin throws
      */
-    bool userPack(ID lasttravel, std::istream& is = std::cin, std::ostream& os = std::cout);
+    bool userPack(ID lasttravel, std::istream& is, std::ostream& os);
 
     /**
      * Change one property of TravelPack
@@ -72,7 +72,7 @@ public:
      * @throws       when vin throws
      * @throws  out_of_range when propn is not in the valid range
      */
-    bool userPackprop(int propn, std::istream& is = std::cin, std::ostream& os = std::cout);
+    bool userPackprop(int propn, std::istream& is, std::ostream& os);
 
     /**
      * 'Get' functions
@@ -116,7 +116,7 @@ public:
      * @throws       when os throws
      */
     template<class ForwardIterator>
-    static std::ostream& print(ForwardIterator first, ForwardIterator last, std::string f, std::ostream& os = std::cout);
+    static std::ostream& print(ForwardIterator first, ForwardIterator last, std::string f, std::ostream& os);
 };
 
 /**

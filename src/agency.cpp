@@ -9,20 +9,7 @@ Agency::Agency(std::istream& is, std::ostream& os) noexcept :cis(is),cos(os){
         std::string fullpath;
         //os << "Agency file: "; getline(is, fullpath);
         fullpath = "input/agency.txt"; //#DEV
-        size_t n = fullpath.find_last_of('/');
-        if(n != fullpath.npos){
-            inputpath  = fullpath.substr(0,n+1);
-            agencypath = fullpath.substr(n+1, fullpath.npos);
-        }else{
-            inputpath  = "";
-            agencypath = fullpath;
-        }
-
-        ifs.clear();
-        ifs.open(inputpath + agencypath, std::ifstream::in);
-        ifs >> *this;
-        if(ifs) break;
-        else std::cout << "Error: failed to read agency file" << std::endl;
+        if(loadAgency(fullpath)) break;
     }
 }
 
@@ -31,12 +18,12 @@ void Agency::run(){
     this->printHelp();
     std::string b;
     while(true){
-        std::cout << std::endl;
-        std::cout << "Operation$ "; getline(std::cin, b); b = trim(b);
-        std::cout << std::endl;
+        cos << std::endl;
+        cos << "Operation$ "; getline(cis, b); b = trim(b);
+        cos << std::endl;
 
-        if     (b == "tclient")     Client::print(vclient.cbegin(), vclient.cend(), "table");
-        else if(b == "tpack"  ) TravelPack::print(vtravel.cbegin(), vtravel.cend(), "table");
+        if     (b == "tclient")     Client::print(vclient.cbegin(), vclient.cend(), "table", cos);
+        else if(b == "tpack"  ) TravelPack::print(vtravel.cbegin(), vtravel.cend(), "table", cos);
         else if(b == "sclient") seeClient();    else if(b == "spack") seePack();
         else if(b == "+client") addClient();    else if(b == "+pack") addPack();
         else if(b == "#client") changeClient(); else if(b == "#pack") changePack(); //#DEV
@@ -45,7 +32,7 @@ void Agency::run(){
         else if(b == "sold"   ) seeSold();
         else if(b == "help"   ) printHelp();
         else if(b == "save"   ) save();         else if(b == "exit" ) return;
-        else std::cout << "Invalid operation" << std::endl;
+        else cos << "Invalid operation" << std::endl;
     }
 }
 
@@ -85,7 +72,12 @@ std::ostream& Agency::save(std::ostream& os) const{
         //Save agency
         std::ofstream of_agency(inputpath + agencypath);
         if(!of_agency.is_open()) throw std::ios_base::failure("failed to open agency file for write");
-        of_agency << *this;
+        os << name       << std::endl;
+        os << nif        << std::endl;
+        os << url        << std::endl;
+        os << address    << std::endl;
+        os << clientpath << std::endl;
+        os << travelpath << std::endl;
         of_agency.close();
         //Save clients
         std::ofstream of_client(inputpath + clientpath);
@@ -118,44 +110,44 @@ std::ostream& Agency::save(std::ostream& os) const{
 }
 
 void Agency::seeSold() const{
-    Client::print(vclient.begin(), vclient.end(), "table") << std::endl;
+    Client::print(vclient.begin(), vclient.end(), "table", cos) << std::endl;
     std::string b; int i;
     while(true){
-        if(!vin("# of client to see (if all clients, fill with '-'): ", b)) return;
+        if(!vin("# of client to see (if all clients, fill with '-'): ", b, cis, cos)) return;
         b = trim(b); if(b == "-") break;
         i = std::stoi(b);
         if(0 <= i && i < (int)vclient.size()) break;
-        else std::cout << "Error: # outside valid input range [0," << vclient.size()-1 << "]" << std::endl;
+        else cos << "Error: # outside valid input range [0," << vclient.size()-1 << "]" << std::endl;
     }
-    std::cout << std::endl;
+    cos << std::endl;
     std::map<ID, TravelPack> m;
     if(b == "-"){
-        std::cout << "Travel packs bought by at least one client:" << std::endl;
+        cos << "Travel packs bought by at least one client:" << std::endl;
         for(const auto& it:vclient)
             for(const auto& id:it.vtravel())
                 if(vtravel.find(id) != vtravel.end())
                     m[id] = vtravel.at(id);
     }else{
-        std::cout << "Travel packs bought by client #" << i << ": " << std::endl;
+        cos << "Travel packs bought by client #" << i << ": " << std::endl;
         auto it = vclient.begin(); std::advance(it, i);
         for(const auto& id:it->vtravel())
             if(vtravel.find(id) != vtravel.end())
                 m[id] = vtravel.at(id);
     }
-    TravelPack::print(m.cbegin(), m.cend(), "sold");
+    TravelPack::print(m.cbegin(), m.cend(), "sold", cos);
 }
 
 void Agency::sell(){
     auto p = seeClient(); unsigned i  = p.first; if(!p.second) return;
     auto q = seePack  (); ID       id = q.first; if(!q.second) return;
     auto it = vclient.begin(); std::advance(it, i);
-    std::cout << std::endl;
+    cos << std::endl;
     if(it->vtravel().find(id) != it->vtravel().end()){
-        std::cout << "Client #" << i <<" has already bought travel pack with ID " << id << std::endl;
+        cos << "Client #" << i <<" has already bought travel pack with ID " << id << std::endl;
         return;
     }
     if(!vtravel[id].sellable()){
-        std::cout << "Travel pack can no longer be sold (not available or sold out)" << std::endl;
+        cos << "Travel pack can no longer be sold (not available or sold out)" << std::endl;
         return;
     }
     if(!confirm("Confirm you want to sell the pack with ID "+std::to_string(id)+" to client #"+std::to_string(i),cis,cos)) return;
@@ -166,26 +158,30 @@ void Agency::sell(){
     vclient.insert(c);
 }
 
-std::istream& operator>>(std::istream& is, Agency& a){
-    vin(              a.name      , is);
-    vin(              a.nif       , is);
-    vin(              a.url       , is);
-    vin(Address::set, a.address   , is);
-    vin(              a.clientpath, is);
-    vin(              a.travelpath, is);
-    if(!a.loadClients(a.inputpath + a.clientpath) ||
-       !a.loadPacks  (a.inputpath + a.travelpath)){
-        is.setstate(std::ios::badbit);
+bool Agency::loadAgency(const std::string& fpath){
+    size_t n = fpath.find_last_of('/');
+    if(n != fpath.npos){
+        inputpath  = fpath.substr(0,n+1);
+        agencypath = fpath.substr(n+1, fpath.npos);
+    }else{
+        inputpath  = "";
+        agencypath = fpath;
     }
-    return is;
-}
-
-std::ostream& operator<<(std::ostream& os, const Agency& a){
-    os << a.name       << std::endl;
-    os << a.nif        << std::endl;
-    os << a.url        << std::endl;
-    os << a.address    << std::endl;
-    os << a.clientpath << std::endl;
-    os << a.travelpath;
-    return os;
+    std::ifstream is(fpath);
+    if(!is){
+        cos << "Error: could not open agency file " << fpath << std::endl;
+        return false;
+    }
+    vin(              name      , is);
+    vin(              nif       , is);
+    vin(              url       , is);
+    vin(Address::set, address   , is);
+    vin(              clientpath, is);
+    vin(              travelpath, is);
+    if(!is){
+        cos << "Error: could not read from agency file " << fpath << std::endl;
+        return false;
+    }
+    return (loadClients(inputpath + clientpath) &&
+            loadPacks  (inputpath + travelpath));
 }

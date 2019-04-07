@@ -6,13 +6,19 @@
 
 bool Agency::loadPacks(const std::string& fpath){
     std::ifstream is(fpath, std::ios_base::in);
-    if(!is.is_open()) throw std::ios_base::failure("failed to open travelpacks file for read");
+    if(!is){
+        cos << "Error: could not open travelpacks file " << fpath << std::endl;
+        return false;
+    }
     vtravel.clear();
     TravelPack t; std::string b;
     getline(is, b); lasttravel = std::stoi(b);
     while(is){
         is >> t;
-        if(!is) return false;
+        if(!is){
+            cos << "Error: could not read travelpack from " << fpath << std::endl;
+            return false;
+        }
         vtravel[t.id()] = t;
         getline(is, b);
     }
@@ -21,7 +27,7 @@ bool Agency::loadPacks(const std::string& fpath){
 
 void Agency::addPack(){
     TravelPack t;
-    if(t.userPack(lasttravel+1)){
+    if(t.userPack(lasttravel+1, cis, cos)){
         ++lasttravel;
         vtravel[t.id()] = t;
         std::cout << "Travel pack added" << std::endl;
@@ -29,16 +35,16 @@ void Agency::addPack(){
 }
 
 std::pair<ID, bool> Agency::seePack() const{
-    TravelPack::print(vtravel.begin(), vtravel.end(), "table") << std::endl;
+    TravelPack::print(vtravel.begin(), vtravel.end(), "table", cos) << std::endl;
     int id;
     while(true){
-        if(!vin("ID of travel pack to see: ", id)) return std::make_pair(0, false);
+        if(!vin("ID of travel pack to see: ", id, cis, cos)) return std::make_pair(0, false);
         if(vtravel.find(id) != vtravel.end()) break;
         else std::cout << "Error: ID not attributed to any travel pack" << std::endl;
     }
     std::cout << std::endl;
     auto it = vtravel.find(id);
-    TravelPack::print(it, std::next(it), "screenfull");
+    TravelPack::print(it, std::next(it), "screenfull", cos);
     return std::make_pair(id, true);
 }
 
@@ -49,13 +55,13 @@ void Agency::changePack(){
     std::string b; std::cout << std::endl;
     int j;{
         while(true){
-            if(!vin("# of property to change: ", j)) return;
+            if(!vin("# of property to change: ", j, cis, cos)) return;
             if(0 <= j && j < 8)      break;
             else std::cout << "Error: # outside valid input range [0,7]" << std::endl;
         }
     }
     auto& it = vtravel[id];
-    if(it.userPackprop(j)){
+    if(it.userPackprop(j, cis, cos)){
         std::cout << "Property changed" << std::endl;
     }
 }
@@ -74,7 +80,7 @@ void Agency::findPack() const{
     std::cout << "If you do not want to use a search field, fill with '-'" << std::endl;
     std::set<std::string> splaces;{
         std::string b;
-        if(!vin("Destinations (separated by ',' if more than one): ", b)) return;
+        if(!vin("Destinations (separated by ',' if more than one): ", b, cis, cos)) return;
         if(b != "-"){
             std::vector<std::string> v = split(b, ',');
             splaces.insert(v.begin(), v.end());
@@ -123,5 +129,5 @@ void Agency::findPack() const{
         if(b) m.insert(p);
     }
     std::cout << std::endl;
-    TravelPack::print(m.cbegin(), m.cend(), "table");
+    TravelPack::print(m.cbegin(), m.cend(), "table", cos);
 }

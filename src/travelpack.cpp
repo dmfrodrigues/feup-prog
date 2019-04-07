@@ -26,14 +26,14 @@ std::vector<std::string> TravelPack::makePlaces(std::string s){
     return ret;
 }
 
-bool TravelPack::userPack(ID lasttravel, std::istream&, std::ostream& os){
+bool TravelPack::userPack(ID lasttravel, std::istream& is, std::ostream& os){
     id_ = lasttravel;
     avail_ = true;
-    if(!vin("Destination (main - secondary separated by ','): ", TravelPack::setPlaces, *this  ) ||
-       !vin("Begin date (yyyy/mm/dd): "                        , Date::set            , begin_ ) ||
-       !vin("End date   (yyyy/mm/dd): "                        , Date::set            , end_   ) ||
-       !vin("Price per person: "                               ,                        price_ ) ||
-       !vin("Max number of people: "                           ,                        numMax_))
+    if(!vin("Destination (main - secondary separated by ','): ", TravelPack::setPlaces, *this  , is, os) ||
+       !vin("Begin date (yyyy/mm/dd): "                        , Date::set            , begin_ , is, os) ||
+       !vin("End date   (yyyy/mm/dd): "                        , Date::set            , end_   , is, os) ||
+       !vin("Price per person: "                               ,                        price_ , is, os) ||
+       !vin("Max number of people: "                           ,                        numMax_, is, os))
         return false;
     numSold_ = 0;
     return true;
@@ -45,17 +45,17 @@ bool TravelPack::userPackprop(int propn, std::istream& is, std::ostream& os){
         case 0: os << "Travel pack ID can not be changed" << std::endl; return false; break;
         case 1: os << "Availability: "                    << (avail_?"yes":"no") << std::endl;
             while(true){
-                if(!vin("New availability value [yes/no]: ", b)) return false;
-                if(b == "yes" || b == "no") break;
+                if(!vin("New availability value [y/n]: ", b, is, os)) return false;
+                if(b == "y" || b == "n") break;
                 else os << "Error: only [y] (yes) or [n] (no) are valid possiblities" << std::endl;
             }
             avail_ = (b == "yes");
             break;
-        case 2: os << "Destination: "          << getPlaces() << std::endl; if(!vin("New destination: "         , TravelPack::setPlaces, *this  )) return false; break;
-        case 3: os << "Begin date: "           << begin_      << std::endl; if(!vin("New begin date: "          , Date::set            , begin_ )) return false; break;
-        case 4: os << "End date: "             << end_        << std::endl; if(!vin("New end date: "            , Date::set            , end_   )) return false; break;
-        case 5: os << "Price per person: "     << price_      << std::endl; if(!vin("New price per person: "    ,                        price_ )) return false; break;
-        case 6: os << "Max number of people: " << numMax_     << std::endl; if(!vin("New max number of people: ",                        numMax_)) return false; break;
+        case 2: os << "Destination: "          << getPlaces() << std::endl; if(!vin("New destination: "         , TravelPack::setPlaces, *this  , is, os)) return false; break;
+        case 3: os << "Begin date: "           << begin_      << std::endl; if(!vin("New begin date: "          , Date::set            , begin_ , is, os)) return false; break;
+        case 4: os << "End date: "             << end_        << std::endl; if(!vin("New end date: "            , Date::set            , end_   , is, os)) return false; break;
+        case 5: os << "Price per person: "     << price_      << std::endl; if(!vin("New price per person: "    ,                        price_ , is, os)) return false; break;
+        case 6: os << "Max number of people: " << numMax_     << std::endl; if(!vin("New max number of people: ",                        numMax_, is, os)) return false; break;
         case 7: os << "Travel pack sells should be handled by operation [sell]" << std::endl; return false; break;
         default: throw std::invalid_argument("trying to access travelpack property that does not exist");
     }
@@ -143,18 +143,18 @@ std::ostream& TravelPack::print(ForwardIterator first, ForwardIterator last, std
 template std::ostream& TravelPack::print(std::map<ID, TravelPack>::const_iterator first, std::map<ID, TravelPack>::const_iterator last, std::string f, std::ostream& os);
 
 std::istream& operator>>(std::istream& is, TravelPack& t){
-    std::stringstream dummy;
     ID id;
-    if(!vin("",                        id        , is, dummy) ||
-       !vin("", TravelPack::setPlaces, t         , is, dummy) ||
-       !vin("", Date::set            , t.begin_  , is, dummy) ||
-       !vin("", Date::set            , t.end_    , is, dummy) ||
-       !vin("",                        t.price_  , is, dummy) ||
-       !vin("",                        t.numMax_ , is, dummy) ||
-       !vin("",                        t.numSold_, is, dummy))
-       throw std::invalid_argument("could not read client file");
-    t.id_ = abs(id);
-    t.avail_ = (id >= 0);
+    vin(                       id        , is);
+    vin(TravelPack::setPlaces, t         , is);
+    vin(Date::set            , t.begin_  , is);
+    vin(Date::set            , t.end_    , is);
+    vin(                       t.price_  , is);
+    vin(                       t.numMax_ , is);
+    vin(                       t.numSold_, is);
+    if(is){
+        t.id_ = abs(id);
+        t.avail_ = (id >= 0);
+    }
     return is;
 }
 
