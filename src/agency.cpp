@@ -13,8 +13,38 @@ Agency::Agency(std::istream& is, std::ostream& os) noexcept :cis(is),cos(os){
     }
 }
 
+
+bool Agency::loadAgency(const std::string& fpath) noexcept{
+    size_t n = fpath.find_last_of('/');
+    if(n != fpath.npos){
+        inputpath  = fpath.substr(0,n+1);
+        agencypath = fpath.substr(n+1, fpath.npos);
+    }else{
+        inputpath  = "";
+        agencypath = fpath;
+    }
+    std::ifstream is(fpath);
+    if(!is){
+        cos << "Error: could not open agency file " << fpath << std::endl;
+        return false;
+    }
+    vin(              name      , is);
+    vin(              nif       , is);
+    vin(              url       , is);
+    vin(Address::set, address   , is);
+    vin(              clientpath, is);
+    vin(              travelpath, is);
+    if(!is){
+        cos << "Error: could not read from agency file " << fpath << std::endl;
+        return false;
+    }
+    return (loadClients(inputpath + clientpath) &&
+            loadPacks  (inputpath + travelpath));
+}
+
+
 void Agency::run(){
-    this->print() << std::endl;
+    this->print(); cos << std::endl;
     this->printHelp();
     std::string b;
     while(true){
@@ -36,52 +66,59 @@ void Agency::run(){
     }
 }
 
-std::ostream& Agency::print(std::ostream& os) const{
-    const long unsigned n = std::max(size_t(0), size_t(74-name.size()))/2;
-    os << std::string(2*n+name.size(), '#')                  << std::endl;
-    os << std::string(n, ' ') << name << std::string(n, ' ') << std::endl;
-    os << std::string(2*n+name.size(), '#')                  << std::endl;
-    os                                                       << std::endl;
-    os << "NIF: " << nif                                     << std::endl;
-    os << address                                            << std::endl;
-    os << url                                                << std::endl;
-    return os;
+bool Agency::print() const{
+    try{
+        const long unsigned n = std::max(size_t(0), size_t(74-name.size()))/2;
+        cos << std::string(2*n+name.size(), '#')                  << std::endl;
+        cos << std::string(n, ' ') << name << std::string(n, ' ') << std::endl;
+        cos << std::string(2*n+name.size(), '#')                  << std::endl;
+        cos                                                       << std::endl;
+        cos << "NIF: " << nif                                     << std::endl;
+        cos << address                                            << std::endl;
+        cos << url                                                << std::endl;
+        return bool(cos);
+    }catch(...){
+        return false;
+    }
 }
 
-std::ostream& Agency::printHelp(std::ostream& os) const{
-    os << "Client management:                       Travel pack management:          \n"
-          "=================================        =================================\n"
-          "Add client              [+client]        Add pack                  [+pack]\n"
-          "Change client           [#client]        Change pack               [#pack]\n"
-          "Delete client           [-client]        Delete pack               [-pack]\n"
-          "Sell pack to client        [sell]                                         \n"
-          "                                                                          \n"
-          "Information visualization:               Other operations:                \n"
-          "=================================        =================================\n"
-          "Clients table           [tclient]        Command list (help)        [help]\n"
-          "See client              [sclient]        Save                       [save]\n"
-          "Packs table               [tpack]        Exit                       [exit]\n"
-          "See pack                  [spack]                                         \n"
-          "Find (search) packs       [fpack]                                         \n"
-          "See packs sold to clients  [sold]                                         \n";
-    return os << std::flush;
+bool Agency::printHelp() const{
+    try{
+        cos << "Client management:                       Travel pack management:          \n"
+               "=================================        =================================\n"
+               "Add client              [+client]        Add pack                  [+pack]\n"
+               "Change client           [#client]        Change pack               [#pack]\n"
+               "Delete client           [-client]        Delete pack               [-pack]\n"
+               "Sell pack to client        [sell]                                         \n"
+               "                                                                          \n"
+               "Information visualization:               Other operations:                \n"
+               "=================================        =================================\n"
+               "Clients table           [tclient]        Command list (help)        [help]\n"
+               "See client              [sclient]        Save                       [save]\n"
+               "Packs table               [tpack]        Exit                       [exit]\n"
+               "See pack                  [spack]                                         \n"
+               "Find (search) packs       [fpack]                                         \n"
+               "See packs sold to clients  [sold]                                         \n";
+        cos << std::flush;
+        return bool(cos);
+    }catch(...){
+        return false;
+    }
 }
 
-std::ostream& Agency::save(std::ostream& os) const{
+bool Agency::save() const{
     try{
         //Save agency
-        std::ofstream of_agency(inputpath + agencypath);
-        if(!of_agency.is_open()) throw std::ios_base::failure("failed to open agency file for write");
-        os << name       << std::endl;
-        os << nif        << std::endl;
-        os << url        << std::endl;
-        os << address    << std::endl;
-        os << clientpath << std::endl;
-        os << travelpath << std::endl;
+        std::ofstream of_agency; of_agency.exceptions(std::ios_base::badbit); of_agency.open(inputpath + agencypath);
+        of_agency << name       << std::endl;
+        of_agency << nif        << std::endl;
+        of_agency << url        << std::endl;
+        of_agency << address    << std::endl;
+        of_agency << clientpath << std::endl;
+        of_agency << travelpath << std::endl;
         of_agency.close();
         //Save clients
-        std::ofstream of_client(inputpath + clientpath);
-        if(!of_client.is_open()) throw std::ios_base::failure("failed to open client file for write");
+        std::ofstream of_client; of_client.exceptions(std::ios_base::badbit); of_client.open(inputpath + agencypath);
         if(vclient.size() >= 1){
             auto it = vclient.begin();
             of_client << *(it++) << std::endl;
@@ -92,8 +129,7 @@ std::ostream& Agency::save(std::ostream& os) const{
         }
         of_client.close();
         //Save travel packs
-        std::ofstream of_pack(inputpath + travelpath);
-        if(!of_pack.is_open()) throw std::ios_base::failure("failed to open travelpack file for write");
+        std::ofstream of_pack; of_pack.exceptions(std::ios_base::badbit); of_pack.open(inputpath + agencypath);
         of_pack << lasttravel << std::endl;
         if(vtravel.size() >= 1){
             auto it = vtravel.begin();
@@ -103,9 +139,13 @@ std::ostream& Agency::save(std::ostream& os) const{
                 of_pack << it->second << std::endl;
             }
         }
-        return (os << "Files saved" << std::endl);
+        of_pack.close();
+
+        cos << "Files saved" << std::endl;
+        return true;
     }catch(...){
-        return (os << "Error: could not save files");
+        cos << "Error: could not save files" << std::endl;
+        return false;
     }
 }
 
@@ -156,32 +196,4 @@ void Agency::sell(){
     c.sell(id);
     vclient.erase(it);
     vclient.insert(c);
-}
-
-bool Agency::loadAgency(const std::string& fpath){
-    size_t n = fpath.find_last_of('/');
-    if(n != fpath.npos){
-        inputpath  = fpath.substr(0,n+1);
-        agencypath = fpath.substr(n+1, fpath.npos);
-    }else{
-        inputpath  = "";
-        agencypath = fpath;
-    }
-    std::ifstream is(fpath);
-    if(!is){
-        cos << "Error: could not open agency file " << fpath << std::endl;
-        return false;
-    }
-    vin(              name      , is);
-    vin(              nif       , is);
-    vin(              url       , is);
-    vin(Address::set, address   , is);
-    vin(              clientpath, is);
-    vin(              travelpath, is);
-    if(!is){
-        cos << "Error: could not read from agency file " << fpath << std::endl;
-        return false;
-    }
-    return (loadClients(inputpath + clientpath) &&
-            loadPacks  (inputpath + travelpath));
 }

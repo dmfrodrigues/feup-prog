@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include "vin.h"
 
-bool Agency::loadClients(const std::string& fpath){
+bool Agency::loadClients(const std::string& fpath) noexcept{
     std::ifstream is(fpath, std::ios_base::in);
     if(!is){
         cos << "Error: could not open clients file " << fpath << std::endl;

@@ -81,7 +81,7 @@ Destined to be used to write to files
 @param  os  output stream where 'Address' is inserted
 @param  a   'Addres' object with the content to insert
 @return     the same as parameter os
-@exceptsafe no-throw (default Address::str(const char*) fmt does not throw)
+@throws     when os throws
 */
 std::ostream& operator<<(std::ostream& os, const Address& a);
 

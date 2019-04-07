@@ -122,7 +122,7 @@ public:
  * @param is input stream where Client will be read from
  * @param c  receiver of the extracted information
  * @return   the same parameter as is
- * @throws   when vin(), is throws
+ * @throws   when vin(), is throw
  */
 std::istream& operator>>(std::istream& is, Client& c);
 
