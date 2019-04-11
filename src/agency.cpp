@@ -7,8 +7,9 @@ Agency::Agency(std::istream& is, std::ostream& os) noexcept :cis(is),cos(os){
     std::ifstream ifs;
     while(true){
         std::string fullpath;
-        //os << "Agency file: "; getline(is, fullpath);
-        fullpath = "input/agency.txt"; //#DEV
+        ///ENTRY_POINT #DEV
+        os << "Agency file: "; getline(is, fullpath);
+        //fullpath = "input/agency.txt"; //#DEV
         if(loadAgency(fullpath)) break;
     }
 }
@@ -56,7 +57,7 @@ void Agency::run(){
         else if(b == "tpack"  ) TravelPack::print(vtravel.cbegin(), vtravel.cend(), "table", cos);
         else if(b == "sclient") seeClient();    else if(b == "spack") seePack();
         else if(b == "+client") addClient();    else if(b == "+pack") addPack();
-        else if(b == "#client") changeClient(); else if(b == "#pack") changePack(); //#DEV
+        else if(b == "#client") changeClient(); else if(b == "#pack") changePack();
         else if(b == "-client") deleteClient(); else if(b == "-pack") deletePack();
         else if(b == "sell"   ) sell();         else if(b == "fpack") findPack();
         else if(b == "sold"   ) seeSold();
