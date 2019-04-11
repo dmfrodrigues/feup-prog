@@ -57,9 +57,11 @@ public:
     @return     result of the corresponding relational operation
     @exceptsafe no-throw
     */
-    bool operator< (const Date& d) const noexcept{ return (std::string(*this) <  std::string(d)); }
-    bool operator==(const Date& d) const noexcept{ return (std::string(*this) == std::string(d)); }
-    bool operator<=(const Date& d) const noexcept{ return (*this < d || *this == d); }
+    bool operator<  (const Date& d) const noexcept{ return (std::string(*this) <  std::string(d)); }
+    bool operator== (const Date& d) const noexcept{ return !(*this < d || d < *this);              }
+    bool operator<= (const Date& d) const noexcept{ return (*this < d || *this == d);              }
+    bool operator>  (const Date& d) const noexcept{ return !(*this <= d);                          }
+    bool operator>= (const Date& d) const noexcept{ return !(*this < d);                           }
 
     /**
     Checks if a certain year is a leap year

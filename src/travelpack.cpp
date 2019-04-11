@@ -30,11 +30,14 @@ bool TravelPack::userPack(ID lasttravel, std::istream& is, std::ostream& os){
     id_ = lasttravel;
     avail_ = true;
     if(!vin("Destination (main - secondary separated by ','): ", TravelPack::setPlaces, *this  , is, os) ||
-       !vin("Begin date (yyyy/mm/dd): "                        , Date::set            , begin_ , is, os) ||
-       !vin("End date   (yyyy/mm/dd): "                        , Date::set            , end_   , is, os) ||
-       !vin("Price per person: "                               ,                        price_ , is, os) ||
-       !vin("Max number of people: "                           ,                        numMax_, is, os))
-        return false;
+       !vin("Begin date (yyyy/mm/dd): "                        , Date::set            , begin_ , is, os)) return false;
+    while(true){
+       if(!vin("End date   (yyyy/mm/dd): "                     , Date::set            , end_   , is, os)) return false;
+       if(end_ >= begin_) break;
+       os << "Error: end date happens before begin date" << std::endl;
+   }
+    if(!vin("Price per person: "                               ,                        price_ , is, os) ||
+       !vin("Max number of people: "                           ,                        numMax_, is, os)) return false;
     numSold_ = 0;
     return true;
 }
@@ -47,13 +50,19 @@ bool TravelPack::userPackprop(int propn, std::istream& is, std::ostream& os){
             while(true){
                 if(!vin("New availability value [y/n]: ", b, is, os)) return false;
                 if(b == "y" || b == "n") break;
-                else os << "Error: only [y] (yes) or [n] (no) are valid possiblities" << std::endl;
+                os << "Error: only [y] (yes) or [n] (no) are valid possiblities" << std::endl;
             }
             avail_ = (b == "yes");
             break;
         case 2: os << "Destination: "          << getPlaces() << std::endl; if(!vin("New destination: "         , TravelPack::setPlaces, *this  , is, os)) return false; break;
         case 3: os << "Begin date: "           << begin_      << std::endl; if(!vin("New begin date: "          , Date::set            , begin_ , is, os)) return false; break;
-        case 4: os << "End date: "             << end_        << std::endl; if(!vin("New end date: "            , Date::set            , end_   , is, os)) return false; break;
+        case 4: os << "End date: "             << end_        << std::endl;
+            while(true){
+                if(!vin("New end date: "            , Date::set            , end_   , is, os)) return false;
+                if(end_ <= begin_) break;
+                os << "Error: end date happens before begin date" << std::endl;
+            }
+            break;
         case 5: os << "Price per person: "     << price_      << std::endl; if(!vin("New price per person: "    ,                        price_ , is, os)) return false; break;
         case 6: os << "Max number of people: " << numMax_     << std::endl; if(!vin("New max number of people: ",                        numMax_, is, os)) return false; break;
         case 7: os << "Travel pack sells should be handled by operation [sell]" << std::endl; return false; break;
@@ -147,7 +156,7 @@ std::istream& operator>>(std::istream& is, TravelPack& t){
     vin(                       id        , is);
     vin(TravelPack::setPlaces, t         , is);
     vin(Date::set            , t.begin_  , is);
-    vin(Date::set            , t.end_    , is);
+    vin(Date::set            , t.end_    , is); if(t.end_ < t.begin_) is.setstate(std::ios::failbit);
     vin(                       t.price_  , is);
     vin(                       t.numMax_ , is);
     vin(                       t.numSold_, is);
