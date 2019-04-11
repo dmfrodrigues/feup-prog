@@ -11,7 +11,7 @@ Agency::Agency(std::istream& is, std::ostream& os) noexcept :cis(is),cos(os){
         os << "Agency file: "; getline(is, fullpath);
         //fullpath = "input/agency.txt"; //#DEV
         if(loadAgency(fullpath)) break;
-    }
+    }os << std::endl;
 }
 
 
@@ -45,10 +45,11 @@ bool Agency::loadAgency(const std::string& fpath) noexcept{
 
 
 void Agency::run(){
-    this->print(); cos << std::endl;
-    this->printHelp();
     std::string b;
     while(true){
+        CLEAR();
+        this->print(); cos << std::endl;
+        this->printHelp();
         cos << std::endl;
         cos << "Operation$ "; getline(cis, b); b = trim(b);
         cos << std::endl;
@@ -110,42 +111,50 @@ bool Agency::printHelp() const{
 bool Agency::save() const{
     try{
         //Save agency
-        std::ofstream of_agency; of_agency.exceptions(std::ios_base::badbit); of_agency.open(inputpath + agencypath);
-        of_agency << name       << std::endl;
-        of_agency << nif        << std::endl;
-        of_agency << url        << std::endl;
-        of_agency << address    << std::endl;
-        of_agency << clientpath << std::endl;
-        of_agency << travelpath << std::endl;
-        of_agency.close();
+        {
+            std::ofstream of_agency; of_agency.exceptions(std::ios_base::badbit); of_agency.open(inputpath + agencypath);
+            of_agency << name       << std::endl;
+            of_agency << nif        << std::endl;
+            of_agency << url        << std::endl;
+            of_agency << address    << std::endl;
+            of_agency << clientpath << std::endl;
+            of_agency << travelpath << std::endl;
+            of_agency.close();
+        }
         //Save clients
-        std::ofstream of_client; of_client.exceptions(std::ios_base::badbit); of_client.open(inputpath + agencypath);
-        if(vclient.size() >= 1){
-            auto it = vclient.begin();
-            of_client << *(it++) << std::endl;
-            for(; it != vclient.end(); ++it){
-                of_client << "::::::::::" << std::endl;
-                of_client << *it << std::endl;
+        {
+            std::ofstream of_client; of_client.exceptions(std::ios_base::badbit); of_client.open(inputpath + clientpath);
+            if(vclient.size() >= 1){
+                auto it = vclient.begin();
+                of_client << *(it++) << std::endl;
+                for(; it != vclient.end(); ++it){
+                    of_client << "::::::::::" << std::endl;
+                    of_client << *it << std::endl;
+                }
             }
+            of_client.close();
         }
-        of_client.close();
         //Save travel packs
-        std::ofstream of_pack; of_pack.exceptions(std::ios_base::badbit); of_pack.open(inputpath + agencypath);
-        of_pack << lasttravel << std::endl;
-        if(vtravel.size() >= 1){
-            auto it = vtravel.begin();
-            of_pack << (it++)->second << std::endl;
-            for(; it != vtravel.end(); ++it){
-                of_pack << "::::::::::" << std::endl;
-                of_pack << it->second << std::endl;
+        {
+            std::ofstream of_pack; of_pack.exceptions(std::ios_base::badbit); of_pack.open(inputpath + travelpath);
+            of_pack << lasttravel << std::endl;
+            if(vtravel.size() >= 1){
+                auto it = vtravel.begin();
+                of_pack << (it++)->second << std::endl;
+                for(; it != vtravel.end(); ++it){
+                    of_pack << "::::::::::" << std::endl;
+                    of_pack << it->second << std::endl;
+                }
             }
+            of_pack.close();
         }
-        of_pack.close();
 
         cos << "Files saved" << std::endl;
+        wait(cis, cos);
         return true;
     }catch(...){
         cos << "Error: could not save files" << std::endl;
+        wait(cis, cos);
         return false;
     }
 }

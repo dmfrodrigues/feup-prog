@@ -1,0 +1,8 @@
+tests/01/agency.txt
+tclient abc
+tclient
+tclient
+tpack abc
+tpack
+tpack
+exit

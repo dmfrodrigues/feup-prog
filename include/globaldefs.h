@@ -17,4 +17,11 @@ typedef std::string Name;
  */
 bool confirm(std::string q, std::istream& is, std::ostream& os);
 
+/**
+ * Wait for user to enter anything
+ * @param is input stream
+ * @param os output stream
+ */
+void wait(std::istream& is, std::ostream& os);
+
 #endif

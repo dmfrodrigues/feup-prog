@@ -47,7 +47,7 @@ std::pair<unsigned, bool> Agency::seeClient() const{
 }
 
 void Agency::changeClient(){
-    auto p = seeClient();
+    auto p = seeClient(); cos << std::endl;
     if(!p.second) return;
     auto i = p.first;
     std::string b;

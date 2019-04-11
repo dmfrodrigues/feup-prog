@@ -5,6 +5,12 @@
 #include <map>
 #include "client.h"
 
+#if defined(_WIN32)
+    #define CLEAR() system("cls")
+#elif defined(unix) || defined(__unix__) || defined(__unix)
+    #define CLEAR() system("clear")
+#endif
+
 typedef std::string URL;
 
 /**

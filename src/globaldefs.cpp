@@ -13,3 +13,9 @@ bool confirm(std::string q, std::istream& is, std::ostream& os){
     }
     return (b == "y");
 }
+
+void wait(std::istream& is, std::ostream& os){
+    std::string b;
+    os << "(Press 'Enter' to continue)";
+    getline(is, b);
+}
