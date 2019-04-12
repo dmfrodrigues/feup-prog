@@ -10,8 +10,8 @@ Agency::Agency(std::istream& is, std::ostream& os) noexcept :cis(is),cos(os){
     while(true){
         std::string fullpath;
         ///ENTRY_POINT #DEV
-        //os << "Agency file: "; getline(is, fullpath);
-        fullpath = "input/agency.txt"; //#DEV
+        os << "Agency file: "; getline(is, fullpath);
+        //fullpath = "input/agency.txt"; //#DEV
         if(loadAgency(fullpath)) break;
     }
     os << std::endl;

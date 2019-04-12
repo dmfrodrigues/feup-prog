@@ -7,8 +7,8 @@
 std::string trim(std::string s) noexcept{
     auto ret = s;
     size_t i;
-    i = ret.find_first_not_of(' '); ret = (i != s.npos ? ret.substr(i) : "");
-    i = ret.find_last_not_of (' '); if(i != s.npos) ret = ret.substr(0, i+1);
+    i = ret.find_first_not_of(" \f\n\r\t\v"); ret = (i != s.npos ? ret.substr(i) : "");
+    i = ret.find_last_not_of (" \f\n\r\t\v"); if(i != s.npos) ret = ret.substr(0, i+1);
     return ret;
 }
 
