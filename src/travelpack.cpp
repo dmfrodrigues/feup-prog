@@ -55,7 +55,13 @@ bool TravelPack::userPackprop(int propn, std::istream& is, std::ostream& os){
             avail_ = (b == "yes");
             break;
         case 2: os << "Destination: "          << getPlaces() << std::endl; if(!vin("New destination: "         , TravelPack::setPlaces, *this  , is, os)) return false; break;
-        case 3: os << "Begin date: "           << begin_      << std::endl; if(!vin("New begin date: "          , Date::set            , begin_ , is, os)) return false; break;
+        case 3: os << "Begin date: "           << begin_      << std::endl;
+            while(true){
+                if(!vin("New begin date: "            , Date::set            , begin_ , is, os)) return false;
+                if(end_ <= begin_) break;
+                os << "Error: begin date happens after end date" << std::endl;
+            }
+            break;
         case 4: os << "End date: "             << end_        << std::endl;
             while(true){
                 if(!vin("New end date: "            , Date::set            , end_   , is, os)) return false;

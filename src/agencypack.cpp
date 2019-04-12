@@ -25,13 +25,9 @@ bool Agency::loadPacks(const std::string& fpath){
     return true;
 }
 
-void Agency::addPack(){
-    TravelPack t;
-    if(t.userPack(lasttravel+1, cis, cos)){
-        ++lasttravel;
-        vtravel[t.id()] = t;
-        std::cout << "Travel pack added" << std::endl;
-    }
+void Agency::tpack() const{
+    header("Travel packs table");
+    TravelPack::print(vtravel.cbegin(), vtravel.cend(), "table", cos); cos << std::endl;
 }
 
 std::pair<ID, bool> Agency::seePack() const{
@@ -40,44 +36,67 @@ std::pair<ID, bool> Agency::seePack() const{
     while(true){
         if(!vin("ID of travel pack to see: ", id, cis, cos)) return std::make_pair(0, false);
         if(vtravel.find(id) != vtravel.end()) break;
-        else std::cout << "Error: ID not attributed to any travel pack" << std::endl;
+        else cos << "Error: ID not attributed to any travel pack" << std::endl;
     }
-    std::cout << std::endl;
+    cos << std::endl;
     auto it = vtravel.find(id);
     TravelPack::print(it, std::next(it), "screenfull", cos);
+    cos << std::endl;
     return std::make_pair(id, true);
 }
 
-void Agency::changePack(){
+void Agency::spack()const{
+    header("See pack");
+    seePack();
+}
+
+void Agency::ppack(){
+    header("Add travel pack");
+    TravelPack t;
+    if(t.userPack(lasttravel+1, cis, cos)){
+        ++lasttravel;
+        vtravel[t.id()] = t;
+        cos << "Travel pack added" << std::endl;
+    }
+}
+
+void Agency::cpack(){
+    header("Change travel pack");
     auto p = seePack();
     if(!p.second) return;
     int id = p.first;
-    std::string b; std::cout << std::endl;
+    std::string b;
     int j;{
         while(true){
             if(!vin("# of property to change: ", j, cis, cos)) return;
             if(0 <= j && j < 8)      break;
-            else std::cout << "Error: # outside valid input range [0,7]" << std::endl;
+            else cos << "Error: # outside valid input range [0,7]" << std::endl;
         }
     }
+    cos << std::endl;
     auto& it = vtravel[id];
+
     if(it.userPackprop(j, cis, cos)){
-        std::cout << "Property changed" << std::endl;
+
+
+        cos << std::endl << "Property changed" << std::endl;
     }
 }
 
-void Agency::deletePack(){
+void Agency::mpack(){
+    header("Delete travel pack");
     auto p = seePack();
     if(!p.second) return;
     ID id = p.first;
-    std::cout << std::endl;
     if(!confirm("Confirm you want to delete travel pack with ID "+std::to_string(id)+" [y/n]: ", cis, cos)) return;
+
     vtravel.erase(id);
-    std::cout << "Travel pack deleted" << std::endl;
+    cos << "Travel pack deleted" << std::endl;
 }
 
-void Agency::findPack() const{
-    std::cout << "If you do not want to use a search field, fill with '-'" << std::endl;
+void Agency::fpack() const{
+    header("Find (search) packs");
+    cos << "If you do not want to use a search field, fill with '-'" << std::endl;
     std::set<std::string> splaces;{
         std::string b;
         if(!vin("Destinations (separated by ',' if more than one): ", b, cis, cos)) return;
@@ -89,8 +108,7 @@ void Agency::findPack() const{
     Date first, last;{
         std::string b;
         while(true){
-            std::cout << "Begin date (yyyy/mm/dd): ";
-            getline(std::cin, b);
+            if(!vin("Begin date (yyyy/mm/dd): ", b, cis, cos)) return;
             if(b == "-"){
                 first = Date::begin();
                 break;
@@ -99,13 +117,12 @@ void Agency::findPack() const{
                     first = Date(b);
                     break;
                 }catch(const std::invalid_argument& e){
-                    std::cout << "Error: " << e.what() << std::endl;
+                    cos << "Error: " << e.what() << std::endl;
                 }
             }
         }
         while(true){
-            std::cout << "End date (yyyy/mm/dd): ";
-             getline(std::cin, b);
+            if(!vin("End date (yyyy/mm/dd): ", b, cis, cos)) return;
             if(b == "-"){
                 last = Date::end();
                 break;
@@ -114,7 +131,7 @@ void Agency::findPack() const{
                     last = Date(b);
                     break;
                 }catch(const std::invalid_argument& e){
-                    std::cout << "Error: " << e.what() << std::endl;
+                    cos << "Error: " << e.what() << std::endl;
                 }
             }
         }
@@ -128,6 +145,6 @@ void Agency::findPack() const{
                 b = false;
         if(b) m.insert(p);
     }
-    std::cout << std::endl;
-    TravelPack::print(m.cbegin(), m.cend(), "table", cos);
+    cos << std::endl;
+    TravelPack::print(m.cbegin(), m.cend(), "table", cos); cos << std::endl;
 }

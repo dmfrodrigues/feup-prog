@@ -33,6 +33,9 @@ private:
     std::istream& cis;                ///default input stream
     std::ostream& cos;                ///default output stream
 
+    static const std::string opstr;
+    static const int WIDTH = 74;
+
     /**
      * Loads agency data and client/travelpack info
      * @param  fpath path to agency file
@@ -50,10 +53,9 @@ private:
     bool loadClients(const std::string& fpath) noexcept;
 
     /**
-     * Add client by asking the user its data
-     * @throws when cis, cos throw
+     * Display all clients in a table
      */
-    void addClient();
+    void tclient() const;
 
     /**
      * Select and see all data of a client
@@ -63,14 +65,25 @@ private:
     std::pair<unsigned, bool> seeClient() const;
 
     /**
+     * Allow user to see all info about a specific client
+     */
+    void sclient() const;
+
+    /**
+     * Add client by asking the user its data
+     * @throws when cis, cos throw
+     */
+    void pclient();
+
+    /**
      * Change client data through Client::userClientprop()
      */
-    void changeClient();
+    void cclient();
 
     /**
      * Delete client from vclient
      */
-    void deleteClient();
+    void mclient();
 
     /**
      * Loads travelpack list from content of file to vtravel
@@ -80,9 +93,9 @@ private:
     bool loadPacks(const std::string& fpath);
 
     /**
-     * Add client by asking the user its data
+     * Display all travelpacks in a table
      */
-    void addPack();
+    void tpack() const;
 
     /**
      * Select and see all data of a travelpack
@@ -91,31 +104,46 @@ private:
     std::pair<ID, bool> seePack() const;
 
     /**
+     * Allow user to see all info about a specific travelpack
+     */
+    void spack() const;
+
+    /**
+     * Add client by asking the user its data
+     */
+    void ppack();
+
+    /**
      * Change travelpack data through TravelPack::userPackprop()
      */
-    void changePack();
+    void cpack();
 
     /**
      * Delete pack from vtravel
      */
-    void deletePack();
+    void mpack();
 
     /**
      * Find all packs that satisfy certain search options (destination(s), begin
      * and end date), and show them in a table
      */
-    void findPack() const;
+    void fpack() const;
 
     /**
      * Display some numbers about packs sold to one client or all clients.
      * Calculates the revenue of each travelpack
      */
-    void seeSold() const;
+    void sold() const;
 
     /**
      * Sell travelpack to a client
      */
     void sell();
+
+    /**
+     * prints header of agency, with a sentence and '=' after that
+     */
+    void header(const std::string& s) const;
 
     /**
      * Save content of all data structures to files
@@ -132,6 +160,7 @@ public:
     Agency(std::istream& is = std::cin, std::ostream& os = std::cout) noexcept;
 
     /**
+     *
      * Print agency details to cos
      * @return true if print was successfull, false otherwise
      */

@@ -3,15 +3,18 @@
 #include <fstream>
 #include "vin.h"
 
+const std::string Agency::opstr = "Operation$ ";
+
 Agency::Agency(std::istream& is, std::ostream& os) noexcept :cis(is),cos(os){
     std::ifstream ifs;
     while(true){
         std::string fullpath;
         ///ENTRY_POINT #DEV
-        os << "Agency file: "; getline(is, fullpath);
-        //fullpath = "input/agency.txt"; //#DEV
+        //os << "Agency file: "; getline(is, fullpath);
+        fullpath = "input/agency.txt"; //#DEV
         if(loadAgency(fullpath)) break;
-    }os << std::endl;
+    }
+    os << std::endl;
 }
 
 
@@ -51,26 +54,26 @@ void Agency::run(){
         this->print(); cos << std::endl;
         this->printHelp();
         cos << std::endl;
-        cos << "Operation$ "; getline(cis, b); b = trim(b);
+        cos << opstr; getline(cis, b); b = trim(b);
         cos << std::endl;
 
-        if     (b == "tclient")     Client::print(vclient.cbegin(), vclient.cend(), "table", cos);
-        else if(b == "tpack"  ) TravelPack::print(vtravel.cbegin(), vtravel.cend(), "table", cos);
-        else if(b == "sclient") seeClient();    else if(b == "spack") seePack();
-        else if(b == "+client") addClient();    else if(b == "+pack") addPack();
-        else if(b == "#client") changeClient(); else if(b == "#pack") changePack();
-        else if(b == "-client") deleteClient(); else if(b == "-pack") deletePack();
-        else if(b == "sell"   ) sell();         else if(b == "fpack") findPack();
-        else if(b == "sold"   ) seeSold();
-        else if(b == "help"   ) printHelp();
-        else if(b == "save"   ) save();         else if(b == "exit" ) return;
-        else cos << "Invalid operation" << std::endl;
+        if     (b == "tclient") tclient();
+        else if(b == "tpack"  ) tpack();
+        else if(b == "sclient") sclient(); else if(b == "spack") spack();
+        else if(b == "+client") pclient(); else if(b == "+pack") ppack();
+        else if(b == "#client") cclient(); else if(b == "#pack") cpack();
+        else if(b == "-client") mclient(); else if(b == "-pack") mpack();
+        else if(b == "sell"   ) sell();    else if(b == "fpack") fpack();
+        else if(b == "sold"   ) sold();
+        else if(b == "save"   ) save();    else if(b == "exit" ) return;
+        else continue;
+        wait(cis,cos);
     }
 }
 
 bool Agency::print() const{
     try{
-        const long unsigned n = std::max(size_t(0), size_t(74-name.size()))/2;
+        const long unsigned n = std::max(size_t(0), size_t(WIDTH-name.size()))/2;
         cos << std::string(2*n+name.size(), '#')                  << std::endl;
         cos << std::string(n, ' ') << name << std::string(n, ' ') << std::endl;
         cos << std::string(2*n+name.size(), '#')                  << std::endl;
@@ -95,9 +98,9 @@ bool Agency::printHelp() const{
                "                                                                          \n"
                "Information visualization:               Other operations:                \n"
                "=================================        =================================\n"
-               "Clients table           [tclient]        Command list (help)        [help]\n"
-               "See client              [sclient]        Save                       [save]\n"
-               "Packs table               [tpack]        Exit                       [exit]\n"
+               "Clients table           [tclient]        Save                       [save]\n"
+               "See client              [sclient]        Exit                       [exit]\n"
+               "Packs table               [tpack]                                         \n"
                "See pack                  [spack]                                         \n"
                "Find (search) packs       [fpack]                                         \n"
                "See packs sold to clients  [sold]                                         \n";
@@ -109,6 +112,7 @@ bool Agency::printHelp() const{
 }
 
 bool Agency::save() const{
+    header("Save");
     try{
         //Save agency
         {
@@ -150,22 +154,26 @@ bool Agency::save() const{
         }
 
         cos << "Files saved" << std::endl;
-        wait(cis, cos);
         return true;
     }catch(...){
         cos << "Error: could not save files" << std::endl;
-        wait(cis, cos);
         return false;
     }
 }
 
-void Agency::seeSold() const{
+void Agency::sold() const{
+    header("See packs sold to clients");
     Client::print(vclient.begin(), vclient.end(), "table", cos) << std::endl;
     std::string b; int i;
     while(true){
         if(!vin("# of client to see (if all clients, fill with '-'): ", b, cis, cos)) return;
         b = trim(b); if(b == "-") break;
-        i = std::stoi(b);
+        try{
+            i = std::stoi(b);
+        }catch(const std::invalid_argument& e){
+            cos << "Error: invalid argument" << std::endl;
+            continue;
+        }
         if(0 <= i && i < (int)vclient.size()) break;
         else cos << "Error: # outside valid input range [0," << vclient.size()-1 << "]" << std::endl;
     }
@@ -188,6 +196,7 @@ void Agency::seeSold() const{
 }
 
 void Agency::sell(){
+    header("Sell pack to client");
     auto p = seeClient(); unsigned i  = p.first; if(!p.second) return;
     auto q = seePack  (); ID       id = q.first; if(!q.second) return;
     auto it = vclient.begin(); std::advance(it, i);
@@ -200,10 +209,17 @@ void Agency::sell(){
         cos << "Travel pack can no longer be sold (not available or sold out)" << std::endl;
         return;
     }
-    if(!confirm("Confirm you want to sell the pack with ID "+std::to_string(id)+" to client #"+std::to_string(i),cis,cos)) return;
-    Client c = *it;
-    vtravel[id].sell();
-    c.sell(id);
-    vclient.erase(it);
-    vclient.insert(c);
+    if(confirm("Confirm you want to sell the pack with ID "+std::to_string(id)+" to client #"+std::to_string(i) + " [y/n]: ",cis,cos)){
+        Client c = *it;
+        vtravel[id].sell();
+        c.sell(id);
+        vclient.erase(it);
+        vclient.insert(c);
+        cos << "Pack sold" << std::endl;
+    }
+}
+
+void Agency::header(const std::string& s) const{
+    CLEAR(); this->print(); cos << std::endl;
+    cos << "==== " + s + " " + std::string(WIDTH-s.size()-6,'=') << std::endl << std::endl;
 }
