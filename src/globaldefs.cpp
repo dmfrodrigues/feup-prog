@@ -11,7 +11,8 @@ bool confirm(std::string q, std::istream& is, std::ostream& os){
         if(b == "y" || b == "n") break;
         os << "Error: only [y] (yes) or [n] (no) are valid possiblities" << std::endl;
     }
-    return (b == "y");
+    if(b == "n"){ os << "Operation cancelled" << std::endl; return false; }
+    else                                                    return true;
 }
 
 void wait(std::istream& is, std::ostream& os){
