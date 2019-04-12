@@ -2,8 +2,8 @@
 #ifndef AGENCY_H_INCLUDED
 #define AGENCY_H_INCLUDED
 
-#include <map>
 #include "client.h"
+#include <map>
 
 #if defined(_WIN32)
     #define CLEAR() system("cls")

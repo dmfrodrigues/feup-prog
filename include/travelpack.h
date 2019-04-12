@@ -2,14 +2,11 @@
 #ifndef TRAVELPACK_H_INCLUDED
 #define TRAVELPACK_H_INCLUDED
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include "convenient.h"
 #include "date.h"
-#include "globaldefs.h"
+#include <vector>
 
 typedef int ID;
+typedef int Price;
 
 /**
  * Stores travel pack data, provides some helpers

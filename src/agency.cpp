@@ -1,7 +1,7 @@
 #include "agency.h"
 
+#include "globaldefs.h"
 #include <fstream>
-#include "vin.h"
 
 const std::string Agency::opstr = "Operation$ ";
 

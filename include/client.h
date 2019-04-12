@@ -2,16 +2,11 @@
 #ifndef CLIENT_H_INCLUDED
 #define CLIENT_H_INCLUDED
 
-#include <string>
-#include <vector>
-#include <iostream>
-#include <set>
 #include "address.h"
-#include "convenient.h"
-#include "globaldefs.h"
 #include "name.h"
 #include "nif.h"
 #include "travelpack.h"
+#include <set>
 
 /**
  * Stores client data, provides some helpers

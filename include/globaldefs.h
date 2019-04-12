@@ -4,8 +4,6 @@
 
 #include <iostream>
 
-typedef int Price;
-
 /**
  * Ask the user to confirm a choice, accepting only 'y' (yes) or 'n' (no) as valid answers
  * @param  q  Query string (to be printed everytime before user input)

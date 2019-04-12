@@ -2,6 +2,9 @@
 #ifndef VIN_H_INCLUDED
 #define VIN_H_INCLUDED
 
+#include "helpers.h"
+#include <sstream>
+
 /**
 Checks if provided string compares equal to "cancel"
 @param  s   string to compare

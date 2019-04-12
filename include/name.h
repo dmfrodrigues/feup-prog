@@ -2,9 +2,6 @@
 #ifndef NAME_H_INCLUDED
 #define NAME_H_INCLUDED
 
-#include <string>
-#include <vector>
-#include "convenient.h"
 #include "vin.h"
 
 struct Name: public std::string{

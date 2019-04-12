@@ -1,7 +1,7 @@
 #include "nif.h"
 
 #include <stdexcept>
-#include "convenient.h"
+#include "helpers.h"
 
 NIF::NIF(std::string s){
     s = trim(s);

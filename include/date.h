@@ -2,7 +2,7 @@
 #ifndef DATE_H_INCLUDED
 #define DATE_H_INCLUDED
 
-#include <iostream>
+#include <ostream>
 
 /**
 * Represents a date, providing some checks and utilities

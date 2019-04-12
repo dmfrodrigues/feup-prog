@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <stdexcept>
+#include "globaldefs.h"
 #include "vin.h"
 
 bool Agency::loadClients(const std::string& fpath) noexcept{

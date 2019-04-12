@@ -1,7 +1,8 @@
-#include "convenient.h"
+#include "helpers.h"
 
+#include <algorithm>
 #include <set>
-#include "vin.h"
+#include <stdexcept>
 
 std::string trim(std::string s) noexcept{
     std::string ret = s;

@@ -2,9 +2,6 @@
 #ifndef STRMANIP_H_INCLUDED
 #define STRMANIP_H_INCLUDED
 
-#include <algorithm>
-#include <iostream>
-#include <sstream>
 #include <string>
 #include <vector>
 
