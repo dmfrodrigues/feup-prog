@@ -5,7 +5,6 @@
 #include <iostream>
 
 typedef int Price;
-typedef std::string Name;
 
 /**
  * Ask the user to confirm a choice, accepting only 'y' (yes) or 'n' (no) as valid answers

@@ -9,6 +9,7 @@
 #include "address.h"
 #include "convenient.h"
 #include "globaldefs.h"
+#include "name.h"
 #include "nif.h"
 #include "travelpack.h"
 
@@ -79,7 +80,7 @@ public:
      * @return const reference to corresponding member variable
      * @exceptsafe  no-throw
      */
-    const std::string&  name     ()const noexcept{ return name_   ; }
+    const Name&         name     ()const noexcept{ return name_   ; }
     const NIF&          nif      ()const noexcept{ return nif_    ; }
     const int&          numFamily()const noexcept{ return numFam_ ; }
     const Address&      address  ()const noexcept{ return address_; }
