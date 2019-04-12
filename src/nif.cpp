@@ -1,6 +1,5 @@
 #include "nif.h"
 
-#include <stdexcept>
 #include "helpers.h"
 
 NIF::NIF(std::string s){

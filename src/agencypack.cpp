@@ -1,10 +1,8 @@
 #include "agency.h"
 
+#include "globaldefs.h"
 #include <algorithm>
 #include <fstream>
-#include <stdexcept>
-#include "globaldefs.h"
-#include "vin.h"
 
 bool Agency::loadPacks(const std::string& fpath){
     std::ifstream is(fpath, std::ios_base::in);

@@ -2,6 +2,7 @@
 
 #include "vin.h"
 
+
 void Client::setPacks(Client& c, std::string s){
     c.vtravel_ = makePacks(s);
 }
