@@ -4,11 +4,11 @@
 #include <fstream>
 
 
-bool Agency::loadClients(const std::string& fpath) noexcept{ cos << (int)fpath[fpath.size()-2] << " " << (int)fpath[fpath.size()-1] << std::endl;
+bool Agency::loadClients(const std::string& fpath) noexcept{
     std::ifstream is(fpath, std::ios_base::in);
 
     if(!is){
-        cos << "Error: could not open clients file " << fpath << std::endl;
+        cos << "Error: could not open clients file. Invalid path '" << fpath << "'" << std::endl;
         return false;
     }
     vclient.clear();

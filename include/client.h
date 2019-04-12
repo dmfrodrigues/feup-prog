@@ -17,7 +17,7 @@ friend std::ostream& operator<<(std::ostream& os, const Client& c);
 private:
     Name name_;             ///name of client
     NIF nif_;               ///numero de identificacao fiscal
-    unsigned numFam_;            ///number of household members
+    unsigned numFam_;       ///number of household members
     Address address_;       ///address
     std::set<ID> vtravel_;  ///set of bought packs
 

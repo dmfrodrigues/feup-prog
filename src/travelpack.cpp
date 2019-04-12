@@ -35,15 +35,29 @@ bool TravelPack::userPack(ID lasttravel, std::istream& is, std::ostream& os){
        if(!vin("End date   (yyyy/mm/dd): "                     , Date::set            , end_   , is, os)) return false;
        if(end_ >= begin_) break;
        os << "Error: end date happens before begin date" << std::endl;
-   }
-    if(!vin("Price per person: "                               ,                        price_ , is, os) ||
-       !vin("Max number of people: "                           ,                        numMax_, is, os)) return false;
+    }
+    auto i = price_;
+    while(true){
+        if(!vin("Price per person: ", i, is, os)) return false;
+        if(0 <= i) break;
+        else       os << "Price per person out of valid range >=0" << std::endl;
+    }
+    price_ = i;
+    auto j = numMax_;
+    while(true){
+        if(!vin("Max number of people: ", i, is, os)) return false;
+        if(1 <= i) break;
+        else       os << "Max number of people out of valid range >=1" << std::endl;
+    }
+    numMax_ = j;
     numSold_ = 0;
     return true;
 }
 
 bool TravelPack::userPackprop(unsigned propn, std::istream& is, std::ostream& os){
     std::string b;
+    auto i = price_;
+    auto j = numMax_;
     switch(propn){
         case 0: os << "Travel pack ID can not be changed" << std::endl; return false; break;
         case 1: os << "Availability: "                    << (avail_?"yes":"no") << std::endl;
@@ -69,8 +83,22 @@ bool TravelPack::userPackprop(unsigned propn, std::istream& is, std::ostream& os
                 os << "Error: end date happens before begin date" << std::endl;
             }
             break;
-        case 5: os << "Price per person: "     << price_      << std::endl; if(!vin("New price per person: "    ,                        price_ , is, os)) return false; break;
-        case 6: os << "Max number of people: " << numMax_     << std::endl; if(!vin("New max number of people: ",                        numMax_, is, os)) return false; break;
+        case 5: os << "Price per person: "     << price_      << std::endl;
+            while(true){
+                if(!vin("New price per person: ", i, is, os)) return false;
+                if(0 <= i) break;
+                else       os << "Price per person out of valid range >=0" << std::endl;
+            }
+            price_ = i;
+            break;
+        case 6: os << "Max number of people: " << numMax_     << std::endl;
+            while(true){
+                if(!vin("New max number of people: ", i, is, os)) return false;
+                if(1 <= i) break;
+                else       os << "Max number of people out of valid range >=1" << std::endl;
+            }
+            numMax_ = j;
+            break;
         case 7: os << "Travel pack sells should be handled by operation [sell]" << std::endl; return false; break;
         default: throw std::invalid_argument("trying to access travelpack property that does not exist");
     }
