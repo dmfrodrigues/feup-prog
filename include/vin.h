@@ -25,8 +25,8 @@ Exceptions thrown by is, os are not handled
 template<class T> inline bool vin(const char *q, T& obj, std::istream& is, std::ostream& os){
     std::string b; std::stringstream ss; ss.exceptions(std::stringstream::failbit | std::stringstream::badbit);
     while(true){
-        os << q; getline(is, b);
-        if(isCancel(b)) return false;
+        os << q; getline(is, b); b = trim(b);
+        if(isCancel(b)){ os << "Operation cancelled" << std::endl; return false; }
         ss.clear(); ss.str(b);
         try{
             ss >> obj;
@@ -44,8 +44,8 @@ Specialization for obj of type string
 */
 template<> inline bool vin(const char *q, std::string& obj, std::istream& is, std::ostream& os){
     std::string b;
-    os << q; getline(is, b);
-    if(isCancel(b)) return false;
+    os << q; getline(is, b); b = trim(b);
+    if(isCancel(b)){ os << "Operation cancelled" << std::endl; return false; }
     obj = b;
     return true;
 }
@@ -66,8 +66,8 @@ Exceptions thrown by is, os are not handled
 template<class T> inline bool vin(const char *q, void f(T&, std::string), T& obj, std::istream& is, std::ostream& os){
     std::string b;
     while(true){
-        os << q; getline(is, b);
-        if(isCancel(b)) return false;
+        os << q; getline(is, b); b = trim(b);
+        if(isCancel(b)){ os << "Operation cancelled" << std::endl; return false; }
         try{
             f(obj, b);
             return true;
@@ -88,7 +88,7 @@ Recieves input to obj, only tries once
 template<class T> inline void vin(T& obj, std::istream& is){
     std::string b; std::stringstream ss;
     ss.exceptions(std::stringstream::failbit | std::stringstream::badbit);
-    getline(is, b);
+    getline(is, b); b = trim(b);
     try{
         ss.clear(); ss.str(b);
         ss >> obj;
@@ -102,7 +102,7 @@ Specialization for std::string
 */
 template<> inline void vin(std::string& obj, std::istream& is){
     std::string b;
-    getline(is, b);
+    getline(is, b); b = trim(b);
     obj = b;
 }
 
@@ -117,7 +117,7 @@ All exceptions are unhandled
 */
 template<class T> inline void vin(void fptr(T&, std::string), T& obj, std::istream& is){
     std::string b;
-    getline(is, b);
+    getline(is, b); b = trim(b);
     try{
         fptr(obj, b);
     }catch(...){
