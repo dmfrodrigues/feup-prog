@@ -3,7 +3,7 @@
 #include "helpers.h"
 
 Address::Address(std::string s){
-    std::vector<std::string> v = split(s, '/');
+    auto v = split(s, '/');
     if(v.size() != 5) throw std::invalid_argument("address does not have 5 fields");
     street_     = v[0];
     door_       = v[1];

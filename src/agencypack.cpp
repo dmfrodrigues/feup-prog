@@ -32,7 +32,7 @@ void Agency::tpack() const{
 
 std::pair<ID, bool> Agency::seePack() const{
     TravelPack::print(vtravel.begin(), vtravel.end(), "table", cos) << std::endl;
-    int id;
+    ID id;
     while(true){
         if(!vin("ID of travel pack to see: ", id, cis, cos)) return std::make_pair(0, false);
         if(vtravel.find(id) != vtravel.end()) break;
@@ -64,7 +64,7 @@ void Agency::cpack(){
     header("Change travel pack");
     auto p = seePack();
     if(!p.second) return;
-    int id = p.first;
+    auto id = p.first;
     std::string b;
     int j;{
         while(true){
@@ -76,7 +76,7 @@ void Agency::cpack(){
     cos << std::endl;
     auto& it = vtravel[id];
 
-    if(it.userPackprop(j, cis, cos)){
+    if(it.userPackprop((unsigned)j, cis, cos)){
 
 
         cos << std::endl << "Property changed" << std::endl;
@@ -87,7 +87,7 @@ void Agency::mpack(){
     header("Delete travel pack");
     auto p = seePack();
     if(!p.second) return;
-    ID id = p.first;
+    auto id = p.first;
     if(!confirm("Confirm you want to delete travel pack with ID "+std::to_string(id)+" [y/n]: ", cis, cos)) return;
 
     vtravel.erase(id);
@@ -96,7 +96,7 @@ void Agency::mpack(){
 
 void Agency::fpack() const{
     header("Find (search) packs");
-    cos << "If you do not want to use a search field, fill with '-'" << std::endl;
+    cos << "If you do not want to use a search field, fill with an invalid input (like '-' or press 'Enter')" << std::endl;
     std::set<std::string> splaces;{
         std::string b;
         if(!vin("Destinations (separated by ',' if more than one): ", b, cis, cos)) return;
@@ -107,33 +107,20 @@ void Agency::fpack() const{
     }
     Date first, last;{
         std::string b;
-        while(true){
-            if(!vin("Begin date (yyyy/mm/dd): ", b, cis, cos)) return;
-            if(b == "-"){
-                first = Date::begin();
-                break;
-            }else{
-                try{
-                    first = Date(b);
-                    break;
-                }catch(const std::invalid_argument& e){
-                    cos << "Error: " << e.what() << std::endl;
-                }
-            }
+
+        if(!vin("Begin date (yyyy/mm/dd): ", b, cis, cos)) return;
+        try{
+            first = Date(b);
+        }catch(const std::invalid_argument& e){
+            first = Date::begin();
         }
-        while(true){
-            if(!vin("End date (yyyy/mm/dd): ", b, cis, cos)) return;
-            if(b == "-"){
-                last = Date::end();
-                break;
-            }else{
-                try{
-                    last = Date(b);
-                    break;
-                }catch(const std::invalid_argument& e){
-                    cos << "Error: " << e.what() << std::endl;
-                }
-            }
+
+
+        if(!vin("End date (yyyy/mm/dd): ", b, cis, cos)) return;
+        try{
+            last = Date(b);
+        }catch(const std::invalid_argument& e){
+            last = Date::end();
         }
     }
     std::map<ID, TravelPack> m;

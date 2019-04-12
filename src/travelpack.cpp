@@ -8,7 +8,7 @@ void TravelPack::setPlaces(TravelPack& t, std::string s){
 }
 
 std::string TravelPack::getPlaces() const noexcept{
-    std::string ret = vplaces_[0];
+    auto ret = vplaces_[0];
     if(vplaces_.size() > 1)
         ret += " - " + join(vplaces_.begin()+1, vplaces_.end(), ", ");
     return ret;
@@ -16,7 +16,7 @@ std::string TravelPack::getPlaces() const noexcept{
 
 std::vector<std::string> TravelPack::makePlaces(std::string s){
     std::vector<std::string> ret;
-    std::vector<std::string> v = split(s, '-');
+    auto v = split(s, '-');
     if(v.size() < 1) throw std::invalid_argument("could not find at least one place");
     ret.push_back(v[0]);
     if(v.size() == 2){
@@ -42,7 +42,7 @@ bool TravelPack::userPack(ID lasttravel, std::istream& is, std::ostream& os){
     return true;
 }
 
-bool TravelPack::userPackprop(int propn, std::istream& is, std::ostream& os){
+bool TravelPack::userPackprop(unsigned propn, std::istream& is, std::ostream& os){
     std::string b;
     switch(propn){
         case 0: os << "Travel pack ID can not be changed" << std::endl; return false; break;
@@ -52,7 +52,7 @@ bool TravelPack::userPackprop(int propn, std::istream& is, std::ostream& os){
                 if(b == "y" || b == "n") break;
                 os << "Error: only [y] (yes) or [n] (no) are valid possiblities" << std::endl;
             }
-            avail_ = (b == "yes");
+            avail_ = (b == "y");
             break;
         case 2: os << "Destination: "          << getPlaces() << std::endl; if(!vin("New destination: "         , TravelPack::setPlaces, *this  , is, os)) return false; break;
         case 3: os << "Begin date: "           << begin_      << std::endl;
@@ -80,7 +80,7 @@ bool TravelPack::userPackprop(int propn, std::istream& is, std::ostream& os){
 template<class ForwardIterator>
 std::ostream& TravelPack::print(ForwardIterator first, ForwardIterator last, std::string f, std::ostream& os){
     if(first == last){
-        return (os << "No clients were found" << std::endl);
+        return (os << "No travel packs were found" << std::endl);
     }
     if(f == "table"){
         os << ljust("ID"         ,  4)
@@ -106,7 +106,7 @@ std::ostream& TravelPack::print(ForwardIterator first, ForwardIterator last, std
             os << std::endl;
         }
     }else if(f == "sold"){
-        int maxpeople = 0, sold = 0, revenue = 0, r;
+        int revenue = 0; unsigned maxpeople = 0, sold = 0;
         os << ljust("ID"         ,  4)
            << ljust("Avail"      ,  7)
            << ljust("Destination", 50) << " \t"
@@ -120,7 +120,7 @@ std::ostream& TravelPack::print(ForwardIterator first, ForwardIterator last, std
         os << std::string(121, '=') << std::endl;;
         for(auto it = first; it != last; ++it){
             const auto& t = it->second;
-            r = t.price()*t.numSold();
+            auto r = t.price()*(int)t.numSold();
             revenue += r;
             maxpeople += t.numMax();
             sold += t.numSold();

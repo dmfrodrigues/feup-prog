@@ -75,8 +75,8 @@ void Agency::cclient(){
     }
     cos << std::endl;
     auto it = vclient.begin(); std::advance(it, i);
-    Client c = *it;
-    if(c.userClientprop(j, cis, cos)){
+    auto c = *it;
+    if(c.userClientprop((unsigned)j, cis, cos)){
         vclient.erase(it);
         vclient.insert(c);
         cos << std::endl << "Property changed" << std::endl;

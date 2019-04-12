@@ -21,8 +21,8 @@ private:
     Date begin_;                        ///begin date
     Date end_;                          ///end date
     Price price_;                       ///price per person
-    int numMax_;                        ///max number of people
-    int numSold_;                       ///number of sold tickets
+    unsigned numMax_;                   ///max number of people
+    unsigned numSold_;                  ///number of sold tickets
 
     /**
      * Changes content of vplaces_ by parsing the contents of a string
@@ -69,7 +69,7 @@ public:
      * @throws       when vin throws
      * @throws  out_of_range when propn is not in the valid range
      */
-    bool userPackprop(int propn, std::istream& is, std::ostream& os);
+    bool userPackprop(unsigned propn, std::istream& is, std::ostream& os);
 
     /**
      * 'Get' functions
@@ -82,8 +82,8 @@ public:
     const Date&                     begin  ()const noexcept{ return begin_  ; }
     const Date&                     end    ()const noexcept{ return end_    ; }
     const Price&                    price  ()const noexcept{ return price_  ; }
-    const int&                      numMax ()const noexcept{ return numMax_ ; }
-    const int&                      numSold()const noexcept{ return numSold_; }
+    const unsigned&                 numMax ()const noexcept{ return numMax_ ; }
+    const unsigned&                 numSold()const noexcept{ return numSold_; }
 
     /**
      * Checks if this travelpack can be sold

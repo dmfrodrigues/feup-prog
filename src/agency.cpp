@@ -19,7 +19,7 @@ Agency::Agency(std::istream& is, std::ostream& os) noexcept :cis(is),cos(os){
 
 
 bool Agency::loadAgency(const std::string& fpath) noexcept{
-    size_t n = fpath.find_last_of('/');
+    auto n = fpath.find_last_of('/');
     if(n != fpath.npos){
         inputpath  = fpath.substr(0,n+1);
         agencypath = fpath.substr(n+1, fpath.npos);
@@ -49,10 +49,16 @@ bool Agency::loadAgency(const std::string& fpath) noexcept{
 
 void Agency::run(){
     std::string b;
-    while(true){
-        CLEAR();
+    #ifndef CLEAR
         this->print(); cos << std::endl;
         this->printHelp();
+    #endif
+    while(true){
+        #ifdef CLEAR
+            CLEAR();
+            this->print(); cos << std::endl;
+            this->printHelp();
+        #endif
         cos << std::endl;
         cos << opstr; getline(cis, b); b = trim(b);
         cos << std::endl;
@@ -73,7 +79,7 @@ void Agency::run(){
 
 bool Agency::print() const{
     try{
-        const long unsigned n = std::max(size_t(0), size_t(WIDTH-name.size()))/2;
+        const auto n = std::max(size_t(0), size_t(WIDTH-name.size()))/2;
         cos << std::string(2*n+name.size(), '#')                  << std::endl;
         cos << std::string(n, ' ') << name << std::string(n, ' ') << std::endl;
         cos << std::string(2*n+name.size(), '#')                  << std::endl;
@@ -166,13 +172,12 @@ void Agency::sold() const{
     Client::print(vclient.begin(), vclient.end(), "table", cos) << std::endl;
     std::string b; int i;
     while(true){
-        if(!vin("# of client to see (if all clients, fill with '-'): ", b, cis, cos)) return;
-        b = trim(b); if(b == "-") break;
+        if(!vin("# of client to see (if all clients, fill with invalid input, like '-' or press 'Enter'): ", b, cis, cos)) return;
+        b = trim(b);
         try{
             i = std::stoi(b);
         }catch(const std::invalid_argument& e){
-            cos << "Error: invalid argument" << std::endl;
-            continue;
+            b = "-"; break;
         }
         if(0 <= i && i < (int)vclient.size()) break;
         else cos << "Error: # outside valid input range [0," << vclient.size()-1 << "]" << std::endl;
@@ -200,7 +205,6 @@ void Agency::sell(){
     auto p = seeClient(); unsigned i  = p.first; if(!p.second) return;
     auto q = seePack  (); ID       id = q.first; if(!q.second) return;
     auto it = vclient.begin(); std::advance(it, i);
-    cos << std::endl;
     if(it->vtravel().find(id) != it->vtravel().end()){
         cos << "Client #" << i <<" has already bought travel pack with ID " << id << std::endl;
         return;
@@ -220,6 +224,8 @@ void Agency::sell(){
 }
 
 void Agency::header(const std::string& s) const{
-    CLEAR(); this->print(); cos << std::endl;
+    #ifdef CLEAR
+        CLEAR(); this->print(); cos << std::endl;
+    #endif
     cos << "==== " + s + " " + std::string(WIDTH-s.size()-6,'=') << std::endl << std::endl;
 }

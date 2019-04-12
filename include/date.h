@@ -10,7 +10,7 @@
 struct Date{
 friend std::ostream& operator<<(std::ostream& os, const Date& d);
 private:
-    int y_, m_, d_; ///year, month, day
+    unsigned y_, m_, d_; ///year, month, day
 public:
     /**
     Constructs Date without arguments (defaults to begin())
@@ -69,7 +69,7 @@ public:
     @return     true if y is a leap year, false otherwise
     @exceptsafe no-throw
     */
-    static bool isLeap(int y) noexcept;
+    static bool isLeap(unsigned y) noexcept;
 
     /**
     Checks if *this is a valid date

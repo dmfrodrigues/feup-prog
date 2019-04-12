@@ -11,6 +11,7 @@
     #define CLEAR() system("clear")
 #endif
 
+
 typedef std::string URL;
 
 /**

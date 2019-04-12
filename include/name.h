@@ -26,4 +26,13 @@ template<> inline bool vin(const char *q, Name& obj, std::istream& is, std::ostr
     }
 }
 
+/**
+Specialization of vin for obj of type Name
+*/
+template<> inline void vin(Name& obj, std::istream& is){
+    std::string b;
+    getline(is, b); b = trim(b);
+    obj = Name(b);
+}
+
 #endif

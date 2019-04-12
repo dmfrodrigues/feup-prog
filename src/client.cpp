@@ -9,14 +9,13 @@ void Client::setPacks(Client& c, std::string s){
 
 std::set<ID> Client::makePacks(std::string s){
     std::set<ID> ret;
-    std::vector<std::string> v = split(s, ';');
-    for(auto i:v) ret.insert(std::stoi(i));
+    auto v = split(s, ';');
+    for(const auto& i:v) ret.insert(std::stoi(i));
     return ret;
 }
 
 std::string Client::getPacks(const std::string& delim) const noexcept{
-    std::string ret = join(vtravel_.cbegin(), vtravel_.cend(), std::to_string, delim);
-    return ret;
+    return join(vtravel_.cbegin(), vtravel_.cend(), std::to_string, delim);
 }
 
 bool Client::userClient(std::istream& is, std::ostream& os) noexcept{
@@ -29,7 +28,7 @@ bool Client::userClient(std::istream& is, std::ostream& os) noexcept{
     return true;
 }
 
-bool Client::userClientprop(int propn, std::istream& is, std::ostream& os){
+bool Client::userClientprop(unsigned propn, std::istream& is, std::ostream& os){
     switch(propn){
         case 0: os << "Name: "           << name_      << std::endl; if(!vin("New name: "          ,                   name_   , is, os)) return false; break;
         case 1: os << "NIF: "            << nif_       << std::endl; if(!vin("New NIF: "           ,                   nif_    , is, os)) return false; break;

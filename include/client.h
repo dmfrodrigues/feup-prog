@@ -17,7 +17,7 @@ friend std::ostream& operator<<(std::ostream& os, const Client& c);
 private:
     Name name_;             ///name of client
     NIF nif_;               ///numero de identificacao fiscal
-    int numFam_;            ///number of household members
+    unsigned numFam_;            ///number of household members
     Address address_;       ///address
     std::set<ID> vtravel_;  ///set of bought packs
 
@@ -68,7 +68,7 @@ public:
      * @throws       when vin throws
      * @throws  std::out_of_range when propn is not in the valid range
      */
-    bool userClientprop(int propn, std::istream& is, std::ostream& os);
+    bool userClientprop(unsigned propn, std::istream& is, std::ostream& os);
 
     /**
      * 'Get' functions
@@ -77,7 +77,7 @@ public:
      */
     const Name&         name     ()const noexcept{ return name_   ; }
     const NIF&          nif      ()const noexcept{ return nif_    ; }
-    const int&          numFamily()const noexcept{ return numFam_ ; }
+    const unsigned&     numFamily()const noexcept{ return numFam_ ; }
     const Address&      address  ()const noexcept{ return address_; }
     const std::set<ID>& vtravel  ()const noexcept{ return vtravel_; }
 

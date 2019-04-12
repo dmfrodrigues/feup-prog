@@ -7,9 +7,9 @@ Date::Date(std::string s){
     if(v.size() != 3){
         throw std::invalid_argument("date does not have 3 fields");
     }
-    y_ = std::stoi(v[0]);
-    m_ = std::stoi(v[1]);
-    d_ = std::stoi(v[2]);
+    y_ = std::stoul(v[0]);
+    m_ = std::stoul(v[1]);
+    d_ = std::stoul(v[2]);
     if(!checkValid()){
         throw std::invalid_argument("date not valid");
     }
@@ -25,8 +25,8 @@ Date::operator std::string() const noexcept{
     return std::string(b);
 }
 
-int days[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-bool Date::isLeap(int y) noexcept{
+unsigned days[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+bool Date::isLeap(unsigned y) noexcept{
     if (y%4 == 0)
         if (y%100 == 0) return (y%400 == 0);
         else return true;

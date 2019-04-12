@@ -1,6 +1,6 @@
 António da Silva Gonçalves Pedrosa da Costa Antunes
 270047662
-2
+3
 Rua das Pedras / 15 / 2oB / 5000-70 / Porto
 3 ; 5 ; 12
 ::::::::::
@@ -12,7 +12,7 @@ Rua das Amoreiras / 135 / - / 7000-190 / Vila Nova de Gaia
 ::::::::::
 Belmiro Miguel
 111987660
-2
+5
 Avenida dos Grilos / 100 / - / 2300-101 / Coimbra
 20 ; 100 ; 136
 ::::::::::
@@ -33,6 +33,12 @@ Gertrudes Felismina de Souto
 3
 Rua da Ponte / 1 / - / 0000-00 / Porto
 0
+::::::::::
+Miguel Fernando Gonçalves de Oliveira e Azevedo Pinto de Rebelo e Moura
+444444440
+12
+Rua Cheia / 12 / - / 4444-44 / Famalicão
+2
 ::::::::::
 Rui Manuel
 234987154

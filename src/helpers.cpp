@@ -5,7 +5,7 @@
 #include <stdexcept>
 
 std::string trim(std::string s) noexcept{
-    std::string ret = s;
+    auto ret = s;
     size_t i;
     i = ret.find_first_not_of(' '); ret = (i != s.npos ? ret.substr(i) : "");
     i = ret.find_last_not_of (' '); if(i != s.npos) ret = ret.substr(0, i+1);
@@ -15,8 +15,8 @@ std::string trim(std::string s) noexcept{
 std::vector<std::string> split(std::string s, char delim) noexcept{
     std::vector<std::string> ret;
     while(true){
-        size_t i = s.find(delim); if(i == s.npos) break;
-        std::string t = trim(s.substr(0,i));
+        auto i = s.find(delim); if(i == s.npos) break;
+        auto t = trim(s.substr(0,i));
         if(t != "") ret.push_back(t);
         s = s.substr(i+1);
     }
