@@ -12,8 +12,6 @@
  * Stores client data, provides some helpers
  */
 struct Client{
-friend std::istream& operator>>(std::istream& is,       Client& c);
-friend std::ostream& operator<<(std::ostream& os, const Client& c);
 private:
     Name name_;             ///name of client
     NIF nif_;               ///numero de identificacao fiscal
@@ -110,26 +108,26 @@ public:
      * @exceptsafe no-throw
      */
     bool operator<(const Client& obj) const noexcept;
+
+    /**
+     * Extracts content to fill 'Client' object
+     * Destined to be used to read from files
+     * @param is input stream where Client will be read from
+     * @param c  receiver of the extracted information
+     * @return   the same parameter as is
+     * @throws   when vin(), is throw
+     */
+    friend std::istream& operator>>(std::istream& is, Client& c);
+
+    /**
+     * Inserts the content of a 'Client' object into a ostream
+     * Destined to be used to write to files
+     * @param os output stream
+     * @param c  'Client' object with the content to insert
+     * @return   the same as parameter os
+     * @throws   when os throws
+     */
+    friend std::ostream& operator<<(std::ostream& os, const Client& c);
 };
-
-/**
- * Extracts content to fill 'Client' object
- * Destined to be used to read from files
- * @param is input stream where Client will be read from
- * @param c  receiver of the extracted information
- * @return   the same parameter as is
- * @throws   when vin(), is throw
- */
-std::istream& operator>>(std::istream& is, Client& c);
-
-/**
- * Inserts the content of a 'Client' object into a ostream
- * Destined to be used to write to files
- * @param os output stream
- * @param c  'Client' object with the content to insert
- * @return   the same as parameter os
- * @throws   when os throws
- */
-std::ostream& operator<<(std::ostream& os, const Client& c);
 
 #endif

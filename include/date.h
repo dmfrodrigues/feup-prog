@@ -77,16 +77,15 @@ public:
     and to a day before or equal to Dec 31st, 9999 AD
     */
     bool checkValid() const;
+
+    /**
+    Inserts the content of a Date object into a std::ostream, using Date::operator std::string()
+    @param  os  output stream where Date is inserted
+    @param  d   Date object with the content to insert
+    @return     the same as parameter os
+    @throws     std::ios_base::failure  inherent to 'os'
+    */
+    friend std::ostream& operator<<(std::ostream& os, const Date& d);
 };
-
-/**
-Inserts the content of a Date object into a std::ostream, using Date::operator std::string()
-@param  os  output stream where Date is inserted
-@param  d   Date object with the content to insert
-@return     the same as parameter os
-@throws     std::ios_base::failure  inherent to 'os'
-*/
-
-std::ostream& operator<<(std::ostream& os, const Date& d);
 
 #endif

@@ -57,16 +57,6 @@ public:
     std::string str(const char* fmt = "%s / %u / %s / %s / %s") const;
 
     /**
-    Inserts the content of an 'Address' object into a std::ostream, using Address::str
-    Destined to be used to write to files
-    @param  os  output stream where 'Address' is inserted
-    @param  a   'Addres' object with the content to insert
-    @return     the same as parameter os
-    @throws     when os throws
-    */
-    friend std::ostream& operator<<(std::ostream& os, const Address& a);
-
-    /**
     Some relational operators. Implemented by conversion to string and comparison
     with std::string relational operators
     @return     result of the relational operator
@@ -75,6 +65,16 @@ public:
     inline bool operator== (const Address& a) const noexcept{ return (str() == a.str()); }
     inline bool operator!= (const Address& a) const noexcept{ return !(*this == a);      }
     inline bool operator<  (const Address& a) const noexcept{ return (str() <  a.str()); }
+
+    /**
+    Inserts the content of an 'Address' object into a std::ostream, using Address::str
+    Destined to be used to write to files
+    @param  os  output stream where 'Address' is inserted
+    @param  a   'Addres' object with the content to insert
+    @return     the same as parameter os
+    @throws     when os throws
+    */
+    friend std::ostream& operator<<(std::ostream& os, const Address& a);
 };
 
 #endif
