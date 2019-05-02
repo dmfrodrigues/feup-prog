@@ -8,13 +8,12 @@
 * Stores fields of an address: street, door number, floor, postal code and city
 */
 struct Address{
-friend std::ostream& operator<<(std::ostream& os, const Address& a);
 private:
     std::string street_;
-    std::string door_;
+    unsigned    door_;
     std::string floor_;
     std::string postalCode_;
-    std::string city_;
+    std::string location_;
 public:
     /**
     Constructs 'Address' object with all fields empty
@@ -43,10 +42,10 @@ public:
     @exceptsafe no-throw
     */
     inline const std::string& street    ()const noexcept{ return street_    ; }
-    inline const std::string& door      ()const noexcept{ return door_      ; }
+    inline const unsigned&    door      ()const noexcept{ return door_      ; }
     inline const std::string& floor     ()const noexcept{ return floor_     ; }
     inline const std::string& postalCode()const noexcept{ return postalCode_; }
-    inline const std::string& city      ()const noexcept{ return city_      ; }
+    inline const std::string& location  ()const noexcept{ return location_  ; }
 
     /**
     Get string version of 'Address', with custom format (implemented with sprintf)
@@ -55,14 +54,17 @@ public:
     @return     result of the write
     @throws     std::runtime_error  when sprintf fails
     */
-    std::string str(const char* fmt = "%s / %s / %s / %s / %s") const;
+    std::string str(const char* fmt = "%s / %u / %s / %s / %s") const;
 
     /**
-    Convert 'Address' to string through Address::str(const char*) with default format
-    @return     result of the conversion
-    @throws     std::runtime_error  when sprintf fails, since it is implemented with Address::str
+    Inserts the content of an 'Address' object into a std::ostream, using Address::str
+    Destined to be used to write to files
+    @param  os  output stream where 'Address' is inserted
+    @param  a   'Addres' object with the content to insert
+    @return     the same as parameter os
+    @throws     when os throws
     */
-    operator std::string() const;
+    friend std::ostream& operator<<(std::ostream& os, const Address& a);
 
     /**
     Some relational operators. Implemented by conversion to string and comparison
@@ -74,15 +76,5 @@ public:
     inline bool operator!= (const Address& a) const noexcept{ return !(*this == a);      }
     inline bool operator<  (const Address& a) const noexcept{ return (str() <  a.str()); }
 };
-
-/**
-Inserts the content of an 'Address' object into a std::ostream, using Address::str
-Destined to be used to write to files
-@param  os  output stream where 'Address' is inserted
-@param  a   'Addres' object with the content to insert
-@return     the same as parameter os
-@throws     when os throws
-*/
-std::ostream& operator<<(std::ostream& os, const Address& a);
 
 #endif

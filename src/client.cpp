@@ -74,7 +74,7 @@ std::ostream& Client::print(ForwardIterator first, ForwardIterator last, std::st
             os << ljust(c.name()                     , 54) << "\t";
             os << ljust(c.nif()                      ,  9);
             os << rjust(std::to_string(c.numFamily()), 12) << "  ";
-            os << ljust(std::string(c.address())     , 60) << "\t";
+            os << ljust(c.address().str()            , 60) << "\t";
             os << ljust(c.getPacks("; ")             , 18);
             os << std::endl;
         }
