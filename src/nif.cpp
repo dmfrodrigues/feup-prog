@@ -13,16 +13,5 @@ NIF::NIF(std::string s){
         sum = std::max(sum%11, 1u); sum = (11-sum)%10;
         if(unsigned(s[8]-'0') != sum) throw std::invalid_argument("NIF number is not valid");
     }
-
-    s_ = s;
-}
-
-std::ostream& operator<<(std::ostream& os, const NIF& obj){
-    return (os << std::string(obj));
-}
-
-std::istream& operator>>(std::istream& is, NIF& obj){
-    std::string s; is >> s;
-    obj = NIF(s);
-    return is;
+    std::string::operator=(s);
 }
