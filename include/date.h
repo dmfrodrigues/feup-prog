@@ -8,7 +8,6 @@
 * Represents a date, providing some checks and utilities
 */
 struct Date{
-friend std::ostream& operator<<(std::ostream& os, const Date& d);
 private:
     unsigned y_, m_, d_; ///year, month, day
 public:
@@ -57,6 +56,7 @@ public:
     @return     result of the corresponding relational operation
     @exceptsafe no-throw
     */
+
     bool operator<  (const Date& d) const noexcept{ return (std::string(*this) <  std::string(d)); }
     bool operator== (const Date& d) const noexcept{ return !(*this < d || d < *this);              }
     bool operator<= (const Date& d) const noexcept{ return (*this < d || *this == d);              }
@@ -86,6 +86,7 @@ Inserts the content of a Date object into a std::ostream, using Date::operator s
 @return     the same as parameter os
 @throws     std::ios_base::failure  inherent to 'os'
 */
+
 std::ostream& operator<<(std::ostream& os, const Date& d);
 
 #endif
