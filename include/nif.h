@@ -7,7 +7,7 @@
 /**
 * Represents NIF (numero de identificacao fiscal), providing some encapsulation
 */
-struct NIF: public std::string{
+class NIF: public std::string{
 private:
     static const size_t NIFsize = 9; ///size of NIF in Portugal
 public:

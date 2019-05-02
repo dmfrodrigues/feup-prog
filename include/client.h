@@ -11,7 +11,7 @@
 /**
  * Stores client data, provides some helpers
  */
-struct Client{
+class Client{
 private:
     Name name_;             ///name of client
     NIF nif_;               ///numero de identificacao fiscal

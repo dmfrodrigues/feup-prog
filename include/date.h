@@ -7,7 +7,7 @@
 /**
 * Represents a date, providing some checks and utilities
 */
-struct Date{
+class Date{
 private:
     unsigned y_, m_, d_; ///year, month, day
 public:

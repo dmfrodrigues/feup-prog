@@ -17,7 +17,7 @@ typedef std::string URL;
 /**
 * Allows to manage a tourist Agency
 */
-struct Agency{
+class Agency{
 private:
     std::string inputpath;  ///folder where all the files are
     std::string agencypath; ///name of agency file

@@ -4,7 +4,7 @@
 
 #include "vin.h"
 
-struct Name: public std::string{
+class Name: public std::string{
 public:
     Name() noexcept{}
     Name(const std::string& s);

@@ -11,7 +11,7 @@ typedef int Price;
 /**
  * Stores travel pack data, provides some helpers
  */
-struct TravelPack{
+class TravelPack{
 friend std::istream& operator>>(std::istream& is,       TravelPack& t);
 friend std::ostream& operator<<(std::ostream& os, const TravelPack& t);
 private:

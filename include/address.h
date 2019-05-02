@@ -7,7 +7,7 @@
 /**
 * Stores fields of an address: street, door number, floor, postal code and city
 */
-struct Address{
+class Address{
 private:
     std::string street_;
     unsigned    door_;
