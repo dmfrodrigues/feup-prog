@@ -30,7 +30,9 @@ private:
     Address address;
     multiset<Client   > vclient; ///multiset with the agency clients
     map<ID, TravelPack> vtravel; ///map with the agency travelpacks
-    ID lasttravel;                    ///ID of the last added travelpack
+    ID lasttravel;               ///ID of the last added travelpack
+
+    bool InfoChanged;
 
     istream& cis;                ///default input stream
     ostream& cos;                ///default output stream
