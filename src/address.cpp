@@ -6,7 +6,9 @@ Address::Address(std::string s){
     auto v = split(s, '/');
     if(v.size() != 5) throw std::invalid_argument("address does not have 5 fields");
     street_     = v[0];
-    door_       = stoul(v[1]);
+    int n = stoi(v[1]);
+    if(n < 0) throw std::invalid_argument("door number is not an unsigned integer");
+    door_ = unsigned(n);
     floor_      = v[2];
     postalCode_ = v[3];
     location_   = v[4];
