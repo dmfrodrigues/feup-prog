@@ -3,22 +3,22 @@
 #include "globaldefs.h"
 #include <fstream>
 
-const std::string Agency::opstr = "Operation$ ";
+const string Agency::opstr = "Operation$ ";
 
-Agency::Agency(std::istream& is, std::ostream& os) noexcept :cis(is),cos(os){
-    std::ifstream ifs;
+Agency::Agency(istream& is, ostream& os) noexcept :cis(is),cos(os){
+    ifstream ifs;
     while(true){
-        std::string fullpath;
+        string fullpath;
         ///ENTRY_POINT #DEV
         os << "Agency file: "; getline(is, fullpath);
         //fullpath = "input/agency.txt"; //#DEV
         if(loadAgency(fullpath)) break;
     }
-    os << std::endl;
+    os << endl;
 }
 
 
-bool Agency::loadAgency(const std::string& fpath) noexcept{
+bool Agency::loadAgency(const string& fpath) noexcept{
     auto n = fpath.find_last_of('/');
     if(n != fpath.npos){
         inputpath  = fpath.substr(0,n+1);
@@ -27,9 +27,9 @@ bool Agency::loadAgency(const std::string& fpath) noexcept{
         inputpath  = "";
         agencypath = fpath;
     }
-    std::ifstream is(fpath);
+    ifstream is(fpath);
     if(!is){
-        cos << "Error: could not open agency file " << fpath << std::endl;
+        cos << "Error: could not open agency file " << fpath << endl;
         return false;
     }
     vin(              name      , is);
@@ -39,7 +39,7 @@ bool Agency::loadAgency(const std::string& fpath) noexcept{
     vin(              clientpath, is);
     vin(              travelpath, is);
     if(!is){
-        cos << "Error: could not read from agency file " << fpath << std::endl;
+        cos << "Error: could not read from agency file " << fpath << endl;
         return false;
     }
     return (loadClients(inputpath + clientpath) &&
@@ -48,20 +48,20 @@ bool Agency::loadAgency(const std::string& fpath) noexcept{
 
 
 void Agency::run(){
-    std::string b;
+    string b;
     #ifndef CLEAR
-        this->print(); cos << std::endl;
+        this->print(); cos << endl;
         this->printHelp();
     #endif
     while(true){
         #ifdef CLEAR
             CLEAR();
-            this->print(); cos << std::endl;
+            this->print(); cos << endl;
             this->printHelp();
         #endif
-        cos << std::endl;
+        cos << endl;
         cos << opstr; getline(cis, b); b = trim(b);
-        cos << std::endl;
+        cos << endl;
 
         if     (b == "tclient") tclient();
         else if(b == "tpack"  ) tpack();
@@ -79,14 +79,14 @@ void Agency::run(){
 
 bool Agency::print() const{
     try{
-        const auto n = std::max(size_t(0), size_t(WIDTH-name.size()))/2;
-        cos << std::string(2*n+name.size(), '#')                  << std::endl;
-        cos << std::string(n, ' ') << name << std::string(n, ' ') << std::endl;
-        cos << std::string(2*n+name.size(), '#')                  << std::endl;
-        cos                                                       << std::endl;
-        cos << "NIF: " << nif                                     << std::endl;
-        cos << address                                            << std::endl;
-        cos << url                                                << std::endl;
+        const auto n = max(size_t(0), size_t(WIDTH-name.size()))/2;
+        cos << string(2*n+name.size(), '#')                  << endl;
+        cos << string(n, ' ') << name << string(n, ' ') << endl;
+        cos << string(2*n+name.size(), '#')                  << endl;
+        cos                                                       << endl;
+        cos << "NIF: " << nif                                     << endl;
+        cos << address                                            << endl;
+        cos << url                                                << endl;
         return bool(cos);
     }catch(...){
         return false;
@@ -110,7 +110,7 @@ bool Agency::printHelp() const{
                "See pack                  [spack]                                         \n"
                "Find (search) packs       [fpack]                                         \n"
                "See packs sold to clients  [sold]                                         \n";
-        cos << std::flush;
+        cos << flush;
         return bool(cos);
     }catch(...){
         return false;
@@ -122,77 +122,77 @@ bool Agency::save() const{
     try{
         //Save agency
         {
-            std::ofstream of_agency; of_agency.exceptions(std::ios_base::badbit); of_agency.open(inputpath + agencypath);
-            of_agency << name       << std::endl;
-            of_agency << nif        << std::endl;
-            of_agency << url        << std::endl;
-            of_agency << address    << std::endl;
-            of_agency << clientpath << std::endl;
-            of_agency << travelpath << std::endl;
+            ofstream of_agency; of_agency.exceptions(ios_base::badbit); of_agency.open(inputpath + agencypath);
+            of_agency << name       << endl;
+            of_agency << nif        << endl;
+            of_agency << url        << endl;
+            of_agency << address    << endl;
+            of_agency << clientpath << endl;
+            of_agency << travelpath << endl;
             of_agency.close();
         }
         //Save clients
         {
-            std::ofstream of_client; of_client.exceptions(std::ios_base::badbit); of_client.open(inputpath + clientpath);
+            ofstream of_client; of_client.exceptions(ios_base::badbit); of_client.open(inputpath + clientpath);
             if(vclient.size() >= 1){
                 auto it = vclient.begin();
-                of_client << *(it++) << std::endl;
+                of_client << *(it++) << endl;
                 for(; it != vclient.end(); ++it){
-                    of_client << "::::::::::" << std::endl;
-                    of_client << *it << std::endl;
+                    of_client << "::::::::::" << endl;
+                    of_client << *it << endl;
                 }
             }
             of_client.close();
         }
         //Save travel packs
         {
-            std::ofstream of_pack; of_pack.exceptions(std::ios_base::badbit); of_pack.open(inputpath + travelpath);
-            of_pack << lasttravel << std::endl;
+            ofstream of_pack; of_pack.exceptions(ios_base::badbit); of_pack.open(inputpath + travelpath);
+            of_pack << lasttravel << endl;
             if(vtravel.size() >= 1){
                 auto it = vtravel.begin();
-                of_pack << (it++)->second << std::endl;
+                of_pack << (it++)->second << endl;
                 for(; it != vtravel.end(); ++it){
-                    of_pack << "::::::::::" << std::endl;
-                    of_pack << it->second << std::endl;
+                    of_pack << "::::::::::" << endl;
+                    of_pack << it->second << endl;
                 }
             }
             of_pack.close();
         }
 
-        cos << "Files saved" << std::endl;
+        cos << "Files saved" << endl;
         return true;
     }catch(...){
-        cos << "Error: could not save files" << std::endl;
+        cos << "Error: could not save files" << endl;
         return false;
     }
 }
 
 void Agency::sold() const{
     header("See packs sold to clients");
-    Client::print(vclient.begin(), vclient.end(), "table", cos) << std::endl;
-    std::string b; int i;
+    Client::print(vclient.begin(), vclient.end(), "table", cos) << endl;
+    string b; int i;
     while(true){
         if(!vin("# of client to see (if all clients, fill with invalid input, like '-' or press 'Enter'): ", b, cis, cos)) return;
         b = trim(b);
         try{
-            i = std::stoi(b);
-        }catch(const std::invalid_argument& e){
+            i = stoi(b);
+        }catch(const invalid_argument& e){
             b = "-"; break;
         }
         if(0 <= i && i < (int)vclient.size()) break;
-        else cos << "Error: # outside valid input range [0," << vclient.size()-1 << "]" << std::endl;
+        else cos << "Error: # outside valid input range [0," << vclient.size()-1 << "]" << endl;
     }
-    cos << std::endl;
-    std::map<ID, TravelPack> m;
+    cos << endl;
+    map<ID, TravelPack> m;
     if(b == "-"){
-        cos << "Travel packs bought by at least one client:" << std::endl;
+        cos << "Travel packs bought by at least one client:" << endl;
         for(const auto& it:vclient)
             for(const auto& id:it.vtravel())
                 if(vtravel.find(id) != vtravel.end())
                     m[id] = vtravel.at(id);
     }else{
-        cos << "Travel packs bought by client #" << i << ": " << std::endl;
-        auto it = vclient.begin(); std::advance(it, i);
+        cos << "Travel packs bought by client #" << i << ": " << endl;
+        auto it = vclient.begin(); advance(it, i);
         for(const auto& id:it->vtravel())
             if(vtravel.find(id) != vtravel.end())
                 m[id] = vtravel.at(id);
@@ -204,28 +204,28 @@ void Agency::sell(){
     header("Sell pack to client");
     auto p = seeClient(); unsigned i  = p.first; if(!p.second) return;
     auto q = seePack  (); ID       id = q.first; if(!q.second) return;
-    auto it = vclient.begin(); std::advance(it, i);
+    auto it = vclient.begin(); advance(it, i);
     if(it->vtravel().find(id) != it->vtravel().end()){
-        cos << "Client #" << i <<" has already bought travel pack with ID " << id << std::endl;
+        cos << "Client #" << i <<" has already bought travel pack with ID " << id << endl;
         return;
     }
     if(!vtravel[id].sellable()){
-        cos << "Travel pack can no longer be sold (not available or sold out)" << std::endl;
+        cos << "Travel pack can no longer be sold (not available or sold out)" << endl;
         return;
     }
-    if(confirm("Confirm you want to sell the pack with ID "+std::to_string(id)+" to client #"+std::to_string(i) + " [y/n]: ",cis,cos)){
+    if(confirm("Confirm you want to sell the pack with ID "+to_string(id)+" to client #"+to_string(i) + " [y/n]: ",cis,cos)){
         Client c = *it;
         vtravel[id].sell();
         c.sell(id);
         vclient.erase(it);
         vclient.insert(c);
-        cos << "Pack sold" << std::endl;
+        cos << "Pack sold" << endl;
     }
 }
 
-void Agency::header(const std::string& s) const{
+void Agency::header(const string& s) const{
     #ifdef CLEAR
-        CLEAR(); this->print(); cos << std::endl;
+        CLEAR(); this->print(); cos << endl;
     #endif
-    cos << "==== " + s + " " + std::string(WIDTH-s.size()-6,'=') << std::endl << std::endl;
+    cos << "==== " + s + " " + string(WIDTH-s.size()-6,'=') << endl << endl;
 }
