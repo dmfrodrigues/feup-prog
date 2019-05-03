@@ -4,6 +4,8 @@
 
 #include <ostream>
 
+using namespace std;
+
 /**
 * Represents a date, providing some checks and utilities
 */
@@ -20,26 +22,26 @@ public:
     /**
     Constructs Date from a string with 3 fields separated by '/'
     @param  s   string with Date content, in format 'yyyy/mm/dd'
-    @throws     std::invalid_argument   when s does not have 3 slash-separated fields,
+    @throws     invalid_argument   when s does not have 3 slash-separated fields,
         or when the date is not valid
     */
-    Date(std::string s);
+    Date(string s);
 
     /**
     Changes content of 'Date' object by one from an object created from a string
     @param  d   'Date' object to be changed
     @param  s   string with 3 slash-separated fields of the date
-    @throws     std::invalid_argument   s does not have 3 slash-separated fields,
-        or the date is not valid [same as Date::Date(std::string)]
+    @throws     invalid_argument   s does not have 3 slash-separated fields,
+        or the date is not valid [same as Date::Date(string)]
     */
-    static void set(Date& d, std::string s);
+    static void set(Date& d, string s);
 
     /**
     Converts date to slash-separated string of format yyyy/mm/dd
     @return     string with slash-separated fields of a date
     @exceptsafe no-throw
     */
-    operator std::string() const noexcept;
+    operator string() const noexcept;
 
     /**
     Static functions returning important date values, namely the earliest and latest valid dates
@@ -57,7 +59,7 @@ public:
     @exceptsafe no-throw
     */
 
-    bool operator<  (const Date& d) const noexcept{ return (std::string(*this) <  std::string(d)); }
+    bool operator<  (const Date& d) const noexcept{ return (string(*this) <  string(d)); }
     bool operator== (const Date& d) const noexcept{ return !(*this < d || d < *this);              }
     bool operator<= (const Date& d) const noexcept{ return (*this < d || *this == d);              }
     bool operator>  (const Date& d) const noexcept{ return !(*this <= d);                          }
@@ -79,13 +81,13 @@ public:
     bool checkValid() const;
 
     /**
-    Inserts the content of a Date object into a std::ostream, using Date::operator std::string()
+    Inserts the content of a Date object into a ostream, using Date::operator string()
     @param  os  output stream where Date is inserted
     @param  d   Date object with the content to insert
     @return     the same as parameter os
-    @throws     std::ios_base::failure  inherent to 'os'
+    @throws     ios_base::failure  inherent to 'os'
     */
-    friend std::ostream& operator<<(std::ostream& os, const Date& d);
+    friend ostream& operator<<(ostream& os, const Date& d);
 };
 
 #endif

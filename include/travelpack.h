@@ -5,6 +5,8 @@
 #include "date.h"
 #include <vector>
 
+using namespace std;
+
 typedef int ID;
 typedef int Price;
 
@@ -12,12 +14,12 @@ typedef int Price;
  * Stores travel pack data, provides some helpers
  */
 class TravelPack{
-friend std::istream& operator>>(std::istream& is,       TravelPack& t);
-friend std::ostream& operator<<(std::ostream& os, const TravelPack& t);
+friend istream& operator>>(istream& is,       TravelPack& t);
+friend ostream& operator<<(ostream& os, const TravelPack& t);
 private:
     ID id_;                             ///ID of the pack
     bool avail_;                        ///availability
-    std::vector<std::string> vplaces_;  ///vector of destination places
+    vector<string> vplaces_;  ///vector of destination places
     Date begin_;                        ///begin date
     Date end_;                          ///end date
     Price price_;                       ///price per person
@@ -30,14 +32,14 @@ private:
      * @param s string with several dash- and comma-separated destinations
      * @throws  invalid_argument    s does not have at least 1 field (same as makePlaces)
      */
-    static void setPlaces(TravelPack& t, std::string s);
+    static void setPlaces(TravelPack& t, string s);
 
     /**
      * Returns string containing destinations from vtravel_
      * @return string with comma- and dash-separated elements of vtravel_
      * @exceptsafe  no-throw
      */
-    std::string getPlaces() const noexcept;
+    string getPlaces() const noexcept;
 
 public:
 
@@ -47,7 +49,7 @@ public:
      * @return  vector containing all destinations in s
      * @throws  invalid_argument    s does not have at least 1 field
      */
-    static std::vector<std::string> makePlaces(std::string s);
+    static vector<string> makePlaces(string s);
 
     /**
      * Queries user about properties of new travelpack object
@@ -57,7 +59,7 @@ public:
      * @return            true if the new travelpack was created successfully, false if cancelled
      * @throws            when vin throws
      */
-    bool userPack(ID lasttravel, std::istream& is, std::ostream& os);
+    bool userPack(ID lasttravel, istream& is, ostream& os);
 
     /**
      * Change one property of TravelPack
@@ -69,7 +71,7 @@ public:
      * @throws       when vin throws
      * @throws  out_of_range when propn is not in the valid range
      */
-    bool userPackprop(unsigned propn, std::istream& is, std::ostream& os);
+    bool userPackprop(unsigned propn, istream& is, ostream& os);
 
     /**
      * 'Get' functions
@@ -78,7 +80,7 @@ public:
      */
     const ID&                       id     ()const noexcept{ return id_     ; }
     const bool&                     avail  ()const noexcept{ return avail_  ; }
-    const std::vector<std::string>& vplaces()const noexcept{ return vplaces_; }
+    const vector<string>& vplaces()const noexcept{ return vplaces_; }
     const Date&                     begin  ()const noexcept{ return begin_  ; }
     const Date&                     end    ()const noexcept{ return end_    ; }
     const Price&                    price  ()const noexcept{ return price_  ; }
@@ -113,7 +115,7 @@ public:
      * @throws       when os throws
      */
     template<class ForwardIterator>
-    static std::ostream& print(ForwardIterator first, ForwardIterator last, std::string f, std::ostream& os);
+    static ostream& print(ForwardIterator first, ForwardIterator last, string f, ostream& os);
 };
 
 /**
@@ -124,7 +126,7 @@ public:
  * @return   the same parameter as is
  * @throws   when vin(), is throws
  */
-std::istream& operator>>(std::istream& is, TravelPack& t);
+istream& operator>>(istream& is, TravelPack& t);
 
 /**
  * Inserts the content of a 'TravelPack' object into a ostream
@@ -134,6 +136,6 @@ std::istream& operator>>(std::istream& is, TravelPack& t);
  * @return   the same as parameter os
  * @throws   when os throws
  */
-std::ostream& operator<<(std::ostream& os, const TravelPack& t);
+ostream& operator<<(ostream& os, const TravelPack& t);
 
 #endif

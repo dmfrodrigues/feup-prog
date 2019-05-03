@@ -11,30 +11,31 @@
     #define CLEAR() system("clear")
 #endif
 
+using namespace std;
 
-typedef std::string URL;
+typedef string URL;
 
 /**
 * Allows to manage a tourist Agency
 */
 class Agency{
 private:
-    std::string inputpath;  ///folder where all the files are
-    std::string agencypath; ///name of agency file
-    std::string travelpath; ///name of travelpacks' file
-    std::string clientpath; ///name of clients' file
-    std::string name;
+    string inputpath;  ///folder where all the files are
+    string agencypath; ///name of agency file
+    string travelpath; ///name of travelpacks' file
+    string clientpath; ///name of clients' file
+    string name;
     NIF nif;
     URL url;
     Address address;
-    std::multiset<Client   > vclient; ///multiset with the agency clients
-    std::map<ID, TravelPack> vtravel; ///map with the agency travelpacks
+    multiset<Client   > vclient; ///multiset with the agency clients
+    map<ID, TravelPack> vtravel; ///map with the agency travelpacks
     ID lasttravel;                    ///ID of the last added travelpack
 
-    std::istream& cis;                ///default input stream
-    std::ostream& cos;                ///default output stream
+    istream& cis;                ///default input stream
+    ostream& cos;                ///default output stream
 
-    static const std::string opstr;
+    static const string opstr;
     static const int WIDTH = 74;
 
     /**
@@ -43,7 +44,7 @@ private:
      * @return       true if input was successfull, false otherwise
      * exceptsafe    no-throw
      */
-    bool loadAgency(const std::string& fpath) noexcept;
+    bool loadAgency(const string& fpath) noexcept;
 
     /**
      * Loads client list from content of file to vclient
@@ -51,7 +52,7 @@ private:
      * @return       true if input was successfull, false otherwise
      * @exceptsafe   no-throw
      */
-    bool loadClients(const std::string& fpath) noexcept;
+    bool loadClients(const string& fpath) noexcept;
 
     /**
      * Display all clients in a table
@@ -63,7 +64,7 @@ private:
      * @return pair, first element is index of selected client, second element is false if cancelled, true otherwise
      * @throws when cis, cos throw
      */
-    std::pair<unsigned, bool> seeClient() const;
+    pair<unsigned, bool> seeClient() const;
 
     /**
      * Allow user to see all info about a specific client
@@ -91,7 +92,7 @@ private:
      * @param  fpath path to clients file
      * @return       true if input was successfull, false otherwise
      */
-    bool loadPacks(const std::string& fpath);
+    bool loadPacks(const string& fpath);
 
     /**
      * Display all travelpacks in a table
@@ -102,7 +103,7 @@ private:
      * Select and see all data of a travelpack
      * @return pair, first element is ID of selected pack, second element is false if cancelled, true otherwise
      */
-    std::pair<ID, bool> seePack() const;
+    pair<ID, bool> seePack() const;
 
     /**
      * Allow user to see all info about a specific travelpack
@@ -144,7 +145,7 @@ private:
     /**
      * prints header of agency, with a sentence and '=' after that
      */
-    void header(const std::string& s) const;
+    void header(const string& s) const;
 
     /**
      * Save content of all data structures to files
@@ -158,7 +159,7 @@ public:
      * @param os output stream
      * @exceptsafe no-throw
      */
-    Agency(std::istream& is = std::cin, std::ostream& os = std::cout) noexcept;
+    Agency(istream& is = cin, ostream& os = cout) noexcept;
 
     /**
      *

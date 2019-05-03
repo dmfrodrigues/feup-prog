@@ -4,16 +4,18 @@
 
 #include <ostream>
 
+using namespace std;
+
 /**
 * Stores fields of an address: street, door number, floor, postal code and city
 */
 class Address{
 private:
-    std::string street_;
+    string street_;
     unsigned    door_;
-    std::string floor_;
-    std::string postalCode_;
-    std::string location_;
+    string floor_;
+    string postalCode_;
+    string location_;
 public:
     /**
     Constructs 'Address' object with all fields empty
@@ -23,42 +25,42 @@ public:
     /**
     Constructs 'Address' object from slash-separated fields in a string
     @param  s   string with 5 slash-separated fields of the address
-    @throws     std::invalid_argument   s does not have the required 5 fields
+    @throws     invalid_argument   s does not have the required 5 fields
     */
-    Address(std::string s);
+    Address(string s);
 
     /**
     Changes content of 'Address' object by one from an object created from a string
     @param  a   'Address' object to be changed
     @param  s   string with 5 slash-separated fields of the address
-    @throws     std::invalid_argument   s does not have the required 5 fields,
-        since it calls Address::Address(std::string)
+    @throws     invalid_argument   s does not have the required 5 fields,
+        since it calls Address::Address(string)
     */
-    static void set(Address& a, std::string s);
+    static void set(Address& a, string s){ a = Address(s); }
 
     /**
     'Get' functions of class 'Address'
     @return const reference to corresponding member variable
     @exceptsafe no-throw
     */
-    inline const std::string& street    ()const noexcept{ return street_    ; }
-    inline const unsigned&    door      ()const noexcept{ return door_      ; }
-    inline const std::string& floor     ()const noexcept{ return floor_     ; }
-    inline const std::string& postalCode()const noexcept{ return postalCode_; }
-    inline const std::string& location  ()const noexcept{ return location_  ; }
+    inline const string& street    ()const noexcept{ return street_    ; }
+    inline const    unsigned& door      ()const noexcept{ return door_      ; }
+    inline const string& floor     ()const noexcept{ return floor_     ; }
+    inline const string& postalCode()const noexcept{ return postalCode_; }
+    inline const string& location  ()const noexcept{ return location_  ; }
 
     /**
     Get string version of 'Address', with custom format (implemented with sprintf)
     Does not fail or throw exceptions for default fmt
     @param  fmt C string containing a format string
     @return     result of the write
-    @throws     std::runtime_error  when sprintf fails
+    @throws     runtime_error  when sprintf fails
     */
-    std::string str(const char* fmt = "%s / %u / %s / %s / %s") const;
+    string str(const char* fmt = "%s / %u / %s / %s / %s") const;
 
     /**
     Some relational operators. Implemented by conversion to string and comparison
-    with std::string relational operators
+    with string relational operators
     @return     result of the relational operator
     @exceptsafe no-throw (default Address::str(const char*) fmt does not throw)
     */
@@ -67,14 +69,14 @@ public:
     inline bool operator<  (const Address& a) const noexcept{ return (str() <  a.str()); }
 
     /**
-    Inserts the content of an 'Address' object into a std::ostream, using Address::str
+    Inserts the content of an 'Address' object into a ostream, using Address::str
     Destined to be used to write to files
     @param  os  output stream where 'Address' is inserted
     @param  a   'Addres' object with the content to insert
     @return     the same as parameter os
     @throws     when os throws
     */
-    friend std::ostream& operator<<(std::ostream& os, const Address& a);
+    friend ostream& operator<<(ostream& os, const Address& a);
 };
 
 #endif

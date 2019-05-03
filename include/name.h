@@ -4,6 +4,8 @@
 
 #include "vin.h"
 
+using namespace std;
+
 class Name: public std::string{
 public:
     Name() noexcept{}
