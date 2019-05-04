@@ -32,7 +32,7 @@ private:
     map<ID, TravelPack> vtravel; ///map with the agency travelpacks
     ID lasttravel;               ///ID of the last added travelpack
 
-    bool InfoChanged;
+    bool InfoChanged = false;               ///
 
     istream& cis;                ///default input stream
     ostream& cos;                ///default output stream
@@ -151,9 +151,16 @@ private:
 
     /**
      * Save content of all data structures to files
-     * @return
+     * @return  true if save was successfull
      */
     bool save() const;
+
+    /**
+     * Exit program
+     * @return  true if program can correctly exit program, false otherwise
+     */
+    bool exit() const;
+
 public:
     /**
      * Constructs Agency object. Asks the user for path of agency file

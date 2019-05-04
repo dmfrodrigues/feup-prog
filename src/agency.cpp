@@ -71,7 +71,7 @@ void Agency::run(){
         else if(b == "-client") mclient(); else if(b == "-pack") mpack();
         else if(b == "sell"   ) sell();    else if(b == "fpack") fpack();
         else if(b == "sold"   ) sold();
-        else if(b == "save"   ) save();    else if(b == "exit" ) return;
+        else if(b == "save"   ) save();    else if(b == "exit" && this->exit()) break;
         else continue;
         wait(cis,cos);
     }
@@ -167,6 +167,16 @@ bool Agency::save() const{
     }
 }
 
+bool Agency::exit() const{
+    if(InfoChanged){
+        header("Exit");
+        if(!confirm("There are unsaved changes. Do you wish to close without saving? [y/n]: ", cis, cos)) return false;
+        return true;
+    }else{
+        return true;
+    }
+}
+
 void Agency::sold() const{
     header("See packs sold to clients");
     Client::print(vclient.begin(), vclient.end(), "table", cos) << endl;
@@ -220,6 +230,7 @@ void Agency::sell(){
         vclient.erase(it);
         vclient.insert(c);
         cos << "Pack sold" << endl;
+        InfoChanged = true;
     }
 }
 

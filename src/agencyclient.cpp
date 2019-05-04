@@ -58,6 +58,7 @@ void Agency::pclient(){
 
         vclient.insert(c);
         cos << "Client added" << endl;
+        InfoChanged = true;
     }
 }
 
@@ -81,6 +82,7 @@ void Agency::cclient(){
         vclient.erase(it);
         vclient.insert(c);
         cos << endl << "Property changed" << endl;
+        InfoChanged = true;
     }
 }
 
@@ -93,4 +95,5 @@ void Agency::mclient(){
     auto it = vclient.begin(); advance(it, i);
     vclient.erase(it);
     cos << "Client deleted" << endl;
+    InfoChanged = true;
 }

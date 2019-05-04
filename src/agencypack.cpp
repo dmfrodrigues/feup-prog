@@ -57,6 +57,7 @@ void Agency::ppack(){
         ++lasttravel;
         vtravel[t.id()] = t;
         cos << "Travel pack added" << endl;
+        InfoChanged = true;
     }
 }
 
@@ -80,6 +81,7 @@ void Agency::cpack(){
 
 
         cos << endl << "Property changed" << endl;
+        InfoChanged = true;
     }
 }
 
@@ -92,6 +94,7 @@ void Agency::mpack(){
 
     vtravel.erase(id);
     cos << "Travel pack deleted" << endl;
+    InfoChanged = true;
 }
 
 void Agency::fpack() const{

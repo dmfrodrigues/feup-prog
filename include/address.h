@@ -11,11 +11,11 @@ using namespace std;
 */
 class Address{
 private:
-    string street_;
+    string      street_;
     unsigned    door_;
-    string floor_;
-    string postalCode_;
-    string location_;
+    string      floor_;
+    string      postalCode_;
+    string      location_;
 public:
     /**
     Constructs 'Address' object with all fields empty
@@ -43,11 +43,11 @@ public:
     @return const reference to corresponding member variable
     @exceptsafe no-throw
     */
-    inline const string& street    ()const noexcept{ return street_    ; }
-    inline const    unsigned& door      ()const noexcept{ return door_      ; }
-    inline const string& floor     ()const noexcept{ return floor_     ; }
-    inline const string& postalCode()const noexcept{ return postalCode_; }
-    inline const string& location  ()const noexcept{ return location_  ; }
+    inline const string&    street    ()const noexcept{ return street_    ; }
+    inline const unsigned&  door      ()const noexcept{ return door_      ; }
+    inline const string&    floor     ()const noexcept{ return floor_     ; }
+    inline const string&    postalCode()const noexcept{ return postalCode_; }
+    inline const string&    location  ()const noexcept{ return location_  ; }
 
     /**
     Get string version of 'Address', with custom format (implemented with sprintf)
