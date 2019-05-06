@@ -5,20 +5,14 @@
 #include <fstream>
 
 bool Agency::loadPacks(const string& fpath){
-    ifstream is(fpath, ios_base::in);  is.exceptions(ifstream::failbit | ifstream::badbit);
-    if(!is){
-        cos << "Error: could not open travelpacks file " << fpath << endl;
-        return false;
-    }
+    ifstream is(fpath, ios_base::in);
+    if(!is) throw ios_base::failure("could not open travelpacks file");
     vtravel.clear();
     TravelPack t; string b;
     getline(is, b); lasttravel = stoi(b);
     while(is){
         is >> t;
-        if(!is){
-            cos << "Error: could not read travelpack from " << fpath << endl;
-            return false;
-        }
+        if(!is) throw ios_base::failure("could not read travelpack");
         vtravel[t.id()] = t;
         getline(is, b);
     }

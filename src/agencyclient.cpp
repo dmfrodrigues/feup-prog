@@ -5,22 +5,17 @@
 
 
 bool Agency::loadClients(const string& fpath){
-    ifstream is(fpath, ios_base::in);  is.exceptions(ifstream::failbit | ifstream::badbit);
+    ifstream is(fpath, ios_base::in);
 
-    if(!is){
-        cos << "Error: could not open clients file. Invalid path '" << fpath << "'" << endl;
-        return false;
-    }
+    if(!is) throw ios_base::failure("could not open clients file");
     vclient.clear();
     Client c; string b;
 
     while(is){
         is >> c;
-        if(!is){
-            cos << "Error: could not read client from " << fpath << endl;
-            return false;
-        }
+        if(!is) throw ios_base::failure("could not read client");
         vclient.insert(c);
+        if(is.eof()) break;
         getline(is, b);
     }
     return true;
