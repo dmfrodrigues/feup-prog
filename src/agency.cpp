@@ -58,20 +58,30 @@ void Agency::run(){
             this->printHelp();
         #endif
         cos << endl;
-        cos << opstr; getline(cis, b); b = trim(b);
+        cos << opstr; getline(cis, b);
+        int n;
+        try{ n = stoi(trim(b)); }catch(...){ n = -1; }
+
         cos << endl;
 
-        if     (b == "tclient") tclient();
-        else if(b == "tpack"  ) tpack();
-        else if(b == "sclient") sclient(); else if(b == "spack") spack();
-        else if(b == "+client") pclient(); else if(b == "+pack") ppack();
-        else if(b == "#client") cclient(); else if(b == "#pack") cpack();
-        else if(b == "-client") mclient(); else if(b == "-pack") mpack();
-        else if(b == "sell"   ) sell();    else if(b == "fpack") fpack();
-        else if(b == "sold"   ) sold();
-        else if(b == "save"   ) save();    else if(b == "exit" && this->exit()) break;
-        else continue;
-        wait(cis,cos);
+        bool mustWait = true;
+
+        switch(n){
+            case 21: pclient(); break; case 31: ppack(); break;
+            case 22: cclient(); break; case 32: cpack(); break;
+            case 23: mclient(); break; case 33: mpack(); break;
+            case 10: sell();    break;
+            case 24: tclient(); break; case 01: save(); break;
+            case 25: sclient(); break; case 02: if(this->exit()) return; break;
+            case 34: tpack();   break;
+            case 35: spack();   break;
+            case 36: fpack();   break;
+            case 11: sold();    break;
+            default: mustWait = false; break;
+        }
+
+        if(mustWait) wait(cis,cos);
+
     }
 }
 
@@ -93,6 +103,7 @@ bool Agency::print() const{
 
 bool Agency::printHelp() const{
     try{
+        /*
         cos << "Client management:                       Travel pack management:          \n"
                "=================================        =================================\n"
                "Add client              [+client]        Add pack                  [+pack]\n"
@@ -108,6 +119,22 @@ bool Agency::printHelp() const{
                "See pack                  [spack]                                         \n"
                "Find (search) packs       [fpack]                                         \n"
                "See packs sold to clients  [sold]                                         \n";
+        */
+        cos << "Client management:                       Travel pack management:          \n"
+               "=================================        =================================\n"
+               "Add client                   [21]        Add pack                     [31]\n"
+               "Change client                [22]        Change pack                  [32]\n"
+               "Delete client                [23]        Delete pack                  [33]\n"
+               "Sell pack to client          [10]                                         \n"
+               "                                                                          \n"
+               "Information visualization:               Other operations:                \n"
+               "=================================        =================================\n"
+               "Clients table                [24]        Save                         [01]\n"
+               "See client                   [25]        Exit                         [02]\n"
+               "Packs table                  [34]                                         \n"
+               "See pack                     [35]                                         \n"
+               "Find (search) packs          [36]                                         \n"
+               "See packs sold to clients    [11]                                         \n";
         cos << flush;
         return bool(cos);
     }catch(...){
