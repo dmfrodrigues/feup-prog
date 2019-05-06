@@ -5,7 +5,7 @@
 #include <fstream>
 
 bool Agency::loadPacks(const string& fpath){
-    ifstream is(fpath, ios_base::in);
+    ifstream is(fpath, ios_base::in);  is.exceptions(ifstream::failbit | ifstream::badbit);
     if(!is){
         cos << "Error: could not open travelpacks file " << fpath << endl;
         return false;

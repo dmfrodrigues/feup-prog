@@ -12,7 +12,11 @@ using namespace std;
 
 int main(){
     ENABLEPT();
-    Agency a;
-    a.run();
+    try{
+        Agency a;
+        a.run();
+    }catch(...){
+        cout << "An error has occured" << endl;
+    }
     return 0;
 }

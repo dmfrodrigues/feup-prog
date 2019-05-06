@@ -5,20 +5,18 @@
 
 const string Agency::opstr = "Operation$ ";
 
-Agency::Agency(istream& is, ostream& os) noexcept :cis(is),cos(os){
+Agency::Agency(istream& is, ostream& os):cis(is),cos(os){
     ifstream ifs;
-    while(true){
-        string fullpath;
-        ///ENTRY_POINT #DEV
-        os << "Agency file: "; getline(is, fullpath);
-        //fullpath = "input/agency.txt"; //#DEV
-        if(loadAgency(fullpath)) break;
-    }
+    string fullpath;
+    ///ENTRY_POINT #DEV
+    os << "Agency file: "; getline(is, fullpath);
+    //fullpath = "input/agency.txt"; //#DEV
+    loadAgency(fullpath);
     os << endl;
 }
 
 
-bool Agency::loadAgency(const string& fpath) noexcept{
+bool Agency::loadAgency(const string& fpath){
     auto n = fpath.find_last_of('/');
     if(n != fpath.npos){
         inputpath  = fpath.substr(0,n+1);
@@ -27,7 +25,7 @@ bool Agency::loadAgency(const string& fpath) noexcept{
         inputpath  = "";
         agencypath = fpath;
     }
-    ifstream is(fpath);
+    ifstream is(fpath); is.exceptions(ifstream::failbit | ifstream::badbit);
     if(!is){
         cos << "Error: could not open agency file " << fpath << endl;
         return false;

@@ -44,17 +44,15 @@ private:
      * Loads agency data and client/travelpack info
      * @param  fpath path to agency file
      * @return       true if input was successfull, false otherwise
-     * exceptsafe    no-throw
      */
-    bool loadAgency(const string& fpath) noexcept;
+    bool loadAgency(const string& fpath);
 
     /**
      * Loads client list from content of file to vclient
      * @param  fpath path to clients file
      * @return       true if input was successfull, false otherwise
-     * @exceptsafe   no-throw
      */
-    bool loadClients(const string& fpath) noexcept;
+    bool loadClients(const string& fpath);
 
     /**
      * Display all clients in a table
@@ -166,9 +164,8 @@ public:
      * Constructs Agency object. Asks the user for path of agency file
      * @param is input stream
      * @param os output stream
-     * @exceptsafe no-throw
      */
-    Agency(istream& is = cin, ostream& os = cout) noexcept;
+    Agency(istream& is = cin, ostream& os = cout);
 
     /**
      *

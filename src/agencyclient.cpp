@@ -4,8 +4,8 @@
 #include <fstream>
 
 
-bool Agency::loadClients(const string& fpath) noexcept{
-    ifstream is(fpath, ios_base::in);
+bool Agency::loadClients(const string& fpath){
+    ifstream is(fpath, ios_base::in);  is.exceptions(ifstream::failbit | ifstream::badbit);
 
     if(!is){
         cos << "Error: could not open clients file. Invalid path '" << fpath << "'" << endl;
