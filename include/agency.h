@@ -137,6 +137,12 @@ private:
     void nplaces() const;
 
     /**
+     * Present, for each client and in a table, the most visited destination
+     * that they have not visited yet
+     */
+    void suggest() const;
+
+    /**
      * Display some numbers about packs sold to one client or all clients.
      * Calculates the revenue of each travelpack
      */

@@ -49,6 +49,11 @@ void Agency::nplaces() const{
     /*BLA BLA BLA*/
 }
 
+void Agency::suggest() const{
+    header("Travel suggestions");
+    /*BLA BLA BLA*/
+}
+
 void Agency::run(){
     string b;
     #ifndef CLEAR
@@ -81,6 +86,7 @@ void Agency::run(){
             case 35: spack();   break;
             case 36: fpack();   break;
             case 40: nplaces(); break;
+            case 41: suggest(); break;
             case 11: sold();    break;
             default: mustWait = false; break;
         }
@@ -123,6 +129,7 @@ bool Agency::printHelp() const{
                "See pack                     [35]                                         \n"
                "Find (search) packs          [36]                                         \n"
                "Get most visited places      [40]                                         \n"
+               "Get travel pack suggestions  [41]                                         \n"
                "See packs sold to clients    [11]                                         \n";
         cos << flush;
         return bool(cos);
