@@ -44,6 +44,10 @@ bool Agency::loadAgency(const string& fpath){
             loadPacks  (inputpath + travelpath));
 }
 
+void Agency::nplaces() const{
+    header("Most visited places");
+    /*BLA BLA BLA*/
+}
 
 void Agency::run(){
     string b;
@@ -76,6 +80,7 @@ void Agency::run(){
             case 34: tpack();   break;
             case 35: spack();   break;
             case 36: fpack();   break;
+            case 40: nplaces(); break;
             case 11: sold();    break;
             default: mustWait = false; break;
         }
@@ -117,6 +122,7 @@ bool Agency::printHelp() const{
                "Packs table                  [34]                                         \n"
                "See pack                     [35]                                         \n"
                "Find (search) packs          [36]                                         \n"
+               "Get most visited places      [40]                                         \n"
                "See packs sold to clients    [11]                                         \n";
         cos << flush;
         return bool(cos);

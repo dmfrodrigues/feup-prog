@@ -132,6 +132,11 @@ private:
     void fpack() const;
 
     /**
+     * Print a table of most visited places
+     */
+    void nplaces() const;
+
+    /**
      * Display some numbers about packs sold to one client or all clients.
      * Calculates the revenue of each travelpack
      */
