@@ -103,23 +103,6 @@ bool Agency::print() const{
 
 bool Agency::printHelp() const{
     try{
-        /*
-        cos << "Client management:                       Travel pack management:          \n"
-               "=================================        =================================\n"
-               "Add client              [+client]        Add pack                  [+pack]\n"
-               "Change client           [#client]        Change pack               [#pack]\n"
-               "Delete client           [-client]        Delete pack               [-pack]\n"
-               "Sell pack to client        [sell]                                         \n"
-               "                                                                          \n"
-               "Information visualization:               Other operations:                \n"
-               "=================================        =================================\n"
-               "Clients table           [tclient]        Save                       [save]\n"
-               "See client              [sclient]        Exit                       [exit]\n"
-               "Packs table               [tpack]                                         \n"
-               "See pack                  [spack]                                         \n"
-               "Find (search) packs       [fpack]                                         \n"
-               "See packs sold to clients  [sold]                                         \n";
-        */
         cos << "Client management:                       Travel pack management:          \n"
                "=================================        =================================\n"
                "Add client                   [21]        Add pack                     [31]\n"
