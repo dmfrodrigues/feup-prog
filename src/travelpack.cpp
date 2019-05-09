@@ -120,7 +120,7 @@ ostream& TravelPack::print(ForwardIterator first, ForwardIterator last, string f
            << rjust("MaxPeople"  , 11)
            << rjust("Sold"       ,  6)
            << endl;
-        os << string(112, '=') << endl;;
+        os << string(112, '=') << endl;
         for(auto it = first; it != last; ++it){
             const auto& t = it->second;
             os << ljust(to_string(t.id     ()),  4);
