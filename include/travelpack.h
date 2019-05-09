@@ -78,14 +78,14 @@ public:
      * @return const reference to corresponding member variable
      * @exceptsafe  no-throw
      */
-    const ID&                       id     ()const noexcept{ return id_     ; }
-    const bool&                     avail  ()const noexcept{ return avail_  ; }
+    const ID&             id     ()const noexcept{ return id_     ; }
+    const bool&           avail  ()const noexcept{ return avail_  ; }
     const vector<string>& vplaces()const noexcept{ return vplaces_; }
-    const Date&                     begin  ()const noexcept{ return begin_  ; }
-    const Date&                     end    ()const noexcept{ return end_    ; }
-    const Price&                    price  ()const noexcept{ return price_  ; }
-    const unsigned&                 numMax ()const noexcept{ return numMax_ ; }
-    const unsigned&                 numSold()const noexcept{ return numSold_; }
+    const Date&           begin  ()const noexcept{ return begin_  ; }
+    const Date&           end    ()const noexcept{ return end_    ; }
+    const Price&          price  ()const noexcept{ return price_  ; }
+    const unsigned&       numMax ()const noexcept{ return numMax_ ; }
+    const unsigned&       numSold()const noexcept{ return numSold_; }
 
     /**
      * Checks if this travelpack can be sold

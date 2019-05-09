@@ -46,7 +46,21 @@ bool Agency::loadAgency(const string& fpath){
 
 void Agency::nplaces() const{
     header("Most visited places");
-    /*BLA BLA BLA*/
+    set< pair<unsigned, string> > mplaces;{
+        map<string, unsigned> m;
+        for(const auto& t:vtravel){
+            const auto& v = t.second.vplaces();
+            for(const auto& s:v) m[s] += t.second.numSold();
+        }
+        for(const auto& p:m) mplaces.insert(pair<unsigned,string>(p.second,p.first));
+    }
+    const int N = mplaces.size();
+    cos << ljust("#", 4) << ljust("Place", 24) << "\t" << ljust("Num. visitors", 15) << endl;
+    cos << string(50, '=') << endl;
+    auto it = mplaces.rbegin();
+    for(int i = 1; i <= N; ++i, ++it)
+        cos << ljust(to_string(i), 4) << ljust(it->second, 24) << "\t" << ljust(to_string(it->first), 15) << endl;
+    cos << endl;
 }
 
 void Agency::suggest() const{
