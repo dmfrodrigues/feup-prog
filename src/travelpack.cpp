@@ -7,7 +7,7 @@ void TravelPack::setPlaces(TravelPack& t, string s){
     t.vplaces_ = makePlaces(s);
 }
 
-string TravelPack::getPlaces() const noexcept{
+string TravelPack::getPlacesStr() const noexcept{
     auto ret = vplaces_[0];
     if(vplaces_.size() > 1)
         ret += " - " + join(vplaces_.begin()+1, vplaces_.end(), ", ");
@@ -68,7 +68,7 @@ bool TravelPack::userPackprop(unsigned propn, istream& is, ostream& os){
             }
             avail_ = (b == "y");
             break;
-        case 2: os << "Destination: "          << getPlaces() << endl; if(!vin("New destination: "         , TravelPack::setPlaces, *this  , is, os)) return false; break;
+        case 2: os << "Destination: "          << getPlacesStr() << endl; if(!vin("New destination: "         , TravelPack::setPlaces, *this  , is, os)) return false; break;
         case 3: os << "Begin date: "           << begin_      << endl;
             while(true){
                 if(!vin("New begin date: "            , Date::set            , begin_ , is, os)) return false;
@@ -125,7 +125,7 @@ ostream& TravelPack::print(ForwardIterator first, ForwardIterator last, string f
             const auto& t = it->second;
             os << ljust(to_string(t.id     ()),  4);
             os << ljust((t.avail()? "yes" : "no")  ,  7);
-            os << ljust(t.getPlaces()              , 50) << " \t";
+            os << ljust(t.getPlacesStr()           , 50) << " \t";
             os << ljust(string(t.begin())     , 12);
             os << ljust(string(t.end())       , 12);
             os << rjust(to_string(t.price  ()),  7);
@@ -154,7 +154,7 @@ ostream& TravelPack::print(ForwardIterator first, ForwardIterator last, string f
             sold += t.numSold();
             os << ljust(to_string(t.id     ()),  4);
             os << ljust((t.avail()? "yes" : "no")  ,  7);
-            os << ljust(t.getPlaces()              , 50) << " \t";
+            os << ljust(t.getPlacesStr()           , 50) << " \t";
             os << ljust(string(t.begin())     , 12);
             os << ljust(string(t.end())       , 12);
             os << rjust(to_string(t.price  ()),  7);
@@ -173,7 +173,7 @@ ostream& TravelPack::print(ForwardIterator first, ForwardIterator last, string f
             os << "#"                                                      << endl;
             os << "0   ID:                   " << t.id_                 << endl;
             os << "1   Availability:         " << (t.avail_?"yes":"no") << endl;
-            os << "2   Destination:          " << t.getPlaces()         << endl;
+            os << "2   Destination:          " << t.getPlacesStr()      << endl;
             os << "3   Begin date:           " << t.begin_              << endl;
             os << "4   End date:             " << t.end_                << endl;
             os << "5   Price per person:     " << t.price_              << endl;
@@ -203,7 +203,7 @@ istream& operator>>(istream& is, TravelPack& t){
 
 ostream& operator<<(ostream& os, const TravelPack& t){
     os << t.id()*(t.avail()?1:-1) << endl;
-    os << t.getPlaces()           << endl;
+    os << t.getPlacesStr()        << endl;
     os << t.begin()               << endl;
     os << t.end()                 << endl;
     os << t.price()               << endl;

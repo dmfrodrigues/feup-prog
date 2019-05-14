@@ -21,7 +21,7 @@ Douro vinhateiro - Porto, Régua, Vila Real
 2019/09/22
 100
 62
-12
+13
 ::::::::::
 4
 Entroncamento - Estação, Centro Cultural
@@ -29,7 +29,7 @@ Entroncamento - Estação, Centro Cultural
 2019/03/27
 25
 60
-0
+2
 ::::::::::
 6
 Porto - Cedofeita, Matosinhos, Gaia
@@ -37,7 +37,7 @@ Porto - Cedofeita, Matosinhos, Gaia
 2020/08/18
 200
 10
-0
+2
 ::::::::::
 7
 Marte - Valis Marineris, Monte Olimpo

@@ -34,13 +34,6 @@ private:
      */
     static void setPlaces(TravelPack& t, string s);
 
-    /**
-     * Returns string containing destinations from vtravel_
-     * @return string with comma- and dash-separated elements of vtravel_
-     * @exceptsafe  no-throw
-     */
-    string getPlaces() const noexcept;
-
 public:
 
     /**
@@ -50,6 +43,13 @@ public:
      * @throws  invalid_argument    s does not have at least 1 field
      */
     static vector<string> makePlaces(string s);
+
+    /**
+     * Returns string containing destinations from vtravel_
+     * @return string with comma- and dash-separated elements of vtravel_
+     * @exceptsafe  no-throw
+     */
+    string getPlacesStr() const noexcept;
 
     /**
      * Queries user about properties of new travelpack object

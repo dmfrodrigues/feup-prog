@@ -8,7 +8,7 @@ Armando da Silva Oliveira
 333346521
 4
 Rua das Amoreiras / 135 / - / 7000-190 / Vila Nova de Gaia
-1 ; 5 ; 7
+1 ; 3 ; 4 ; 5 ; 6 ; 7
 ::::::::::
 Belmiro Miguel
 111987660
@@ -38,7 +38,7 @@ Miguel Fernando Gonçalves de Oliveira e Azevedo Pinto de Rebelo e Moura
 444444440
 12
 Rua Cheia / 12 / - / 4444-44 / Famalicão
-2
+2 ; 4 ; 6
 ::::::::::
 Rui Manuel
 234987154
