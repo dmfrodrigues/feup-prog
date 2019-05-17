@@ -9,8 +9,8 @@ Agency::Agency(istream& is, ostream& os):cis(is),cos(os){
     ifstream ifs;
     string fullpath;
     ///ENTRY_POINT #DEV
-    //os << "Agency file: "; getline(is, fullpath);
-    fullpath = "input/agency.txt"; //#DEV
+    os << "Agency file: "; getline(is, fullpath);
+    //fullpath = "input/agency.txt"; //#DEV
     loadAgency(fullpath);
     os << endl;
 }
