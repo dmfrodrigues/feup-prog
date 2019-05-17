@@ -54,16 +54,12 @@ void Agency::nplaces() const{
         }
         for(const auto& p:m) mplaces.insert(pair<unsigned,string>(p.second, p.first));
     }
-<<<<<<< HEAD
-    const size_t N = mplaces.size();
-=======
 
     size_t N;
     if(!vin("Number of places (for all places, enter a very large number): ", N, cis, cos)) return;
     N = min(N, mplaces.size());
     cos << endl;
 
->>>>>>> suggest-impl
     cos << ljust("#", 4) << ljust("Place", 24) << "\t" << ljust("Num. visitors", 15) << endl;
     cos << string(50, '=') << endl;
     auto it = mplaces.rbegin();
