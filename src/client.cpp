@@ -47,7 +47,8 @@ bool Client::UserClientprop(unsigned propn, istream& is, ostream& os){
             numFam_ = (unsigned)i;
             break;
         case 3: os << "Address: "        << address_   << endl; if(!vin("New address: "       , Address::Set    , address_, is, os)) return false; break;
-        case 4: os << "Travel pack sells should be handled by operation [sell]" << endl; return false; break;
+        case 4: os << "Travel pack sells should be handled by operation 'sell' [10]" << endl; return false; break;
+        case 5: os << "Travel pack sells should be handled by operation 'sell' [10]" << endl; return false; break;
         default: throw out_of_range("trying to access client property that does not exist");
     }
     return true;
@@ -65,9 +66,9 @@ ostream& Client::Print(ForwardIterator first, ForwardIterator last, string f, os
            << rjust("#Household"     , 12) << "  "
            << ljust("Address"        , 60) << "\t"
            << ljust("Bought packs"   , 18)
-           << ljust("Total purchased", 17)
+           << rjust("Total purchased", 17)
            << endl;
-        os << string(170, '=') << endl;
+        os << string(187, '=') << endl;
         unsigned i = 0;
         for(auto it = first; it != last; ++it, ++i){
             const auto& c = *it;
@@ -77,18 +78,19 @@ ostream& Client::Print(ForwardIterator first, ForwardIterator last, string f, os
             os << rjust(to_string(c.GetNumFamily()), 12) << "  ";
             os << ljust(c.GetAddress().str()            , 60) << "\t";
             os << ljust(c.GetPacks("; ")             , 18);
-            os << ljust(to_string(c.GetTotalPurchased()), 17);
+            os << rjust(to_string(c.GetTotalPurchased()), 17);
             os << endl;
         }
     }else if(f == "screenfull"){
         if(last != first){
             const auto& c = *first;
-            os << "#"                                        << endl;
-            os << "0   Name:           " << c.name_          << endl;
-            os << "1   VAT:            " << c.vat_           << endl;
-            os << "2   Household size: " << c.numFam_        << endl;
-            os << "3   Address:        " << c.address_       << endl;
-            os << "4   Bought packs:   " << c.GetPacks("; ") << endl;
+            os << "#"                                          << endl;
+            os << "0   Name:            " << c.name_           << endl;
+            os << "1   VAT:             " << c.vat_            << endl;
+            os << "2   Household size:  " << c.numFam_         << endl;
+            os << "3   Address:         " << c.address_        << endl;
+            os << "4   Bought packs:    " << c.GetPacks("; ")  << endl;
+            os << "5   Total purchased: " << c.totalPurchased_ << endl;
         }
     } return os;
 }

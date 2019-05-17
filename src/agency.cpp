@@ -140,8 +140,8 @@ bool Agency::printHelp() const{
                "Clients table                [24]        Save                         [01]\n"
                "See client                   [25]        Exit                         [02]\n"
                "Packs table                  [34]                                         \n"
-               "See pack                     [35]                                         \n"
-               "Find (search) packs          [36]                                         \n"
+               "See pack                     [35]        To cancel operation at any point,\n"
+               "Find (search) packs          [36]        type 'cancel' and press 'Enter'  \n"
                "Get most visited places      [40]                                         \n"
                "Get travel pack suggestions  [41]                                         \n"
                "See packs sold to clients    [11]                                         \n";

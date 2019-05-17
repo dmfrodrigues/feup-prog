@@ -66,7 +66,7 @@ void Agency::cclient(){
     int j;{
         while(true){
             if(!vin("# of property to change: ", j, cis, cos)) return;
-            if(0 <= j && j < 5)      break;
+            if(0 <= j && j < 6)      break;
             else cos << "Error: # outside valid input range [0,4]" << endl;
         }
     }
