@@ -7,7 +7,11 @@ void TravelPack::SetPlaces(TravelPack& t, string s){
     t.vplaces_ = MakePlaces(s);
 }
 
+<<<<<<< HEAD
 string TravelPack::GetPlaces() const noexcept{
+=======
+string TravelPack::getPlacesStr() const noexcept{
+>>>>>>> suggest-impl
     auto ret = vplaces_[0];
     if(vplaces_.size() > 1)
         ret += " - " + join(vplaces_.begin()+1, vplaces_.end(), ", ");
@@ -68,7 +72,11 @@ bool TravelPack::UserPackprop(unsigned propn, istream& is, ostream& os){
             }
             avail_ = (b == "y");
             break;
+<<<<<<< HEAD
         case 2: os << "Destination: "          << GetPlaces() << endl; if(!vin("New destination: "         , TravelPack::SetPlaces, *this  , is, os)) return false; break;
+=======
+        case 2: os << "Destination: "          << getPlacesStr() << endl; if(!vin("New destination: "         , TravelPack::setPlaces, *this  , is, os)) return false; break;
+>>>>>>> suggest-impl
         case 3: os << "Begin date: "           << begin_      << endl;
             while(true){
                 if(!vin("New begin date: "            , Date::Set            , begin_ , is, os)) return false;
@@ -123,6 +131,7 @@ ostream& TravelPack::Print(ForwardIterator first, ForwardIterator last, string f
         os << string(112, '=') << endl;
         for(auto it = first; it != last; ++it){
             const auto& t = it->second;
+<<<<<<< HEAD
             os << ljust(to_string(t.GetID())     ,  4);
             os << ljust((t.GetAvail()? "yes" : "no"),  7);
             os << ljust(t.GetPlaces()            , 50) << " \t";
@@ -131,6 +140,16 @@ ostream& TravelPack::Print(ForwardIterator first, ForwardIterator last, string f
             os << rjust(to_string(t.GetPrice  ()),  7);
             os << rjust(to_string(t.GetNumMax ()), 11);
             os << rjust(to_string(t.GetNumSold()),  6);
+=======
+            os << ljust(to_string(t.id     ()),  4);
+            os << ljust((t.avail()? "yes" : "no")  ,  7);
+            os << ljust(t.getPlacesStr()           , 50) << " \t";
+            os << ljust(string(t.begin())     , 12);
+            os << ljust(string(t.end())       , 12);
+            os << rjust(to_string(t.price  ()),  7);
+            os << rjust(to_string(t.numMax ()), 11);
+            os << rjust(to_string(t.numSold()),  6);
+>>>>>>> suggest-impl
             os << endl;
         }
     }else if(f == "sold"){
@@ -150,6 +169,7 @@ ostream& TravelPack::Print(ForwardIterator first, ForwardIterator last, string f
             const auto& t = it->second;
             auto r = t.GetPrice()*(int)t.GetNumSold();
             revenue += r;
+<<<<<<< HEAD
             maxpeople += t.GetNumMax();
             sold += t.GetNumSold();
             os << ljust(to_string(t.GetID())  ,  4);
@@ -160,6 +180,18 @@ ostream& TravelPack::Print(ForwardIterator first, ForwardIterator last, string f
             os << rjust(to_string(t.GetPrice  ()),  7);
             os << rjust(to_string(t.GetNumMax ()), 11);
             os << rjust(to_string(t.GetNumSold()),  6);
+=======
+            maxpeople += t.numMax();
+            sold += t.numSold();
+            os << ljust(to_string(t.id     ()),  4);
+            os << ljust((t.avail()? "yes" : "no")  ,  7);
+            os << ljust(t.getPlacesStr()           , 50) << " \t";
+            os << ljust(string(t.begin())     , 12);
+            os << ljust(string(t.end())       , 12);
+            os << rjust(to_string(t.price  ()),  7);
+            os << rjust(to_string(t.numMax ()), 11);
+            os << rjust(to_string(t.numSold()),  6);
+>>>>>>> suggest-impl
             os << rjust(to_string(r)          ,  9);
             os << endl;
         }
@@ -173,7 +205,11 @@ ostream& TravelPack::Print(ForwardIterator first, ForwardIterator last, string f
             os << "#"                                                      << endl;
             os << "0   ID:                   " << t.id_                 << endl;
             os << "1   Availability:         " << (t.avail_?"yes":"no") << endl;
+<<<<<<< HEAD
             os << "2   Destination:          " << t.GetPlaces()         << endl;
+=======
+            os << "2   Destination:          " << t.getPlacesStr()      << endl;
+>>>>>>> suggest-impl
             os << "3   Begin date:           " << t.begin_              << endl;
             os << "4   End date:             " << t.end_                << endl;
             os << "5   Price per person:     " << t.price_              << endl;
@@ -202,6 +238,7 @@ istream& operator>>(istream& is, TravelPack& t){
 }
 
 ostream& operator<<(ostream& os, const TravelPack& t){
+<<<<<<< HEAD
     os << t.GetID()*(t.GetAvail()?1:-1) << endl;
     os << t.GetPlaces()                 << endl;
     os << t.GetBegin()                  << endl;
@@ -209,5 +246,14 @@ ostream& operator<<(ostream& os, const TravelPack& t){
     os << t.GetPrice()                  << endl;
     os << t.GetNumMax()                 << endl;
     os << t.GetNumSold()                << flush;
+=======
+    os << t.id()*(t.avail()?1:-1) << endl;
+    os << t.getPlacesStr()        << endl;
+    os << t.begin()               << endl;
+    os << t.end()                 << endl;
+    os << t.price()               << endl;
+    os << t.numMax()              << endl;
+    os << t.numSold()             << flush;
+>>>>>>> suggest-impl
     return os;
 }

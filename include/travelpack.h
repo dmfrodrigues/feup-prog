@@ -50,6 +50,13 @@ public:
     static vector<string> MakePlaces(string s);
 
     /**
+     * Returns string containing destinations from vtravel_
+     * @return string with comma- and dash-separated elements of vtravel_
+     * @exceptsafe  no-throw
+     */
+    string getPlacesStr() const noexcept;
+
+    /**
      * Queries user about properties of new travelpack object
      * @param  lasttravel index of last travel (so the new travelpack has a unique ID)
      * @param  is         input stream

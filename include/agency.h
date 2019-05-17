@@ -162,7 +162,7 @@ private:
      * Save content of all data structures to files
      * @return  true if save was successfull
      */
-    bool save() const;
+    bool save();
 
     /**
      * Exit program

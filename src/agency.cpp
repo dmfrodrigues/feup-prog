@@ -46,15 +46,24 @@ bool Agency::loadAgency(const string& fpath){
 
 void Agency::nplaces() const{
     header("Most visited places");
-    set< pair<unsigned, string> > mplaces;{
+    multimap<unsigned, string> mplaces;{
         map<string, unsigned> m;
         for(const auto& t:vtravel){
             const auto& v = t.second.GetVPlaces();
             for(const auto& s:v) m[s] += t.second.GetNumSold();
         }
-        for(const auto& p:m) mplaces.insert(pair<unsigned,string>(p.second,p.first));
+        for(const auto& p:m) mplaces.insert(pair<unsigned,string>(p.second, p.first));
     }
+<<<<<<< HEAD
     const size_t N = mplaces.size();
+=======
+
+    size_t N;
+    if(!vin("Number of places (for all places, enter a very large number): ", N, cis, cos)) return;
+    N = min(N, mplaces.size());
+    cos << endl;
+
+>>>>>>> suggest-impl
     cos << ljust("#", 4) << ljust("Place", 24) << "\t" << ljust("Num. visitors", 15) << endl;
     cos << string(50, '=') << endl;
     auto it = mplaces.rbegin();
@@ -65,7 +74,61 @@ void Agency::nplaces() const{
 
 void Agency::suggest() const{
     header("Travel suggestions");
-    /*BLA BLA BLA*/
+    multimap<unsigned, string> mplaces;{
+        map<string, unsigned> m;
+        for(const auto& t:vtravel){
+            const auto& v = t.second.vplaces();
+            for(const auto& s:v) m[s] += t.second.numSold();
+        }
+        for(const auto& p:m) mplaces.insert(pair<unsigned,string>(p.second, p.first));
+    }
+
+    cos << ljust("#", 4) << ljust("Name", 54) << "\t" << ljust("Suggestion", 60) << endl;
+    cos << string(122, '=') << endl;
+
+    unsigned n = 0;
+    for(const auto& c:vclient){
+        multimap<unsigned, string> notvisited = mplaces;{
+            set<string> visited;{
+                for(const auto& id:c.vtravel()){
+                    if(vtravel.find(id) != vtravel.end()){
+                        const TravelPack& t = vtravel.at(id);
+                        visited.insert(t.vplaces().begin(), t.vplaces().end());
+                    }
+                }
+            }
+            for(auto it = notvisited.begin(); it != notvisited.end();){
+                if(visited.find(it->second) != visited.end()){
+                    it = notvisited.erase(it);
+                }else{
+                    ++it;
+                }
+            }
+        }
+        const TravelPack *goodt = nullptr;
+        bool good = false;
+        for(const auto& tus:notvisited){ const string& tovisit = tus.second;
+            for(const auto& tp:vtravel){
+                const TravelPack& t = tp.second;
+                if(!t.avail()) continue;
+                for(const string& s:t.vplaces()){
+                    if(s == tovisit){
+                        goodt = &t;
+                        good = true;
+                        break;
+                    }
+                }
+                if(good) break;
+            }
+            if(good) break;
+        }
+        if(good){
+            cos << ljust(to_string(n++), 4) << ljust(c.name(), 54) << "\t" << ljust(goodt->getPlacesStr(), 60) << endl;
+        }else{
+            cos << ljust(to_string(n++), 4) << ljust(c.name(), 54) << "\t" << ljust("-", 60) << endl;
+        }
+    }
+    cos << endl;
 }
 
 void Agency::run(){
@@ -152,7 +215,7 @@ bool Agency::printHelp() const{
     }
 }
 
-bool Agency::save() const{
+bool Agency::save(){
     header("Save");
     try{
         //Save agency
@@ -195,6 +258,7 @@ bool Agency::save() const{
         }
 
         cos << "Files saved" << endl;
+        InfoChanged = false;
         return true;
     }catch(...){
         cos << "Error: could not save files" << endl;

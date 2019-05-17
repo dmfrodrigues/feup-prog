@@ -60,10 +60,10 @@ public:
     */
 
     bool operator<  (const Date& d) const noexcept{ return (string(*this) <  string(d)); }
-    bool operator== (const Date& d) const noexcept{ return !(*this < d || d < *this);              }
-    bool operator<= (const Date& d) const noexcept{ return (*this < d || *this == d);              }
-    bool operator>  (const Date& d) const noexcept{ return !(*this <= d);                          }
-    bool operator>= (const Date& d) const noexcept{ return !(*this < d);                           }
+    bool operator== (const Date& d) const noexcept{ return !(*this < d || d < *this);    }
+    bool operator<= (const Date& d) const noexcept{ return (*this < d || *this == d);    }
+    bool operator>  (const Date& d) const noexcept{ return !(*this <= d);                }
+    bool operator>= (const Date& d) const noexcept{ return !(*this < d);                 }
 
     /**
     Checks if a certain year is a leap year
