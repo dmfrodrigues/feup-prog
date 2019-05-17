@@ -73,8 +73,8 @@ void Agency::suggest() const{
     multimap<unsigned, string> mplaces;{
         map<string, unsigned> m;
         for(const auto& t:vtravel){
-            const auto& v = t.second.vplaces();
-            for(const auto& s:v) m[s] += t.second.numSold();
+            const auto& v = t.second.GetVPlaces();
+            for(const auto& s:v) m[s] += t.second.GetNumSold();
         }
         for(const auto& p:m) mplaces.insert(pair<unsigned,string>(p.second, p.first));
     }
@@ -86,10 +86,10 @@ void Agency::suggest() const{
     for(const auto& c:vclient){
         multimap<unsigned, string> notvisited = mplaces;{
             set<string> visited;{
-                for(const auto& id:c.vtravel()){
+                for(const auto& id:c.GetVTravel()){
                     if(vtravel.find(id) != vtravel.end()){
                         const TravelPack& t = vtravel.at(id);
-                        visited.insert(t.vplaces().begin(), t.vplaces().end());
+                        visited.insert(t.GetVPlaces().begin(), t.GetVPlaces().end());
                     }
                 }
             }
@@ -106,8 +106,8 @@ void Agency::suggest() const{
         for(const auto& tus:notvisited){ const string& tovisit = tus.second;
             for(const auto& tp:vtravel){
                 const TravelPack& t = tp.second;
-                if(!t.avail()) continue;
-                for(const string& s:t.vplaces()){
+                if(!t.GetAvail()) continue;
+                for(const string& s:t.GetVPlaces()){
                     if(s == tovisit){
                         goodt = &t;
                         good = true;
@@ -119,9 +119,9 @@ void Agency::suggest() const{
             if(good) break;
         }
         if(good){
-            cos << ljust(to_string(n++), 4) << ljust(c.name(), 54) << "\t" << ljust(goodt->getPlacesStr(), 60) << endl;
+            cos << ljust(to_string(n++), 4) << ljust(c.GetName(), 54) << "\t" << ljust(goodt->GetPlaces(), 60) << endl;
         }else{
-            cos << ljust(to_string(n++), 4) << ljust(c.name(), 54) << "\t" << ljust("-", 60) << endl;
+            cos << ljust(to_string(n++), 4) << ljust(c.GetName(), 54) << "\t" << ljust("-", 60) << endl;
         }
     }
     cos << endl;

@@ -32,13 +32,6 @@ private:
      */
     static void SetPlaces(TravelPack& t, string s);
 
-    /**
-     * Returns string containing destinations from vtravel_
-     * @return string with comma- and dash-separated elements of vtravel_
-     * @exceptsafe  no-throw
-     */
-    string GetPlaces() const noexcept;
-
 public:
 
     /**
@@ -54,7 +47,7 @@ public:
      * @return string with comma- and dash-separated elements of vtravel_
      * @exceptsafe  no-throw
      */
-    string getPlacesStr() const noexcept;
+    string GetPlaces() const noexcept;
 
     /**
      * Queries user about properties of new travelpack object
