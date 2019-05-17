@@ -14,8 +14,6 @@ typedef int Price;
  * Stores travel pack data, provides some helpers
  */
 class TravelPack{
-friend istream& operator>>(istream& is,       TravelPack& t);
-friend ostream& operator<<(ostream& os, const TravelPack& t);
 private:
     ID id_;                             ///ID of the pack
     bool avail_;                        ///availability
@@ -32,14 +30,14 @@ private:
      * @param s string with several dash- and comma-separated destinations
      * @throws  invalid_argument    s does not have at least 1 field (same as makePlaces)
      */
-    static void setPlaces(TravelPack& t, string s);
+    static void SetPlaces(TravelPack& t, string s);
 
     /**
      * Returns string containing destinations from vtravel_
      * @return string with comma- and dash-separated elements of vtravel_
      * @exceptsafe  no-throw
      */
-    string getPlaces() const noexcept;
+    string GetPlaces() const noexcept;
 
 public:
 
@@ -49,7 +47,7 @@ public:
      * @return  vector containing all destinations in s
      * @throws  invalid_argument    s does not have at least 1 field
      */
-    static vector<string> makePlaces(string s);
+    static vector<string> MakePlaces(string s);
 
     /**
      * Queries user about properties of new travelpack object
@@ -59,7 +57,7 @@ public:
      * @return            true if the new travelpack was created successfully, false if cancelled
      * @throws            when vin throws
      */
-    bool userPack(ID lasttravel, istream& is, ostream& os);
+    bool UserPack(ID lasttravel, istream& is, ostream& os);
 
     /**
      * Change one property of TravelPack
@@ -71,35 +69,35 @@ public:
      * @throws       when vin throws
      * @throws  out_of_range when propn is not in the valid range
      */
-    bool userPackprop(unsigned propn, istream& is, ostream& os);
+    bool UserPackprop(unsigned propn, istream& is, ostream& os);
 
     /**
      * 'Get' functions
      * @return const reference to corresponding member variable
      * @exceptsafe  no-throw
      */
-    const ID&             id     ()const noexcept{ return id_     ; }
-    const bool&           avail  ()const noexcept{ return avail_  ; }
-    const vector<string>& vplaces()const noexcept{ return vplaces_; }
-    const Date&           begin  ()const noexcept{ return begin_  ; }
-    const Date&           end    ()const noexcept{ return end_    ; }
-    const Price&          price  ()const noexcept{ return price_  ; }
-    const unsigned&       numMax ()const noexcept{ return numMax_ ; }
-    const unsigned&       numSold()const noexcept{ return numSold_; }
+    const ID&             GetID     ()const noexcept{ return id_     ; }
+    const bool&           GetAvail  ()const noexcept{ return avail_  ; }
+    const vector<string>& GetVPlaces()const noexcept{ return vplaces_; }
+    const Date&           GetBegin  ()const noexcept{ return begin_  ; }
+    const Date&           GetEnd    ()const noexcept{ return end_    ; }
+    const Price&          GetPrice  ()const noexcept{ return price_  ; }
+    const unsigned&       GetNumMax ()const noexcept{ return numMax_ ; }
+    const unsigned&       GetNumSold()const noexcept{ return numSold_; }
 
     /**
      * Checks if this travelpack can be sold
      * @return true if can be sold, false if not available or sold out
      * exceptsafe   no-throw
      */
-    bool sellable() noexcept{ return (avail_ && numSold_ < numMax_); }
+    bool Sellable() noexcept{ return (avail_ && numSold_ < numMax_); }
 
     /**
      * Sell this pack to someone
      * @return  true if pack was successfully bought, false if it sold out
      * @exceptsafe  no-throw
      */
-    bool sell() noexcept{ if(sellable()){ ++numSold_; return true;} return false; }
+    bool Sell() noexcept{ if(Sellable()){ ++numSold_; return true;} return false; }
 
     /**
      * Print travelpacks to screen
@@ -115,27 +113,27 @@ public:
      * @throws       when os throws
      */
     template<class ForwardIterator>
-    static ostream& print(ForwardIterator first, ForwardIterator last, string f, ostream& os);
+    static ostream& Print(ForwardIterator first, ForwardIterator last, string f, ostream& os);
+
+    /**
+     * Extracts content to fill 'TravelPack' object
+     * Destined to be used to read from files
+     * @param is input stream where TravelPack will be read from
+     * @param t  receiver of the extracted information
+     * @return   the same parameter as is
+     * @throws   when vin(), is throws
+     */
+    friend istream& operator>>(istream& is, TravelPack& t);
+
+    /**
+     * Inserts the content of a 'TravelPack' object into a ostream
+     * Destined to be used to write to files
+     * @param os output stream
+     * @param t  'TravelPack' object with the content to insert
+     * @return   the same as parameter os
+     * @throws   when os throws
+     */
+    friend ostream& operator<<(ostream& os, const TravelPack& t);
 };
-
-/**
- * Extracts content to fill 'TravelPack' object
- * Destined to be used to read from files
- * @param is input stream where TravelPack will be read from
- * @param t  receiver of the extracted information
- * @return   the same parameter as is
- * @throws   when vin(), is throws
- */
-istream& operator>>(istream& is, TravelPack& t);
-
-/**
- * Inserts the content of a 'TravelPack' object into a ostream
- * Destined to be used to write to files
- * @param os output stream
- * @param t  'TravelPack' object with the content to insert
- * @return   the same as parameter os
- * @throws   when os throws
- */
-ostream& operator<<(ostream& os, const TravelPack& t);
 
 #endif

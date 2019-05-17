@@ -17,7 +17,7 @@ public:
     Constructs Date without arguments (defaults to begin())
     @exceptsafe no-throw (default value is valid)
     */
-    Date() noexcept{ *this = begin(); }
+    Date() noexcept{ *this = GetBegin(); }
 
     /**
     Constructs Date from a string with 3 fields separated by '/'
@@ -34,7 +34,7 @@ public:
     @throws     invalid_argument   s does not have 3 slash-separated fields,
         or the date is not valid [same as Date::Date(string)]
     */
-    static void set(Date& d, string s);
+    static void Set(Date& d, string s);
 
     /**
     Converts date to slash-separated string of format yyyy/mm/dd
@@ -48,8 +48,8 @@ public:
     @return     Jan 1st, 1AD; Dec 31st, 9999AD
     @exceptsafe no-throw
     */
-    static Date begin() noexcept{ return Date("0001/01/01"); }
-    static Date end  () noexcept{ return Date("9999/12/31"); }
+    static Date GetBegin() noexcept{ return Date("0001/01/01"); }
+    static Date GetEnd  () noexcept{ return Date("9999/12/31"); }
 
     /**
     Relational operators for dates, employing string conversion (since strings
@@ -71,14 +71,14 @@ public:
     @return     true if y is a leap year, false otherwise
     @exceptsafe no-throw
     */
-    static bool isLeap(unsigned y) noexcept;
+    static bool IsLeap(unsigned y) noexcept;
 
     /**
     Checks if *this is a valid date
     A date is valid if it refers to a day after or equal to Jan 1, 1 AD
     and to a day before or equal to Dec 31st, 9999 AD
     */
-    bool checkValid() const;
+    bool CheckValid() const;
 
     /**
     Inserts the content of a Date object into a ostream, using Date::operator string()

@@ -4,7 +4,7 @@
 
 #include "address.h"
 #include "name.h"
-#include "nif.h"
+#include "vat.h"
 #include "travelpack.h"
 #include <set>
 
@@ -16,10 +16,11 @@ using namespace std;
 class Client{
 private:
     Name name_;         ///name of client
-    NIF nif_;           ///numero de identificacao fiscal
+    VAT vat_;           ///numero de identificacao fiscal
     unsigned numFam_;   ///number of household members
     Address address_;   ///address
     set<ID> vtravel_;   ///set of bought packs
+    Price   totalPurchased_; ///
 
     /**
      * Changes content of vtravel_ by parsing the contents of a string
@@ -28,7 +29,7 @@ private:
      * @throws   invalid_argument no conversion could be performed (from Client::makePacks)
      * @throws   out_of_range value read is out of int range (from Client::makePacks)
      */
-    static void setPacks(Client& c, string s);
+    static void SetPacks(Client& c, string s);
 
     /**
      * Returns string containing delim-separated elements of vtravel_
@@ -37,7 +38,7 @@ private:
      * @exceptsafe   no-throw (may throw bad_alloc from string constructor, but
      *      if that failed then it is not even worth to keep trying)
      */
-    string getPacks(const string& delim = " ; ") const noexcept;
+    string GetPacks(const string& delim = " ; ") const noexcept;
 
 public:
     /**
@@ -47,7 +48,7 @@ public:
      * @throws   invalid_argument no conversion could be performed (from stoi)
      * @throws   out_of_range value read is out of int range (from stoi)
      */
-    static set<ID> makePacks(string s);
+    static set<ID> MakePacks(string s);
 
     /**
      * Queries user about properties of new client object
@@ -56,7 +57,7 @@ public:
      * @return    true if new client was created successfully, false if cancelled
      * @throws    when vin throws
      */
-    bool userClient(istream& is, ostream& os) noexcept;
+    bool UserClient(istream& is, ostream& os) noexcept;
 
     /**
      * Change one property of Client
@@ -68,25 +69,26 @@ public:
      * @throws       when vin throws
      * @throws  out_of_range when propn is not in the valid range
      */
-    bool userClientprop(unsigned propn, istream& is, ostream& os);
+    bool UserClientprop(unsigned propn, istream& is, ostream& os);
 
     /**
      * 'Get' functions
      * @return const reference to corresponding member variable
      * @exceptsafe  no-throw
      */
-    const Name&         name     ()const noexcept{ return name_   ; }
-    const NIF&          nif      ()const noexcept{ return nif_    ; }
-    const unsigned&     numFamily()const noexcept{ return numFam_ ; }
-    const Address&      address  ()const noexcept{ return address_; }
-    const set<ID>& vtravel  ()const noexcept{ return vtravel_; }
+    const Name&     GetName          ()const noexcept{ return name_   ;        }
+    const VAT&      GetVAT           ()const noexcept{ return vat_    ;        }
+    const unsigned& GetNumFamily     ()const noexcept{ return numFam_ ;        }
+    const Address&  GetAddress       ()const noexcept{ return address_;        }
+    const set<ID>&  GetVTravel       ()const noexcept{ return vtravel_;        }
+    const Price&    GetTotalPurchased()const noexcept{ return totalPurchased_; }
 
     /**
      * Sell pack with certain ID to the client
      * @param id ID of the travel pack
      * @exceptsafe  no-throw
      */
-    void sell(ID id) noexcept{ vtravel_.insert(id); }
+    void Sell(ID id) noexcept{ vtravel_.insert(id); }
 
     /**
      * Print clients to screen
@@ -101,7 +103,7 @@ public:
      * @throws       if os throws
      */
     template<class ForwardIterator>
-    static ostream& print(ForwardIterator first, ForwardIterator last, string f, ostream& os);
+    static ostream& Print(ForwardIterator first, ForwardIterator last, string f, ostream& os);
 
     /**
      * Compare clients (meant for comparator in set)

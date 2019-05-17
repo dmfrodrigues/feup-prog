@@ -31,9 +31,9 @@ bool Agency::loadAgency(const string& fpath){
         return false;
     }
     vin(              name      , is);
-    vin(              nif       , is);
+    vin(              vat       , is);
     vin(              url       , is);
-    vin(Address::set, address   , is);
+    vin(Address::Set, address   , is);
     vin(              clientpath, is);
     vin(              travelpath, is);
     if(!is){
@@ -49,16 +49,16 @@ void Agency::nplaces() const{
     set< pair<unsigned, string> > mplaces;{
         map<string, unsigned> m;
         for(const auto& t:vtravel){
-            const auto& v = t.second.vplaces();
-            for(const auto& s:v) m[s] += t.second.numSold();
+            const auto& v = t.second.GetVPlaces();
+            for(const auto& s:v) m[s] += t.second.GetNumSold();
         }
         for(const auto& p:m) mplaces.insert(pair<unsigned,string>(p.second,p.first));
     }
-    const int N = mplaces.size();
+    const size_t N = mplaces.size();
     cos << ljust("#", 4) << ljust("Place", 24) << "\t" << ljust("Num. visitors", 15) << endl;
     cos << string(50, '=') << endl;
     auto it = mplaces.rbegin();
-    for(int i = 1; i <= N; ++i, ++it)
+    for(size_t i = 1; i <= N; ++i, ++it)
         cos << ljust(to_string(i), 4) << ljust(it->second, 24) << "\t" << ljust(to_string(it->first), 15) << endl;
     cos << endl;
 }
@@ -117,7 +117,7 @@ bool Agency::print() const{
         cos << string(n, ' ') << name << string(n, ' ') << endl;
         cos << string(2*n+name.size(), '#')                  << endl;
         cos                                                       << endl;
-        cos << "NIF: " << nif                                     << endl;
+        cos << "VAT: " << vat                                     << endl;
         cos << address                                            << endl;
         cos << url                                                << endl;
         return bool(cos);
@@ -159,7 +159,7 @@ bool Agency::save() const{
         {
             ofstream of_agency; of_agency.exceptions(ios_base::badbit); of_agency.open(inputpath + agencypath);
             of_agency << name       << endl;
-            of_agency << nif        << endl;
+            of_agency << vat        << endl;
             of_agency << url        << endl;
             of_agency << address    << endl;
             of_agency << clientpath << endl;
@@ -214,7 +214,7 @@ bool Agency::exit() const{
 
 void Agency::sold() const{
     header("See packs sold to clients");
-    Client::print(vclient.begin(), vclient.end(), "table", cos) << endl;
+    Client::Print(vclient.begin(), vclient.end(), "table", cos) << endl;
     string b; int i;
     while(true){
         if(!vin("# of client to see (if all clients, fill with invalid input, like '-' or press 'Enter'): ", b, cis, cos)) return;
@@ -232,17 +232,17 @@ void Agency::sold() const{
     if(b == "-"){
         cos << "Travel packs bought by at least one client:" << endl;
         for(const auto& it:vclient)
-            for(const auto& id:it.vtravel())
+            for(const auto& id:it.GetVTravel())
                 if(vtravel.find(id) != vtravel.end())
                     m[id] = vtravel.at(id);
     }else{
         cos << "Travel packs bought by client #" << i << ": " << endl;
         auto it = vclient.begin(); advance(it, i);
-        for(const auto& id:it->vtravel())
+        for(const auto& id:it->GetVTravel())
             if(vtravel.find(id) != vtravel.end())
                 m[id] = vtravel.at(id);
     }
-    TravelPack::print(m.cbegin(), m.cend(), "sold", cos);
+    TravelPack::Print(m.cbegin(), m.cend(), "sold", cos);
 }
 
 void Agency::sell(){
@@ -250,18 +250,18 @@ void Agency::sell(){
     auto p = seeClient(); unsigned i  = p.first; if(!p.second) return;
     auto q = seePack  (); ID       id = q.first; if(!q.second) return;
     auto it = vclient.begin(); advance(it, i);
-    if(it->vtravel().find(id) != it->vtravel().end()){
+    if(it->GetVTravel().find(id) != it->GetVTravel().end()){
         cos << "Client #" << i <<" has already bought travel pack with ID " << id << endl;
         return;
     }
-    if(!vtravel[id].sellable()){
+    if(!vtravel[id].Sellable()){
         cos << "Travel pack can no longer be sold (not available or sold out)" << endl;
         return;
     }
     if(confirm("Confirm you want to sell the pack with ID "+to_string(id)+" to client #"+to_string(i) + " [y/n]: ",cis,cos)){
         Client c = *it;
-        vtravel[id].sell();
-        c.sell(id);
+        vtravel[id].Sell();
+        c.Sell(id);
         vclient.erase(it);
         vclient.insert(c);
         cos << "Pack sold" << endl;

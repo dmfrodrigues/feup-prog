@@ -10,12 +10,12 @@ Date::Date(string s){
     y_ = stoul(v[0]);
     m_ = stoul(v[1]);
     d_ = stoul(v[2]);
-    if(!checkValid()){
+    if(!CheckValid()){
         throw invalid_argument("date not valid");
     }
 }
 
-void Date::set(Date& d, string s){
+void Date::Set(Date& d, string s){
     d = Date(s);
 }
 
@@ -26,15 +26,15 @@ Date::operator string() const noexcept{
 }
 
 unsigned days[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-bool Date::isLeap(unsigned y) noexcept{
+bool Date::IsLeap(unsigned y) noexcept{
     if (y%4 == 0)
         if (y%100 == 0) return (y%400 == 0);
         else return true;
     else return false;
 }
-bool Date::checkValid()const{
+bool Date::CheckValid()const{
     if(!(1 <= m_ && m_ <= 12)) return false;
-    if(!(1 <= d_ && d_ <= days[m_]+(m_ == 2 && isLeap(y_)? 1 : 0))) return false;
+    if(!(1 <= d_ && d_ <= days[m_]+(m_ == 2 && IsLeap(y_)? 1 : 0))) return false;
     if(!(1 <= y_ && y_ <= 9999)) return false;
     return true;
 }

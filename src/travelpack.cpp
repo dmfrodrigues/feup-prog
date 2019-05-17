@@ -3,18 +3,18 @@
 #include <map>
 #include "vin.h"
 
-void TravelPack::setPlaces(TravelPack& t, string s){
-    t.vplaces_ = makePlaces(s);
+void TravelPack::SetPlaces(TravelPack& t, string s){
+    t.vplaces_ = MakePlaces(s);
 }
 
-string TravelPack::getPlaces() const noexcept{
+string TravelPack::GetPlaces() const noexcept{
     auto ret = vplaces_[0];
     if(vplaces_.size() > 1)
         ret += " - " + join(vplaces_.begin()+1, vplaces_.end(), ", ");
     return ret;
 }
 
-vector<string> TravelPack::makePlaces(string s){
+vector<string> TravelPack::MakePlaces(string s){
     vector<string> ret;
     auto v = split(s, '-');
     if(v.size() < 1) throw invalid_argument("could not find at least one place");
@@ -26,13 +26,13 @@ vector<string> TravelPack::makePlaces(string s){
     return ret;
 }
 
-bool TravelPack::userPack(ID lasttravel, istream& is, ostream& os){
+bool TravelPack::UserPack(ID lasttravel, istream& is, ostream& os){
     id_ = lasttravel;
     avail_ = true;
-    if(!vin("Destination (main - secondary separated by ','): ", TravelPack::setPlaces, *this  , is, os) ||
-       !vin("Begin date (yyyy/mm/dd): "                        , Date::set            , begin_ , is, os)) return false;
+    if(!vin("Destination (main - secondary separated by ','): ", TravelPack::SetPlaces, *this  , is, os) ||
+       !vin("Begin date (yyyy/mm/dd): "                        , Date::Set            , begin_ , is, os)) return false;
     while(true){
-       if(!vin("End date   (yyyy/mm/dd): "                     , Date::set            , end_   , is, os)) return false;
+       if(!vin("End date   (yyyy/mm/dd): "                     , Date::Set            , end_   , is, os)) return false;
        if(end_ >= begin_) break;
        os << "Error: end date happens before begin date" << endl;
     }
@@ -54,7 +54,7 @@ bool TravelPack::userPack(ID lasttravel, istream& is, ostream& os){
     return true;
 }
 
-bool TravelPack::userPackprop(unsigned propn, istream& is, ostream& os){
+bool TravelPack::UserPackprop(unsigned propn, istream& is, ostream& os){
     string b;
     auto i = price_;
     auto j = numMax_;
@@ -68,17 +68,17 @@ bool TravelPack::userPackprop(unsigned propn, istream& is, ostream& os){
             }
             avail_ = (b == "y");
             break;
-        case 2: os << "Destination: "          << getPlaces() << endl; if(!vin("New destination: "         , TravelPack::setPlaces, *this  , is, os)) return false; break;
+        case 2: os << "Destination: "          << GetPlaces() << endl; if(!vin("New destination: "         , TravelPack::SetPlaces, *this  , is, os)) return false; break;
         case 3: os << "Begin date: "           << begin_      << endl;
             while(true){
-                if(!vin("New begin date: "            , Date::set            , begin_ , is, os)) return false;
+                if(!vin("New begin date: "            , Date::Set            , begin_ , is, os)) return false;
                 if(end_ <= begin_) break;
                 os << "Error: begin date happens after end date" << endl;
             }
             break;
         case 4: os << "End date: "             << end_        << endl;
             while(true){
-                if(!vin("New end date: "            , Date::set            , end_   , is, os)) return false;
+                if(!vin("New end date: "            , Date::Set            , end_   , is, os)) return false;
                 if(end_ <= begin_) break;
                 os << "Error: end date happens before begin date" << endl;
             }
@@ -106,7 +106,7 @@ bool TravelPack::userPackprop(unsigned propn, istream& is, ostream& os){
 }
 
 template<class ForwardIterator>
-ostream& TravelPack::print(ForwardIterator first, ForwardIterator last, string f, ostream& os){
+ostream& TravelPack::Print(ForwardIterator first, ForwardIterator last, string f, ostream& os){
     if(first == last){
         return (os << "No travel packs were found" << endl);
     }
@@ -123,14 +123,14 @@ ostream& TravelPack::print(ForwardIterator first, ForwardIterator last, string f
         os << string(112, '=') << endl;
         for(auto it = first; it != last; ++it){
             const auto& t = it->second;
-            os << ljust(to_string(t.id     ()),  4);
-            os << ljust((t.avail()? "yes" : "no")  ,  7);
-            os << ljust(t.getPlaces()              , 50) << " \t";
-            os << ljust(string(t.begin())     , 12);
-            os << ljust(string(t.end())       , 12);
-            os << rjust(to_string(t.price  ()),  7);
-            os << rjust(to_string(t.numMax ()), 11);
-            os << rjust(to_string(t.numSold()),  6);
+            os << ljust(to_string(t.GetID())     ,  4);
+            os << ljust((t.GetAvail()? "yes" : "no"),  7);
+            os << ljust(t.GetPlaces()            , 50) << " \t";
+            os << ljust(string(t.GetBegin())     , 12);
+            os << ljust(string(t.GetEnd())       , 12);
+            os << rjust(to_string(t.GetPrice  ()),  7);
+            os << rjust(to_string(t.GetNumMax ()), 11);
+            os << rjust(to_string(t.GetNumSold()),  6);
             os << endl;
         }
     }else if(f == "sold"){
@@ -148,18 +148,18 @@ ostream& TravelPack::print(ForwardIterator first, ForwardIterator last, string f
         os << string(121, '=') << endl;;
         for(auto it = first; it != last; ++it){
             const auto& t = it->second;
-            auto r = t.price()*(int)t.numSold();
+            auto r = t.GetPrice()*(int)t.GetNumSold();
             revenue += r;
-            maxpeople += t.numMax();
-            sold += t.numSold();
-            os << ljust(to_string(t.id     ()),  4);
-            os << ljust((t.avail()? "yes" : "no")  ,  7);
-            os << ljust(t.getPlaces()              , 50) << " \t";
-            os << ljust(string(t.begin())     , 12);
-            os << ljust(string(t.end())       , 12);
-            os << rjust(to_string(t.price  ()),  7);
-            os << rjust(to_string(t.numMax ()), 11);
-            os << rjust(to_string(t.numSold()),  6);
+            maxpeople += t.GetNumMax();
+            sold += t.GetNumSold();
+            os << ljust(to_string(t.GetID())  ,  4);
+            os << ljust((t.GetAvail()? "yes" : "no")  ,  7);
+            os << ljust(t.GetPlaces()              , 50) << " \t";
+            os << ljust(string(t.GetBegin())     , 12);
+            os << ljust(string(t.GetEnd())       , 12);
+            os << rjust(to_string(t.GetPrice  ()),  7);
+            os << rjust(to_string(t.GetNumMax ()), 11);
+            os << rjust(to_string(t.GetNumSold()),  6);
             os << rjust(to_string(r)          ,  9);
             os << endl;
         }
@@ -173,7 +173,7 @@ ostream& TravelPack::print(ForwardIterator first, ForwardIterator last, string f
             os << "#"                                                      << endl;
             os << "0   ID:                   " << t.id_                 << endl;
             os << "1   Availability:         " << (t.avail_?"yes":"no") << endl;
-            os << "2   Destination:          " << t.getPlaces()         << endl;
+            os << "2   Destination:          " << t.GetPlaces()         << endl;
             os << "3   Begin date:           " << t.begin_              << endl;
             os << "4   End date:             " << t.end_                << endl;
             os << "5   Price per person:     " << t.price_              << endl;
@@ -183,14 +183,14 @@ ostream& TravelPack::print(ForwardIterator first, ForwardIterator last, string f
     }
     return os;
 }
-template ostream& TravelPack::print(map<ID, TravelPack>::const_iterator first, map<ID, TravelPack>::const_iterator last, string f, ostream& os);
+template ostream& TravelPack::Print(map<ID, TravelPack>::const_iterator first, map<ID, TravelPack>::const_iterator last, string f, ostream& os);
 
 istream& operator>>(istream& is, TravelPack& t){
     ID id;
     vin(                       id        , is);
-    vin(TravelPack::setPlaces, t         , is);
-    vin(Date::set            , t.begin_  , is);
-    vin(Date::set            , t.end_    , is); if(t.end_ < t.begin_) is.setstate(ios::failbit);
+    vin(TravelPack::SetPlaces, t         , is);
+    vin(Date::Set            , t.begin_  , is);
+    vin(Date::Set            , t.end_    , is); if(t.end_ < t.begin_) is.setstate(ios::failbit);
     vin(                       t.price_  , is);
     vin(                       t.numMax_ , is);
     vin(                       t.numSold_, is);
@@ -202,12 +202,12 @@ istream& operator>>(istream& is, TravelPack& t){
 }
 
 ostream& operator<<(ostream& os, const TravelPack& t){
-    os << t.id()*(t.avail()?1:-1) << endl;
-    os << t.getPlaces()           << endl;
-    os << t.begin()               << endl;
-    os << t.end()                 << endl;
-    os << t.price()               << endl;
-    os << t.numMax()              << endl;
-    os << t.numSold()             << flush;
+    os << t.GetID()*(t.GetAvail()?1:-1) << endl;
+    os << t.GetPlaces()                 << endl;
+    os << t.GetBegin()                  << endl;
+    os << t.GetEnd()                    << endl;
+    os << t.GetPrice()                  << endl;
+    os << t.GetNumMax()                 << endl;
+    os << t.GetNumSold()                << flush;
     return os;
 }

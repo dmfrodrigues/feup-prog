@@ -36,18 +36,18 @@ public:
     @throws     invalid_argument   s does not have the required 5 fields,
         since it calls Address::Address(string)
     */
-    static void set(Address& a, string s){ a = Address(s); }
+    static void Set(Address& a, string s){ a = Address(s); }
 
     /**
     'Get' functions of class 'Address'
     @return const reference to corresponding member variable
     @exceptsafe no-throw
     */
-    inline const string&    street    ()const noexcept{ return street_    ; }
-    inline const unsigned&  door      ()const noexcept{ return door_      ; }
-    inline const string&    floor     ()const noexcept{ return floor_     ; }
-    inline const string&    postalCode()const noexcept{ return postalCode_; }
-    inline const string&    location  ()const noexcept{ return location_  ; }
+    inline const string&    GetStreet    ()const noexcept{ return street_    ; }
+    inline const unsigned&  GetDoor      ()const noexcept{ return door_      ; }
+    inline const string&    GetFloor     ()const noexcept{ return floor_     ; }
+    inline const string&    GetPostalCode()const noexcept{ return postalCode_; }
+    inline const string&    GetLocation  ()const noexcept{ return location_  ; }
 
     /**
     Get string version of 'Address', with custom format (implemented with sprintf)

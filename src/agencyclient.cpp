@@ -23,11 +23,11 @@ bool Agency::loadClients(const string& fpath){
 
 void Agency::tclient() const{
     header("Clients table");
-    Client::print(vclient.cbegin(), vclient.cend(), "table", cos); cos << endl;
+    Client::Print(vclient.cbegin(), vclient.cend(), "table", cos); cos << endl;
 }
 
 pair<unsigned, bool> Agency::seeClient() const{
-    Client::print(vclient.begin(), vclient.end(), "table", cos) << endl;
+    Client::Print(vclient.begin(), vclient.end(), "table", cos) << endl;
     int i;
     while(true){
         if(!vin("# of client to see: ", i, cis, cos)) return make_pair(0, false);
@@ -36,7 +36,7 @@ pair<unsigned, bool> Agency::seeClient() const{
     }
     cos << endl;
     auto it = vclient.begin(); advance(it, i);
-    Client::print(it, next(it), "screenfull", cos);
+    Client::Print(it, next(it), "screenfull", cos);
     cos << endl;
     return make_pair(i, true);
 }
@@ -49,7 +49,7 @@ void Agency::sclient() const{
 void Agency::pclient(){
     header("Add client");
     Client c;
-    if(c.userClient(cis, cos)){
+    if(c.UserClient(cis, cos)){
 
         vclient.insert(c);
         cos << "Client added" << endl;
@@ -73,7 +73,7 @@ void Agency::cclient(){
     cos << endl;
     auto it = vclient.begin(); advance(it, i);
     auto c = *it;
-    if(c.userClientprop((unsigned)j, cis, cos)){
+    if(c.UserClientprop((unsigned)j, cis, cos)){
         vclient.erase(it);
         vclient.insert(c);
         cos << endl << "Property changed" << endl;

@@ -25,7 +25,7 @@ private:
     string travelpath; ///name of travelpacks' file
     string clientpath; ///name of clients' file
     string name;
-    NIF nif;
+    VAT vat;
     URL url;
     Address address;
     multiset<Client   > vclient; ///multiset with the agency clients
