@@ -61,7 +61,7 @@ def compile():
     print('Done')
     print("Create %s, link .o files..."%fbin)
     if not os.path.isdir(fbin): os.makedirs(fbin)
-    assert os.system("g++ -o %s %s*.o"%(pmain, fobj)) == 0
+    assert os.system("g++ -o %s %s"%(pmain, ' '.join([fobj+s for s in os.listdir(fobj) if s[-2:] == ".o"]))) == 0
     print("Done")
     return pmain
 
