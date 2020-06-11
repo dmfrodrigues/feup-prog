@@ -1,5 +1,7 @@
 # NiceHolidays
 
+![Make](https://github.com/dmfrodrigues/feup-prog-proj/workflows/Make/badge.svg)
+
 - **Project name:** NiceHolidays
 - **Short description:** Console-based program to manage a travel agency
 - **Environment:** Unix/Windows console
