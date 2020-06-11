@@ -1,7 +1,6 @@
 build/
-
 AgencyTemplateAll/
-
 *.zip
-
 T5G06/
+*.o
+main
