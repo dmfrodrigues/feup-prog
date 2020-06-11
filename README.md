@@ -15,13 +15,13 @@
 ### Compile
 
 ```sh
-python3 compile.py
+make
 ```
 
 ## Run me
 
 ```sh
-./build/linux/bin/main.app
+./main
 ```
 
 Agency file: `input/agency.txt`
