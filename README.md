@@ -1,5 +1,7 @@
 # NiceHolidays
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
 ![Make](https://github.com/dmfrodrigues/feup-prog-proj/workflows/Make/badge.svg)
 
 - **Project name:** NiceHolidays
@@ -13,17 +15,30 @@
     - Diogo Miguel Ferreira Rodrigues (diogo.rodrigues@fe.up.pt / dmfrodrigues2000@gmail.com)
     - João Carlos Machado Rocha Pires (up201806079@fe.up.pt)
 
-## Make commands
-### Compile
+## Install
+
+To compile this program, run `make`.
+
+### Make commands
 
 ```sh
-make
+make        # Compile
+make clean  # Cleanup
 ```
 
-## Run me
+## Usage
 
 ```sh
 ./main
 ```
 
 Agency file: `input/agency.txt`
+
+## License
+
+© 2018-2020 Diogo Rodrigues, João Pires
+
+All files are licensed under [GNU General Public License v3](LICENSE), to the exception of:
+- `.pdf` files, which were authored by the lecturers
+
+The files not authored by us are presented as a fundamental complement to this project, and are made available under *fair use for education*.
