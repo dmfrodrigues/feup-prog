@@ -3,6 +3,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ![Make](https://github.com/dmfrodrigues/feup-prog-proj/workflows/Make/badge.svg)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/27119e114b444cf9af859f567c2df438)](https://www.codacy.com/gh/dmfrodrigues/feup-prog-proj/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dmfrodrigues/feup-prog-proj&amp;utm_campaign=Badge_Grade)
 
 - **Project name:** NiceHolidays
 - **Short description:** Console-based program to manage a travel agency
